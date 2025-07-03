@@ -1,7 +1,7 @@
 const NewsLetter = () => {
   return (
     <>
-      <section className="py-10 px-4 bg-[#1a1a1a] text-white text-center rounded-t-3xl mt-16">
+      <section className="p-6 bg-[#1a1a1a] text-white text-center rounded-t-3xl">
         <h2 className="text-2xl font-semibold text-gold font-brand">
           Stay in the Loop
         </h2>

@@ -2,8 +2,5 @@
 @tailwind components;
 @tailwind utilities;
 body {
-  background-image: url("/src/assets/bg-image.png");
-  background-attachment: fixed;
-  background-position: center;
-  background-size: cover;
+  background-color: black;
 }

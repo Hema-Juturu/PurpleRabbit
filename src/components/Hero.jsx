@@ -1,8 +1,8 @@
 const Hero = () => {
   return (
-    <section className="relative h-screen bg-fixed bg-center bg-transparent">
+    <section className="relative bg-fixed bg-center bg-transparent"  style={{ backgroundImage: `url('/src/assets/bg-image.png')` }}>
       <div className="absolute inset-0 backdrop-blur-sm" />
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center p-16">
         <h1 className="text-5xl md:text-6xl font-brand text-purple tracking-wider">
           Purple<span className="text-gold">Rabbit</span>
         </h1>
