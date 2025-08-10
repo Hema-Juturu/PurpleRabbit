@@ -1,8 +1,8 @@
 import Home from "../assets/Home.png"
 import Trending from "../assets/Trending.png"
 import Categories from "../assets/Categories.png"
-import cart from "../assets/cart.png"
 import profile from "../assets/profile.png";
+import help from "../assets/help.png"
 
 const Footer = () => {
   return (
@@ -20,7 +20,7 @@ const Footer = () => {
         <img src={profile} className="w-8"/>
       </button>
       <button>
-        <img src={cart} className="w-8"/>
+        <img src={help} className="w-8"/>
       </button>
     </div>
   );
