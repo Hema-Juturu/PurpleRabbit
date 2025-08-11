@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 // import { FiSearch } from "react-icons/fi";
-
-
+import search from "../assets/search.png";
 export default function SearchBar() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
@@ -27,14 +26,15 @@ export default function SearchBar() {
 
   return (
     <div className="relative w-full max-w-lg mx-auto">
-      <div className="flex items-center border border-gray-300 rounded-full overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-violet-700">
+      <div className="flex items-center border-none shadow-sm">
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search for products..."
-          className="w-full px-4 py-2 outline-none"
+          className="w-full px-4 py-2 border-b-2 border-gray-500 focus:outline-none bg-neutral-200"
         />
+            <img src={search} alt="search" className="w-7" />
       </div>
 
       {results.length > 0 && (
