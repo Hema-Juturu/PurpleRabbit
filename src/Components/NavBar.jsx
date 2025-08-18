@@ -4,7 +4,7 @@ import profile from "../assets/profile.png";
 import wishlist from "../assets/wishlist.png";
 import cart from "../assets/cart.png";
 import SearchBar from "./searchBar";
-import search from "../assets/search.png";
+import enter from "../assets/enter.png";
 import { Link } from "react-router-dom";
 import Login from "../pages/Login";
 // import SearchBar from "./searchBar";
@@ -76,9 +76,10 @@ const NavBar = () => {
             ) : (
               <button
                 onClick={() => setShowLogin(true)}
-                className="text-amber-600 font-semibold border border-amber-600 px-4 py-2 rounded-full hover:bg-amber-50"
+                className="flex items-center gap-2 text-amber-600 font-semibold px-4 py-2 rounded-full hover:bg-amber-50"
               >
-                Register
+                <img src={enter} alt="login" className="w-6 h-6" />
+                <span>Login</span>
               </button>
             )}
           </div>
