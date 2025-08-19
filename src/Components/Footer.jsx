@@ -1,25 +1,32 @@
-import Home from "../assets/Home.png";
-import Trending from "../assets/Trending.png";
-import Categories from "../assets/Categories.png";
-import profile from "../assets/profile.png";
-import help from "../assets/help.png";
+// import Home from "../assets/Home.png";
+// import Trending from "../assets/Trending.png";
+// import Categories from "../assets/Categories.png";
+// import help from "../assets/help.png";
 import logo from "../assets/logo.png";
+import profile from "../assets/profile.png";
 import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin } from "react-icons/fa";
+import {
+  User,
+  Home,
+  Flame,
+  MessageCircleQuestionMark,
+  LayoutGrid,
+} from "lucide-react";
 
 const Footer = () => {
   return (
     <>
-      <footer className="bg-gray-900 text-gray-300">
+      <footer className=" text-gray-900 bg-transparent">
         <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand Section */}
           <div>
             <div className="flex items-center space-x-3">
               <img src={logo} alt="PurpleRabbit" className="w-10 h-10" />
-              <span className="text-xl font-semibold text-white">
+              <span className="text-xl font-semibold text-gray-800">
                 PurpleRabbit
               </span>
             </div>
-            <p className="mt-3 text-sm text-gray-400">
+            <p className="mt-3 text-sm text-gray-800">
               Your smart e-commerce + rental platform. Buy or rent — with AI
               assistance.
             </p>
@@ -27,7 +34,7 @@ const Footer = () => {
 
           {/* Links Section */}
           <div>
-            <h4 className="text-white font-semibold mb-3">Quick Links</h4>
+            <h4 className="text-gray-800 font-semibold mb-3">Quick Links</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <a href="/about" className="hover:text-white">
@@ -44,7 +51,7 @@ const Footer = () => {
 
           {/* Social Media Section */}
           <div>
-            <h4 className="text-white font-semibold mb-3">Follow Us</h4>
+            <h4 className="text-gray-800 font-semibold mb-3">Follow Us</h4>
             <div className="flex space-x-4">
               <a href="#" className="hover:text-white">
                 <FaFacebook size={20} />
@@ -67,21 +74,21 @@ const Footer = () => {
           © {new Date().getFullYear()} PurpleRabbit. All rights reserved.
         </div>
       </footer>
-      <div className="md:hidden flex flex-row justify-between mx-6 my-3 bg-red ">
+      <div className="fixed z-50 bottom-0 w-full left-0 md:hidden flex flex-row justify-between px-6 py-3 ">
         <button>
-          <img src={Home} className="w-8" />
+          <Home className="w-8 h-8 text-gray-700" />
         </button>
         <button>
-          <img src={Trending} className="w-8" />
+          <Flame className="w-8 h-8 text-gray-700" />
         </button>
         <button>
-          <img src={Categories} className="w-8" />
+          <LayoutGrid className="w-8 h-8 text-gray-700" />
         </button>
         <button>
-          <img src={profile} className="w-8" />
+          <User className="w-8 h-8 text-gray-700" />
         </button>
         <button>
-          <img src={help} className="w-8" />
+          <MessageCircleQuestionMark className="w-8 h-8 text-gray-700" />
         </button>
       </div>
     </>

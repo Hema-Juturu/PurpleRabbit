@@ -27,7 +27,7 @@ const Login = () => {
 
   return (
     <div>
-      <h2 className="text-xl font-bold text-center mb-4">
+      <h2 className="text-2xl  text-center mb-4">
         {isRegister ? "Register Now" : "Login"}
       </h2>
 
@@ -36,7 +36,7 @@ const Login = () => {
         {isRegister && (
           <input
             type="text"
-            className="w-full p-2 mb-4 border-b-2 border-gray-500 focus:outline-none bg-neutral-200 rounded"
+            className="w-full p-2 mb-4 border-b-2 border-gray-500 focus:outline-none bg-white rounded"
             value={username}
             placeholder="Enter username"
             onChange={(e) => setUsername(e.target.value)}
@@ -46,7 +46,7 @@ const Login = () => {
         {/* Email */}
         <input
           type="email"
-          className="w-full p-2 mb-4 border-b-2 border-gray-500 focus:outline-none bg-neutral-200 rounded"
+          className="w-full p-2 mb-4 border-b-2 border-gray-500 focus:outline-none bg-white rounded"
           value={email}
           placeholder="Enter email address"
           onChange={(e) => setEmail(e.target.value)}
@@ -55,13 +55,13 @@ const Login = () => {
         {/* Password */}
         <input
           type="password"
-          className="w-full p-2 mb-4 border-b-2 border-gray-500 focus:outline-none bg-neutral-200 rounded"
+          className="w-full p-2 mb-4 border-b-2 border-gray-500 focus:outline-none bg-white rounded"
           value={password}
           placeholder="Enter password"
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button className="w-full bg-amber-600 text-white py-2 rounded hover:bg-violet-600">
+        <button className="w-full border-2 border-violet-500  text-violet-500 py-2 rounded-full hover:bg-violet-600 hover:text-white">
           {isRegister ? "Register" : "Login"}
         </button>
       </form>
@@ -71,10 +71,10 @@ const Login = () => {
         {isRegister ? "Already have an account?" : "Don't have an account?"}{" "}
         <button
           type="button"
-          className="text-amber-600 font-semibold hover:underline"
+          className="text-yellow-600 text-lg hover:underline mx-2"
           onClick={() => setIsRegister(!isRegister)}
         >
-          {isRegister ? "Login here" : "Register here"}
+          {isRegister ? "Login" : "Register"}
         </button>
       </p>
     </div>

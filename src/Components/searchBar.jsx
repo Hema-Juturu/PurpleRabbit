@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-// import { FiSearch } from "react-icons/fi";
-import search from "../assets/search.png";
+import { Search } from 'lucide-react';
+
+
 export default function SearchBar() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
@@ -32,9 +33,10 @@ export default function SearchBar() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search for products..."
-          className="w-full px-4 py-2 border-b-2 border-gray-500 focus:outline-none bg-neutral-200"
+          className="w-full px-4 py-2 border-b-2 border-gray-500 focus:outline-none bg-transparent"
         />
-            <img src={search} alt="search" className="w-7" />
+            <Search className="w-7 h-7 text-gray-500" />
+
       </div>
 
       {results.length > 0 && (
