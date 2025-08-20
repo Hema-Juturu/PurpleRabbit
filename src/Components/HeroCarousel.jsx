@@ -12,9 +12,11 @@ import img4 from "../assets/img4.png";
 import img5 from "../assets/img5.png";
 import img6 from "../assets/img6.png";
 import img7 from "../assets/img7.png";
+import img8 from "../assets/img8.jpg";
+
 
 const HeroCarousel = () => {
-  const slides = [img1, img2, img3, img4, img5, img6, img7];
+  const slides = [img1, img2, img3, img4, img5, img6, img7, img8];
 
   return (
     <section className="w-full py-10 bg-white text-center">

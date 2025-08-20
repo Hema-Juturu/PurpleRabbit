@@ -1,9 +1,4 @@
-// import Home from "../assets/Home.png";
-// import Trending from "../assets/Trending.png";
-// import Categories from "../assets/Categories.png";
-// import help from "../assets/help.png";
 import logo from "../assets/logo.png";
-import profile from "../assets/profile.png";
 import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin } from "react-icons/fa";
 import {
   User,
@@ -74,7 +69,7 @@ const Footer = () => {
           © {new Date().getFullYear()} PurpleRabbit. All rights reserved.
         </div>
       </footer>
-      <div className="fixed z-50 bottom-0 w-full left-0 md:hidden flex flex-row justify-between px-6 py-3 ">
+      <div className="bg-white fixed z-50 bottom-0 w-full left-0 md:hidden flex flex-row justify-between px-6 py-3 ">
         <button>
           <Home className="w-8 h-8 text-gray-700" />
         </button>

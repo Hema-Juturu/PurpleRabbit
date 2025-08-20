@@ -47,21 +47,25 @@ const NavBar = () => {
 
           {/* Logo */}
           <div className="hidden md:flex md:justify-center">
+            <Link to="/">
             <img
               src={logo}
               alt="Logo"
               className="w-14 h-auto object-contain hover:scale-110 transition"
-            />
+              />
+              </Link>
           </div>
           {/* Mobile view*/}
           <div className="flex flex-col md:hidden mt-5">
             <div className="flex flex-row mt-3 justify-between px-2 items-center">
               <div className="flex md:justify-center">
+                <Link to="/">
                 <img
                   src={logo}
                   alt="Logo"
                   className="w-12 h-auto object-contain hover:scale-110 transition"
-                />
+                  />
+                  </Link>
               </div>
               {isLoggedIn ? (
                 <div className="flex flex-row justify-end">
@@ -110,10 +114,10 @@ const NavBar = () => {
             ) : (
               <button
                 onClick={() => setShowLogin(true)}
-                className="flex items-center gap-2 text-violet-600 font-semibold px-4 py-2 rounded-full border border-violet-600 hover:border-2"
+                className="flex items-center gap-2 text-violet-600 font-semibold px-4 py-2 rounded-full border border-violet-600 hover:border-y-2"
               >
                 <LogIn className="w-5 h-5" />
-                <span>Login</span>
+                <span>LogIn</span>
               </button>
             )}
           </div>
