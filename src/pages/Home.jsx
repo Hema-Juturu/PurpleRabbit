@@ -1,8 +1,18 @@
-const Home=()=>{
-    return (
-        <>
-        <h1 className="text-purple-950 justify-center items-center">Home</h1>
-        </>
-    )
-}
+import ProductCard from "../Components/ProductCard";
+import { homeProducts } from "../data/productsData";
+
+const Home = () => {
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold text-purple-950 mb-6">Home</h1>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {homeProducts.map((product) => (
+          <ProductCard key={product.id} {...product} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export default Home;

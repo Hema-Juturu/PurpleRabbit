@@ -7,7 +7,7 @@ import {
   MessageCircleQuestionMark,
   LayoutGrid,
 } from "lucide-react";
-
+import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <>
@@ -80,7 +80,9 @@ const Footer = () => {
           <LayoutGrid className="w-8 h-8 text-gray-700" />
         </button>
         <button>
-          <User className="w-8 h-8 text-gray-700" />
+          <Link to="/profile">
+            <User className="w-8 h-8 text-gray-700" />
+          </Link>
         </button>
         <button>
           <MessageCircleQuestionMark className="w-8 h-8 text-gray-700" />

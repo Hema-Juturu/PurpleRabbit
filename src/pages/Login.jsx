@@ -4,7 +4,7 @@ import { User, Mail, Lock } from "lucide-react";
 
 const Login = () => {
   const [isRegister, setIsRegister] = useState(true);
-  const [username, setUsername] = useState(""); 
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -17,12 +17,15 @@ const Login = () => {
       : "http://localhost:5000/login";
 
     const data = isRegister
-      ? { username, email, password } 
+      ? { username, email, password }
       : { email, password };
 
     axios
       .post(url, data)
-      .then((res) => console.log(res.data))
+      .then((res) => {
+        console.log(res.data);
+        if (isRegister) setIsRegister(false); // Switch to login after signup
+      })
       .catch((err) => console.error(err));
   };
 

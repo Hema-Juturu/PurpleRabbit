@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { User, Heart, ShoppingBag, LogIn  } from "lucide-react";
+import { User, Heart, ShoppingBag, LogIn } from "lucide-react";
 import logo from "../assets/logo.png";
 import Login from "../pages/Login";
 import SearchBar from "./searchBar";
 
 const NavBar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showLogin, setShowLogin] = useState(false);
 
   return (
@@ -48,30 +48,34 @@ const NavBar = () => {
           {/* Logo */}
           <div className="hidden md:flex md:justify-center">
             <Link to="/">
-            <img
-              src={logo}
-              alt="Logo"
-              className="w-14 h-auto object-contain hover:scale-110 transition"
+              <img
+                src={logo}
+                alt="Logo"
+                className="w-14 h-auto object-contain hover:scale-110 transition"
               />
-              </Link>
+            </Link>
           </div>
           {/* Mobile view*/}
           <div className="flex flex-col md:hidden mt-5">
             <div className="flex flex-row mt-3 justify-between px-2 items-center">
               <div className="flex md:justify-center">
                 <Link to="/">
-                <img
-                  src={logo}
-                  alt="Logo"
-                  className="w-12 h-auto object-contain hover:scale-110 transition"
+                  <img
+                    src={logo}
+                    alt="Logo"
+                    className="w-12 h-auto object-contain hover:scale-110 transition"
                   />
-                  </Link>
+                </Link>
               </div>
               {isLoggedIn ? (
-                <div className="flex flex-row justify-end">
-                  <img src={Heart} alt="wishlist" className="w-8 h-8 mx-2" />
-                  <img src={ShoppingBag} alt="cart" className="w-8 h-8 mx-2" />
-                  <img src={User} alt="profile" className="w-8 h-8 mx-2" />
+                <div className="flex flex-row justify-end gap-4">
+                  {" "}
+                  <Link to="/wishlist">
+                    <Heart className="w-6 h-6 text-gray-700 cursor-pointer hover:text-violet-600" />
+                  </Link>
+                  <Link to="/bag">
+                    <ShoppingBag className="w-6 h-6 text-gray-700 cursor-pointer hover:text-violet-600" />
+                  </Link>
                 </div>
               ) : (
                 <button
@@ -107,9 +111,16 @@ const NavBar = () => {
             <SearchBar className="w-56 rounded-full border border-gray-300 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 outline-none" />
             {isLoggedIn ? (
               <>
-                <User className="w-6 h-6 text-gray-700 cursor-pointer hover:text-violet-600" />
-                <Heart className="w-6 h-6 text-gray-700 cursor-pointer hover:text-violet-600" />
-                <ShoppingBag className="w-6 h-6 text-gray-700 cursor-pointer hover:text-violet-600" />
+                {" "}
+                <Link to="/profile">
+                  <User className="w-6 h-6 text-gray-700 cursor-pointer hover:text-violet-600" />
+                </Link>
+                <Link to="/wishlist">
+                  <Heart className="w-6 h-6 text-gray-700 cursor-pointer hover:text-violet-600" />
+                </Link>
+                <Link to="/bag">
+                  <ShoppingBag className="w-6 h-6 text-gray-700 cursor-pointer hover:text-violet-600" />
+                </Link>
               </>
             ) : (
               <button
