@@ -1,10 +1,13 @@
 import { useParams } from "react-router-dom";
+import { useContext ,useState } from "react";
 import {
   menProducts,
   womenProducts,
   kidsProducts,
   homeProducts,
 } from "../data/productsData";
+import { Heart, ShoppingBag } from "lucide-react";
+import { ProductContext } from "../context/product-context";
 
 const allProducts = [
   ...menProducts,
@@ -12,11 +15,22 @@ const allProducts = [
   ...kidsProducts,
   ...homeProducts,
 ];
-import { Heart, ShoppingBag } from "lucide-react";
+
 const ProductDetails = () => {
   const { id } = useParams();
-  const product = allProducts.find((p) => p.id === Number(id));
 
+  // ✅ Get cart functions from context
+  const { addToCart } = useContext(ProductContext);
+  const product = allProducts.find((p) => p.id === Number(id));
+  const [added, setAdded] = useState(false);
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    setAdded(true);
+
+    // Reset after 2 seconds
+    setTimeout(() => setAdded(false), 2000);
+  };
   if (!product) {
     return (
       <h2 className="text-center mt-10 text-red-600">Product not found</h2>
@@ -53,8 +67,16 @@ const ProductDetails = () => {
           </button>
 
           {/* Add to Bag Button */}
-          <button className="px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 shadow">
+          <button
+            className={`px-4 py-2 rounded-lg ${
+              added
+                ? "bg-green-500 text-white"
+                : "bg-purple-600 text-white hover:bg-purple-700"
+            } shadow flex items-center gap-2`}
+            onClick={() => handleAddToCart(product)}
+          >
             <ShoppingBag />
+            {added ? "Added!" : "Add to Bag"}
           </button>
 
           {/* Buy Now Button */}

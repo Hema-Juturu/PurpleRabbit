@@ -9,10 +9,12 @@ import ProductDetails from "./pages/ProductDetails";
 import WishlistPage from "./pages/WishlistPage";
 import BagPage from "./pages/BagPage";
 import Profile from "./pages/Profile";
+import { ProductContextProvider } from "./context/product-context";
 function AppRoutes() {
   return (
     <>
       <BrowserRouter>
+      <ProductContextProvider>
         <Layout>
           <Routes>
             <Route path="/" element={<LandingPage />}></Route>
@@ -26,6 +28,7 @@ function AppRoutes() {
             <Route path="/profile" element={<Profile />} />
           </Routes>
         </Layout>
+      </ProductContextProvider>
       </BrowserRouter>
     </>
   );
