@@ -18,11 +18,11 @@ const allProducts = [
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const { addToCart } = useContext(ProductContext);
+  const { addToCart, wishlist, toggleWishlist } = useContext(ProductContext);
   const product = allProducts.find((p) => p.id === Number(id));
 
   const [added, setAdded] = useState(false);
-  const [quantity, setQuantity] = useState(1); // ✅ quantity state
+  const [quantity, setQuantity] = useState(1);
 
   if (!product) {
     return (
@@ -31,11 +31,13 @@ const ProductDetails = () => {
   }
 
   const handleAddToCart = () => {
-    addToCart(product, quantity); // ✅ pass quantity
+    addToCart(product, quantity);
     setAdded(true);
-
     setTimeout(() => setAdded(false), 2000);
   };
+
+  // check if product is already in wishlist
+  const inWishlist = wishlist.some((item) => item.id === product.id);
 
   return (
     <div className="p-8 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -77,10 +79,14 @@ const ProductDetails = () => {
           </button>
         </div>
 
+        {/* Actions */}
         <div className="flex gap-4 mt-6 items-center">
           {/* Wishlist Button */}
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg border text-purple-600 border-purple-600 hover:bg-purple-100">
-            <Heart />
+          <button
+            onClick={() => toggleWishlist(product)}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-purple-600 border-purple-600 hover:bg-purple-100"
+          >
+            <Heart className={inWishlist ? "fill-purple-500" : ""} />
           </button>
 
           {/* Add to Bag Button */}
