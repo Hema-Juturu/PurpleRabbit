@@ -2,31 +2,46 @@ import { useState } from "react";
 import axios from "axios";
 import { User, Mail, Lock } from "lucide-react";
 
-const Login = () => {
+const Login = ({ onLoginSuccess }) => {
   const [isRegister, setIsRegister] = useState(true);
-  const [username, setUsername] = useState("");
+  const [name, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.defaults.withCredentials = true;
 
     const url = isRegister
-      ? "http://localhost:5000/register"
-      : "http://localhost:5000/login";
+      ? "http://localhost:5000/api/auth/register"
+      : "http://localhost:5000/api/auth/login";
 
-    const data = isRegister
-      ? { username, email, password }
-      : { email, password };
+    const data = isRegister ? { name, email, password } : { email, password };
+
+    // 👀 Debug log
+    console.log("Sending to:", url);
+    console.log("Payload:", data);
 
     axios
-      .post(url, data)
-      .then((res) => {
-        console.log(res.data);
-        if (isRegister) setIsRegister(false); // Switch to login after signup
+      .post(url, data, {
+        headers: { "Content-Type": "application/json" },
       })
-      .catch((err) => console.error(err));
+      .then((res) => {
+        console.log("✅ Response:", res.data);
+
+        // Save token
+        if (res.data.token) {
+          localStorage.setItem("token", res.data.token);
+        }
+
+        // Call parent callback to update NavBar state
+        if (onLoginSuccess) {
+          onLoginSuccess(res.data.user); // pass user info if needed
+        }
+      })
+      .catch((err) => {
+        console.error("❌ Error:", err.response?.data || err.message);
+        alert(err.response?.data?.message || "Something went wrong");
+      });
   };
 
   return (
@@ -42,7 +57,7 @@ const Login = () => {
             <input
               type="text"
               className="w-full p-2 pl-10 mb-4 border-b-2 border-gray-500 focus:outline-none bg-white rounded"
-              value={username}
+              value={name}
               placeholder="Enter username"
               onChange={(e) => setUsername(e.target.value)}
             />

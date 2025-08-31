@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { User, Heart, ShoppingBag, LogIn } from "lucide-react";
 import logo from "../assets/logo.png";
@@ -6,8 +6,12 @@ import Login from "../pages/Login";
 import SearchBar from "./searchBar";
 
 const NavBar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token); // true if token exists
+  }, []);
 
   return (
     <>
@@ -21,7 +25,12 @@ const NavBar = () => {
             >
               ✕
             </button>
-            <Login />
+            <Login
+              onLoginSuccess={() => {
+                setIsLoggedIn(true);
+                setShowLogin(false);
+              }}
+            />
           </div>
         </div>
       )}
