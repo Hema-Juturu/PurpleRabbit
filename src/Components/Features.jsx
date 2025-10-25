@@ -27,7 +27,7 @@ const Features = () => {
       {features.map((f) => (
         <div
           key={f.id}
-          className="p-6 rounded-2xl bg-white shadow hover:shadow-lg transition duration-300"
+          className="p-6 rounded-2xl shadow hover:shadow-lg transition duration-300"
         >
           <div className="flex justify-center mb-4">{f.icon}</div>
           <h3 className="text-xl font-semibold mb-2">{f.title}</h3>

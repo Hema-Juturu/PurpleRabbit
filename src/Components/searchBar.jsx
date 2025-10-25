@@ -33,9 +33,9 @@ export default function SearchBar() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search for products..."
-          className="w-full px-4 py-2 border-b-2 border-gray-500 focus:outline-none bg-transparent"
+          className="w-full px-4 py-2 border-b-2 border-gray-300 focus:outline-none bg-transparent"
         />
-            <Search className="w-7 h-7 text-gray-500" />
+            <Search className="w-7 h-7 text-gray-300" />
 
       </div>
 

@@ -32,12 +32,12 @@ const Trending = () => {
 
   return (
     <section className="py-12 px-5 md:px-60">
-      <h2 className="text-2xl font-bold mb-6 text-center">🔥 Trending Now</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+      <h2 className="text-2xl text-white font-bold mb-6 text-center">🔥 Trending Now</h2>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 ">
         {products.map((p) => (
           <div
             key={p.id}
-            className="border rounded-2xl overflow-hidden shadow hover:shadow-lg transition duration-300 cursor-pointer"
+            className="bg-gray-300  border rounded-2xl overflow-hidden shadow hover:shadow-lg transition duration-300 cursor-pointer"
           >
             <img
               src={p.img}

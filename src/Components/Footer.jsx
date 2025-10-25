@@ -11,17 +11,17 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <>
-      <footer className=" text-gray-900 bg-transparent">
+      <footer className=" text-gray-300 bg-transparent">
         <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand Section */}
           <div>
             <div className="flex items-center space-x-3">
               <img src={logo} alt="PurpleRabbit" className="w-10 h-10" />
-              <span className="text-xl font-semibold text-gray-800">
+              <span className="text-xl font-semibold text-gray-300">
                 PurpleRabbit
               </span>
             </div>
-            <p className="mt-3 text-sm text-gray-800">
+            <p className="mt-3 text-sm text-gray-300">
               Your smart e-commerce + rental platform. Buy or rent — with AI
               assistance.
             </p>
@@ -29,7 +29,7 @@ const Footer = () => {
 
           {/* Links Section */}
           <div>
-            <h4 className="text-gray-800 font-semibold mb-3">Quick Links</h4>
+            <h4 className="text-gray-300 font-semibold mb-3">Quick Links</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <a href="/about" className="hover:text-white">
@@ -46,7 +46,7 @@ const Footer = () => {
 
           {/* Social Media Section */}
           <div>
-            <h4 className="text-gray-800 font-semibold mb-3">Follow Us</h4>
+            <h4 className="text-gray-300 font-semibold mb-3">Follow Us</h4>
             <div className="flex space-x-4">
               <a href="#" className="hover:text-white">
                 <FaFacebook size={20} />
