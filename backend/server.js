@@ -4,6 +4,9 @@ import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/auth.js";
 import http from "http";
+import path from "path";
+import { fileURLToPath } from "url";
+
 import { ERRORS } from "./utils/error.types.js";
 dotenv.config();
 const app = express();
@@ -12,6 +15,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname,"../frontend/dist")));
+
+// Serve index.html for any other routes
+app.get("/", (_, res) =>
+  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"))
+);
 // Routes
 app.get("/api", (_, res) => {
   res.status(200).json({
