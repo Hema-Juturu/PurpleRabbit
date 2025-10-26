@@ -4,16 +4,21 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+  
+     "local": "cd ./frontend && npm run dev",
+    "dev": "cd ./backend && nodemon ./server.js",
+    "build": "cd ./backend && npm install && cd ../frontend && npm install && npm run build",
+    "build:prod": "cd ./backend && npm install && cd ../frontend && npm install && npm run build && rm -rf node_modules",
+    "start": "npm run build && cd ./backend &&  node ./server.js",
+    "start:prod": "cd ./backend && node ./server.js",
+    "start1": "concurrently \"npm run local\" \"npm run start\""
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.6",
     "@tailwindcss/vite": "^4.1.11",
     "axios": "^1.11.0",
     "bcryptjs": "^3.0.2",
+    "concurrently": "^9.2.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
