@@ -16,7 +16,7 @@ const BagPage = () => {
           {cart.map((product) => (
             <div
               key={product.id}
-              className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-lg shadow gap-4"
+              className="bg-white/30 flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-lg shadow gap-4"
             >
               {/* Product Info */}
               <div className="flex items-start gap-4 w-full md:w-auto">
@@ -35,20 +35,20 @@ const BagPage = () => {
               </div>
 
               {/* Actions in same row */}
-              <div className="flex items-center justify-end gap-2 w-full md:w-auto mt-2 md:mt-0">
+              <div className="flex items-center justify-end gap-6 w-full md:w-auto mt-2 md:mt-0 ">
                 {/* Quantity Controls */}
                 <div className="flex items-center gap-2">
                   <button
-                    className="px-2 py-1 border rounded"
+                    className="px-2 py-1 border rounded bg-white "
                     onClick={() =>
                       updateQuantity(product.id, product.quantity - 1)
                     }
                   >
                     -
                   </button>
-                  <p className="px-2">{product.quantity}</p>
+                  <p className="px-2 text-2xl text-white">{product.quantity}</p>
                   <button
-                    className="px-2 py-1 border rounded"
+                    className="px-2 py-1 border rounded bg-white "
                     onClick={() =>
                       updateQuantity(product.id, product.quantity + 1)
                     }
@@ -59,21 +59,21 @@ const BagPage = () => {
 
                 {/* Wishlist & Remove Buttons */}
                 <button
-                  className="p-2 rounded-lg border text-purple-600 hover:bg-purple-100"
+                  className="p-2 rounded-lg border text-purple-600  hover:bg-purple-600 bg-white"
                   onClick={() => toggleWishlist(product)}
                 >
                   <Heart
                     className={
                       wishlist.some((item) => item.id === product.id)
-                        ? "fill-purple-500"
-                        : ""
+                        ? "fill-red-600"
+                        : "fill-white"
                     }
                   />
 
                   {/* <Heart className={wishlist.some((item) => item.id === product.id ? "fill-purple-500" : ""} /> */}
                 </button>
                 <button
-                  className="p-2 rounded-lg border text-red-600 hover:bg-red-100"
+                  className="p-2 bg-white rounded-lg border text-red-600  hover:bg-red-600 hover:text-white"
                   onClick={() => removeFromCart(product.id)}
                 >
                   <X />

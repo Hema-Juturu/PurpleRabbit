@@ -69,7 +69,7 @@ const Footer = () => {
           © {new Date().getFullYear()} PurpleRabbit. All rights reserved.
         </div>
       </footer>
-      <div className="bg-white fixed z-50 bottom-0 w-full left-0 md:hidden flex flex-row justify-between px-6 py-3 ">
+      <div className="bg-white fixed z-50 bottom-0 w-full left-0 lg:hidden flex flex-row justify-evenly px-6 py-3 ">
         <button>
           <Home className="w-8 h-8 text-gray-700" />
         </button>

@@ -17,7 +17,7 @@ const WishlistPage = () => {
           {wishlist.map((product) => (
             <div
               key={product.id}
-              className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-lg shadow gap-4"
+              className=" bg-white/30 flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-lg shadow gap-4"
             >
               {/* Product Info */}
               <div className="flex items-start gap-4 w-full md:w-auto">
@@ -30,7 +30,7 @@ const WishlistPage = () => {
                   <h2 className="font-bold">{product.name}</h2>
                   <p className="text-purple-700">{product.price}</p>
                   {product.offer && (
-                    <p className="text-red-500 text-sm">{product.offer}</p>
+                    <p className="text-red-500 text-sm ">{product.offer}</p>
                   )}
                 </div>
               </div>
@@ -52,7 +52,7 @@ const WishlistPage = () => {
 
                 {/* Remove */}
                 <button
-                  className="p-2 rounded-lg border text-red-600 hover:bg-red-100"
+                  className="p-2 rounded-lg border text-red-600 hover:bg-red-600 hover:text-white bg-white"
                   onClick={() => toggleWishlist(product)}
                 >
                   <X />

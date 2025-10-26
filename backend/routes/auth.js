@@ -1,8 +1,7 @@
 import express from "express";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import JwtService from "../services/jwt.js";
 import User from "../models/User.js";
-import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -20,11 +19,11 @@ router.post("/register", async (req, res) => {
     user = new User({ name, email, password: hashedPassword });
     await user.save();
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    const token = JwtService.sign({ id: user._id});
 
-    res.json({ 
-      token, 
-      user: { id: user._id, name: user.name, email: user.email }
+    res.json({
+      token,
+      user: { id: user._id, name: user.name, email: user.email },
     });
   } catch (err) {
     res.status(500).json({ msg: "Server error" });
@@ -42,11 +41,13 @@ router.post("/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
-    res.json({ 
-      token, 
-      user: { id: user._id, name: user.name, email: user.email }
+    res.json({
+      token,
+      user: { id: user._id, name: user.name, email: user.email },
     });
   } catch (err) {
     res.status(500).json({ msg: "Server error" });
@@ -54,9 +55,9 @@ router.post("/login", async (req, res) => {
 });
 
 // ✅ Get logged in user
-router.get("/me", auth, async (req, res) => {
-  const user = await User.findById(req.user).select("-password");
-  res.json(user);
-});
+// router.get("/me", JwtService, async (req, res) => {
+//   const user = await User.findById(req.user).select("-password");
+//   res.json(user);
+// });
 
 export default router;

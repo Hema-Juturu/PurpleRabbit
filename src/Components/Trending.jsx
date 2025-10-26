@@ -37,7 +37,7 @@ const Trending = () => {
         {products.map((p) => (
           <div
             key={p.id}
-            className="bg-gray-300  border rounded-2xl overflow-hidden shadow hover:shadow-lg transition duration-300 cursor-pointer"
+            className="bg-gray-50  border rounded-2xl overflow-hidden shadow hover:shadow-lg transition duration-300 cursor-pointer"
           >
             <img
               src={p.img}

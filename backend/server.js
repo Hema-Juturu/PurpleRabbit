@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/auth.js";
-
+import http from "http";
+import { ERRORS } from "./utils/error.types.js";
 dotenv.config();
 const app = express();
 
@@ -12,20 +13,32 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+app.get("/api", (_, res) => {
+  res.status(200).json({
+    message: "Api [PurpleRabbit]",
+  });
+});
+
 app.use("/api/auth", authRoutes);
 
-// Connect DB & Start Server
-console.log("Connecting to:", process.env.MONGO_URI);
+// app.use("/*", (_, res) => {
+//   console.log("wild-route-hit");
+//   res.status(403).json({
+//     error: ERRORS.METHOD_NOT_ALLOWED,
+//   });
+// });
 
-mongoose.connect(process.env.MONGO_URI)
+// Connect DB & Start Server
+const server = http.createServer(app);
+
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => {
-    console.log("✅ MongoDB Connected");
-    app.listen(process.env.PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${process.env.PORT}`);
+    console.log("DB Connected");
+    server.listen(process.env.PORT, () => {
+      console.log(`Server running on http://localhost:${process.env.PORT}`);
     });
   })
-  .catch(err => {
-    console.error("❌ MongoDB Connection Error:", err.message);
+  .catch((err) => {
+    console.error("DB Connection Error:", err.message);
   });
-
-
