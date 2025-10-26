@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "1.0.0",
   "main": "postcss.config.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite --port 9000",
@@ -13,5 +13,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@fontsource/inter": "^5.2.8"
+  }
 }

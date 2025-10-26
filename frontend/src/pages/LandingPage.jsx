@@ -8,7 +8,7 @@ const LandingPage = () => {
       <section className="mt-100 w-full md:h-screen">
         <HeroCarousel />
       </section>
-      <section className="md:py-16 px-8 bg-white/30 backdrop-blur-md">
+      <section className="py-16 px-8 bg-white/30 backdrop-blur-md">
         <h2 className=" text-gray-50 text-2xl font-bold mb-8 text-center">
           Shop by Category
         </h2>

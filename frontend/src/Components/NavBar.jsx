@@ -89,14 +89,14 @@ const NavBar = () => {
             ) : (
               <button
                 onClick={() => setShowLogin(true)}
-                className="flex items-center gap-2 text-violet-600 font-semibold"
+                className="flex items-center gap-2 text-gray-300 font-semibold"
               >
                 <LogIn className="w-5 h-5" />
                 <span>Login</span>
               </button>
             )}
           </div>
-          <div className="flex flex-row justify-evenly items-center p-4">
+          <div className="flex flex-row justify-evenly items-center p-4 text-gray-300">
             <Link to="/women">
               <span>Women</span>
             </Link>

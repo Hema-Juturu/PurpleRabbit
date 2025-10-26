@@ -69,23 +69,23 @@ const Footer = () => {
           © {new Date().getFullYear()} PurpleRabbit. All rights reserved.
         </div>
       </footer>
-      <div className="bg-white fixed z-50 bottom-0 w-full left-0 lg:hidden flex flex-row justify-evenly px-6 py-3 ">
+      <div className="bg-purple-900 fixed z-50 bottom-0 w-full left-0 lg:hidden flex flex-row justify-evenly px-6 py-3 ">
         <button>
-          <Home className="w-8 h-8 text-gray-700" />
+          <Home className="w-8 h-8 text-gray-300" />
         </button>
         <button>
-          <Flame className="w-8 h-8 text-gray-700" />
+          <Flame className="w-8 h-8 text-gray-300" />
         </button>
         <button>
-          <LayoutGrid className="w-8 h-8 text-gray-700" />
+          <LayoutGrid className="w-8 h-8 text-gray-300" />
         </button>
         <button>
           <Link to="/profile">
-            <User className="w-8 h-8 text-gray-700" />
+            <User className="w-8 h-8 text-gray-300" />
           </Link>
         </button>
         <button>
-          <MessageCircleQuestionMark className="w-8 h-8 text-gray-700" />
+          <MessageCircleQuestionMark className="w-8 h-8 text-gray-300" />
         </button>
       </div>
     </>
