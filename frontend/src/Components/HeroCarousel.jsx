@@ -61,7 +61,7 @@ const HeroCarousel = () => {
         </Swiper>
       </div>
        <div className="mb-12">
-        <p className="text-lg md:text-xl mb-6 text-gray-700">
+        <p className="text-lg md:text-xl mb-6 text-gray-300">
           Shop • Rent • Explore the latest trends
         </p>
         <div className="flex justify-center space-x-4">
