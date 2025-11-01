@@ -31,7 +31,7 @@ const Trending = () => {
   ];
 
   return (
-    <section className="py-12 px-5 md:px-60">
+    <section className="py-12 px-5 lg:px-40">
       <h2 className="text-2xl text-white font-bold mb-6 text-center">🔥 Trending Now</h2>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6 ">
         {products.map((p) => (

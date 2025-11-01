@@ -18,7 +18,7 @@ const NavBar = () => {
       {/* Login Modal */}
       {showLogin && (
         <div className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl w-96 shadow-lg relative">
+          <div className="bg-black/40 backdrop-blur-lg p-6 rounded-xl w-96 shadow-lg relative">
             <button
               onClick={() => setShowLogin(false)}
               className="absolute top-2 right-2 text-gray-500 hover:text-black"
@@ -37,7 +37,7 @@ const NavBar = () => {
 
       {/* Navbar */}
       <nav className="bg-white/30 backdrop-blur-lg w-full items-center lg:w-3/4 lg:flex h-18 px-10 py-4 justify-between lg:rounded-full shadow-lg top-10 z-40">
-      {/* Left Menu (Desktop only) */}
+        {/* Left Menu (Desktop only) */}
         <div className="hidden lg:flex gap-8 justify-start font-medium text-gray-300">
           <Link to="/women" className="hover:text-violet-900 text-lg">
             Women
