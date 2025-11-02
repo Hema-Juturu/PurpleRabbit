@@ -32,7 +32,7 @@ app.get("/api", (_, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 
-// app.use("/*", (_, res) => {
+// app.use("*", (_, res) => {
 //   console.log("wild-route-hit");
 //   res.status(403).json({
 //     error: ERRORS.METHOD_NOT_ALLOWED,

@@ -28,9 +28,8 @@ export const register = async (req, res) => {
     await newUser.save();
     res.status(201).json({ message: `User registered with name ${name}` });
   } catch (error) {
-  
     console.error("Registration Error:", error);
-  
+
     res.status(500).json({ message: "Server error during registration." });
   }
 };
@@ -59,12 +58,28 @@ export const login = async (req, res) => {
 
     res.status(200).json({ token });
   } catch (error) {
-    
     console.error("Registration Error:", error);
- 
+
     res.status(500).json({ message: "Server error during registration." });
   }
 };
+
+export const logout = (req, res) => {
+  res.cookie("jwt", "loggedout", {
+    httpOnly: true,
+    maxAge: 0,
+  });
+
+  res
+    .status(200)
+    .json({
+      status: "success",
+      message: "Logged out successfully, token cookie cleared.",
+    });
+};
+
+
+
 
 // ✅ Get logged in user
 // router.get("/me", JwtService, async (req, res) => {
