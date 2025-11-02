@@ -28,9 +28,9 @@ export const register = async (req, res) => {
     await newUser.save();
     res.status(201).json({ message: `User registered with name ${name}` });
   } catch (error) {
-    // ✅ Handle any error that occurred in the 'try' block
+  
     console.error("Registration Error:", error);
-    // Send a generic 500 status for any server/database failure
+  
     res.status(500).json({ message: "Server error during registration." });
   }
 };
@@ -54,14 +54,14 @@ export const login = async (req, res) => {
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "8h" }
     );
 
     res.status(200).json({ token });
   } catch (error) {
-    // ✅ Handle any error that occurred in the 'try' block
+    
     console.error("Registration Error:", error);
-    // Send a generic 500 status for any server/database failure
+ 
     res.status(500).json({ message: "Server error during registration." });
   }
 };

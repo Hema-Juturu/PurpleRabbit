@@ -95,7 +95,7 @@ const Login = ({ onLoginSuccess }) => {
               type="text"
               className="text-gray-300 bg-transparent w-full p-2 pl-12 mb-4 border-b-2 border-gray-500 focus:outline-none   rounded"
               value={role}
-              placeholder="Enter user/admin/manager"
+              placeholder="Enter user/admin"
               onChange={(e) => setRole(e.target.value)}
             />
           </div>

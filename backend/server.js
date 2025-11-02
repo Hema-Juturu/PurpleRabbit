@@ -6,7 +6,7 @@ import authRoutes from "./routes/auth.js";
 import http from "http";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import userRoutes from "./routes/userRoutes.js"
 import { ERRORS } from "./utils/error.types.js";
 dotenv.config();
 const app = express();
@@ -30,6 +30,7 @@ app.get("/api", (_, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 
 // app.use("/*", (_, res) => {
 //   console.log("wild-route-hit");
