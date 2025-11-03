@@ -1,11 +1,11 @@
 import User from "../models/User.js";
 import dotenv from "dotenv";
+import bcrypt from "bcryptjs";
+
 dotenv.config();
 export const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find();
-
-    // const safeUsers = users.map(filterUser);
     return res
       .status(200)
       .json({
@@ -70,3 +70,75 @@ export const deleteUser = async (req, res,next) => {
   }
 };
 
+export const getProfile = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password -__v");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({
+      status: "success",
+      data: { user },
+    });
+  } catch (error) {
+    console.error("Get Profile Error:", error);
+    return next({ statusCode: 500, message: "Failed to get profile." });
+  }
+};
+
+export const updateProfile = async (req, res, next) => {
+  try {
+    const { name, email } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { name, email },
+      { new: true, runValidators: true, select: "-password -__v" }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({
+      status: "success",
+      message: "Profile updated successfully",
+      data: { user: updatedUser },
+    });
+  } catch (error) {
+    console.error("Update Profile Error:", error);
+    return next({ statusCode: 500, message: "Failed to update profile." });
+  }
+};
+
+export const updatePassword = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    // 1️⃣ Get user by ID
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // 2️⃣ Check current password
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Current password is incorrect" });
+    }
+
+    // 3️⃣ Hash and save new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.status(200).json({
+      status: "success",
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    console.error("Update Password Error:", error);
+    return next({ statusCode: 500, message: "Failed to update password." });
+  }
+};
