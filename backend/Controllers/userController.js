@@ -6,7 +6,7 @@ export const getAllUsers = async (req, res, next) => {
     const users = await User.find();
 
     // const safeUsers = users.map(filterUser);
-    res
+    return res
       .status(200)
       .json({
         status: "success",
@@ -27,10 +27,10 @@ export const getUser = async (req, res, next) => {
             return next({ statusCode: 404, message: 'No user found with that ID.' });
         }
         
-        res.status(200).json({ status: 'success', data: { user: user } });
+        return res.status(200).json({ status: 'success', data: { user: user } });
     } catch (error) {
         console.error(error);
-        next({ statusCode: 500, message: 'Failed to fetch user.' });
+        return next({ statusCode: 500, message: 'Failed to fetch user.' });
     }
 };
 
@@ -45,13 +45,13 @@ export const updateUser = async (req, res,next) => {
 
     if (!updatedUser) return res.status(404).json({ message: "User not found" });
 
-    res.json({
+    return res.json({
       message: "User updated successfully",
       user: updatedUser,
     });
   } catch (err) {
 
-     next({ statusCode: 500, message: 'Failed to fetch user.' });
+     return next({ statusCode: 500, message: 'Failed to fetch user.' });
   }
 };
 
@@ -64,9 +64,9 @@ export const deleteUser = async (req, res,next) => {
 
     if (!deletedUser) return res.status(404).json({ message: "User not found" });
 
-    res.json({ message: "User deleted successfully" });
+    return res.json({ message: "User deleted successfully" });
   } catch (err) {
-     next({ statusCode: 500, message: 'Failed to delete user.' });
+     return next({ statusCode: 500, message: 'Failed to delete user.' });
   }
 };
 

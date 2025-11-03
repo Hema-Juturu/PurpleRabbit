@@ -26,11 +26,11 @@ export const register = async (req, res) => {
     });
 
     await newUser.save();
-    res.status(201).json({ message: `User registered with name ${name}` });
+    return res.status(201).json({ message: `User registered with name ${name}` });
   } catch (error) {
     console.error("Registration Error:", error);
 
-    res.status(500).json({ message: "Server error during registration." });
+    return res.status(500).json({ message: "Server error during registration." });
   }
 };
 
@@ -42,7 +42,7 @@ export const login = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      res.status(400).json({ msg: "User doesn't exists" });
+      return res.status(400).json({ msg: "User doesn't exists" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -56,11 +56,11 @@ export const login = async (req, res) => {
       { expiresIn: "8h" }
     );
 
-    res.status(200).json({ token });
+    return res.status(200).json({ token });
   } catch (error) {
-    console.error("Registration Error:", error);
+    console.error("Login  Error:", error);
 
-    res.status(500).json({ message: "Server error during registration." });
+    return res.status(500).json({ message: "Server error during Login." });
   }
 };
 
