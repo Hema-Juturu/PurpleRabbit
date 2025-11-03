@@ -47,7 +47,7 @@ mongoose
   .then(() => {
     console.log("DB Connected");
     server.listen(process.env.PORT, () => {
-      console.log(`Server running on http://localhost:${process.env.PORT}`);
+      console.log(`Server running on https://purplerabbit.onrender.com:${process.env.PORT}`);
     });
   })
   .catch((err) => {

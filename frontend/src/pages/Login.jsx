@@ -13,8 +13,8 @@ const Login = ({ onLoginSuccess }) => {
     e.preventDefault();
 
     const url = isRegister
-      ? "http://localhost:5000/api/auth/register"
-      : "http://localhost:5000/api/auth/login";
+      ? "https://purplerabbit.onrender.com/api/auth/register"
+      : "https://purplerabbit.onrender.com/api/auth/login";
 
     const data = isRegister
       ? { name, email, password, role }
