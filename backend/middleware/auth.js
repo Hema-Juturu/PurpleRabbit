@@ -15,12 +15,7 @@ const validateToken = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (e) {
-    if (e.message === ERRORS.JWT.INVALID_OR_EXPIRED) {
-      return res.status(403).json({ error: e.message });
-    }
-    if (e.message === ERRORS.JWT.SECRET_NOT_DEFINED) {
-      return res.status(500).json({ error: "Internal Server error" });
-    }
+    return res.status(500).json({ error: "Internal Server error" });
   }
 };
 

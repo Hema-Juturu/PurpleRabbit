@@ -2,12 +2,14 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
-import authRoutes from "./routes/auth.js";
 import http from "http";
 import path from "path";
-import { fileURLToPath } from "url";
+
+//import routes
+import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/userRoutes.js"
-import { ERRORS } from "./utils/error.types.js";
+import productRoute from "./routes/product.js"
+
 dotenv.config();
 const app = express();
 
@@ -31,6 +33,8 @@ app.get("/api", (_, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/product", productRoute);
+
 
 // app.use("*", (_, res) => {
 //   console.log("wild-route-hit");
