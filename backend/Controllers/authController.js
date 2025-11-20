@@ -5,19 +5,10 @@ import dotenv from "dotenv";
 dotenv.config();
 export const register = async (req, res) => {
   try {
-    // ✅ START the try block
     const { name, password, email, role } = req.body;
 
-    // 1. Check for existing user
-    let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ msg: "User already exists" });
-    }
-
-    // 2. Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 3. Create and save new user
     const newUser = new User({
       name,
       email,
@@ -26,11 +17,17 @@ export const register = async (req, res) => {
     });
 
     await newUser.save();
-    return res.status(201).json({ message: `User registered with name ${name}` });
+    return res
+      .status(201)
+      .json({ message: `User registered with name ${name}` });
   } catch (error) {
     console.error("Registration Error:", error);
-
-    return res.status(500).json({ message: "Server error during registration." });
+    if (error.code === 11000) {
+      return res.status(400).json({ msg: "Email already registered" });
+    }
+    return res
+      .status(500)
+      .json({ message: "Server error during registration." });
   }
 };
 
@@ -70,16 +67,11 @@ export const logout = (req, res) => {
     maxAge: 0,
   });
 
-  res
-    .status(200)
-    .json({
-      status: "success",
-      message: "Logged out successfully, token cookie cleared.",
-    });
+  res.status(200).json({
+    status: "success",
+    message: "Logged out successfully, token cookie cleared.",
+  });
 };
-
-
-
 
 // ✅ Get logged in user
 // router.get("/me", JwtService, async (req, res) => {

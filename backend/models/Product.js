@@ -127,5 +127,7 @@ productSchema.index({
   description: "text",
   aiDescription: "text"
 });
+// Prevent duplicate product by same owner
+productSchema.index({ name: 1, owner: 1 }, { unique: true });
 
 export default mongoose.model("Product", productSchema);
