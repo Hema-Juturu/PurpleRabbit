@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../features/auth/authSlice";
 const Profile = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    // setIsLoggedIn(false); // Update navbar
-    navigate("/");
+    dispatch(logout());
+     navigate("/");
   };
 
   return (

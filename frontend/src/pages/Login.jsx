@@ -1,7 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
 import { User, Mail, Lock } from "lucide-react";
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  loginUser,
+  registerUser,
+  selectAuthError,
+  selectIsLoading,
+} from "../features/auth/authSlice.js";
 const Login = ({ onLoginSuccess }) => {
   const [isRegister, setIsRegister] = useState(false);
   const [name, setUsername] = useState("");
@@ -9,41 +15,16 @@ const Login = ({ onLoginSuccess }) => {
   const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
 
+  const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const url = isRegister
-      ? "https://purplerabbit.onrender.com/api/auth/register"
-      : "https://purplerabbit.onrender.com/api/auth/login";
-
-    const data = isRegister
-      ? { name, email, password, role }
-      : { email, password };
-
-    // 👀 Debug log
-    console.log("Sending to:", url);
-
-
-    axios
-      .post(url, data, {
-        headers: { "Content-Type": "application/json" },
-      })
-      .then((res) => {
-        console.log("✅ Response:", res.data);
-
-        // Save token
-        if (res.data.token) {
-          localStorage.setItem("token", res.data.token);
-        }
-
-        // Call parent callback to update NavBar state
-        if (onLoginSuccess) {
-          onLoginSuccess(res.data.user); // pass user info if needed
-        }
-      })
-      .catch((err) => {
-        console.error("❌ Error:", err.response?.data || err.message);
-        alert(err.response?.data?.message || "Something went wrong");
+    const authAction = isRegister
+      ? registerUser({ name, email, password, role })
+      : loginUser({ email, password });
+    dispatch(authAction)
+      .unwrap()
+      .catch((error) => {
+        console.error("❌ Auth Failed:", error);
       });
   };
 

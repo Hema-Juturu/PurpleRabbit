@@ -4,14 +4,17 @@ import { User, Heart, ShoppingBag, LogIn } from "lucide-react";
 import logo from "../assets/logo.png";
 import Login from "../pages/Login";
 import SearchBar from "./searchBar";
-
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../features/auth/authSlice.js";
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const user = useSelector(selectCurrentUser);
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token); // true if token exists
-  }, []);
+    if (user) {
+      setShowLogin(false); 
+    }
+  }, [user]); 
 
   return (
     <div className="flex items-start justify-center lg:mt-5">
@@ -25,12 +28,7 @@ const NavBar = () => {
             >
               ✕
             </button>
-            <Login
-              onLoginSuccess={() => {
-                setIsLoggedIn(true);
-                setShowLogin(false);
-              }}
-            />
+            <Login/>
           </div>
         </div>
       )}
@@ -76,7 +74,7 @@ const NavBar = () => {
                 />
               </Link>
             </div>
-            {isLoggedIn ? (
+            {user ? (
               <div className="flex flex-row justify-end gap-4">
                 {" "}
                 <Link to="/wishlist">
@@ -118,7 +116,7 @@ const NavBar = () => {
         {/* Right Side (Desktop only) */}
         <div className="hidden lg:flex items-center gap-6 justify-items-end ml-3">
           {/* <SearchBar className="w-56 rounded-full border border-gray-300 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 outline-none" /> */}
-          {isLoggedIn ? (
+          {user ? (
             <>
               {" "}
               <Link to="/profile">
