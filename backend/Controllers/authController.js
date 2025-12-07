@@ -23,7 +23,7 @@ export const register = async (req, res) => {
   } catch (error) {
     console.error("Registration Error:", error);
     if (error.code === 11000) {
-      return res.status(400).json({ msg: "Email already registered" });
+      return res.status(400).json({ message: "User already registered." });
     }
     return res
       .status(500)
@@ -39,7 +39,7 @@ export const login = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ msg: "User doesn't exists" });
+      return res.status(400).json({ message: "User doesn't exists" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);

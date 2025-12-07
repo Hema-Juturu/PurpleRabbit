@@ -13,15 +13,15 @@ router.get("/user", validateToken,roles("user","admin"), (req, res) => {
 
 
 
-router.get("/", validateToken, roles("admin"), getAllUsers); // GET /api/users
-router.get("/:id", validateToken, roles("admin", "user"), getUser); // GET /api/users/:id
-router.put("/:id", validateToken, roles("admin", "user"), updateUser); // PUT /api/users/:id
-router.delete("/:id", validateToken, roles("admin"), deleteUser); // DELETE /api/users/:id
+router.get("/", validateToken, roles("admin"), getAllUsers); // GET /api/user
+router.get("/:id", validateToken, roles("admin", "user"), getUser); // GET /api/user/:id
+router.put("/:id", validateToken, roles("admin", "user"), updateUser); // PUT /api/user/:id
+router.delete("/:id", validateToken, roles("admin"), deleteUser); // DELETE /api/user/:id
 
 // ✅ Self-service routes
-router.get("/me/profile", validateToken, getProfile); // GET /api/users/me/profile
-router.put("/me/update", validateToken, updateProfile); // PUT /api/users/me/update
-router.put("/me/password", validateToken, updatePassword); // PUT /api/users/me/password
+router.get("/me/profile", validateToken, getProfile); // GET /api/user/me/profile
+router.put("/me/update", validateToken, updateProfile); // PUT /api/user/me/update
+router.put("/me/password", validateToken, updatePassword); // PUT /api/user/me/password
 
 
 export default router;

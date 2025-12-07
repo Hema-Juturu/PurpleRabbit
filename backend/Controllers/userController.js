@@ -6,13 +6,11 @@ dotenv.config();
 export const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find();
-    return res
-      .status(200)
-      .json({
-        status: "success",
-        results: users.length,
-        data: { users: users },
-      });
+    return res.status(200).json({
+      status: "success",
+      results: users.length,
+      data: { users: users },
+    });
   } catch (error) {
     console.error(error);
     next({ statusCode: 500, message: "Failed to fetch users." });
@@ -20,53 +18,56 @@ export const getAllUsers = async (req, res, next) => {
 };
 
 export const getUser = async (req, res, next) => {
-    try {
-        const user = await User.findById(req.query.id); 
-        
-        if (!user) {
-            return next({ statusCode: 404, message: 'No user found with that ID.' });
-        }
-        
-        return res.status(200).json({ status: 'success', data: { user: user } });
-    } catch (error) {
-        console.error(error);
-        return next({ statusCode: 500, message: 'Failed to fetch user.' });
+  try {
+    const user = await User.findById(req.query.id);
+
+    if (!user) {
+      return next({ statusCode: 404, message: "No user found with that ID." });
     }
+
+    return res.status(200).json({ status: "success", data: { user: user } });
+  } catch (error) {
+    console.error(error);
+    return next({ statusCode: 500, message: "Failed to fetch user." });
+  }
 };
 
-export const updateUser = async (req, res,next) => {
+export const updateUser = async (req, res, next) => {
   try {
-    const { id } = req.query; 
-    const updates = req.body; 
-    
+    const { id } = req.query;
+    const updates = req.body;
+
     if (!id) return res.status(400).json({ message: "Missing user id" });
 
-    const updatedUser = await User.findByIdAndUpdate(id, updates, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(id, updates, {
+      new: true,
+    });
 
-    if (!updatedUser) return res.status(404).json({ message: "User not found" });
+    if (!updatedUser)
+      return res.status(404).json({ message: "User not found" });
 
     return res.json({
       message: "User updated successfully",
       user: updatedUser,
     });
   } catch (err) {
-
-     return next({ statusCode: 500, message: 'Failed to fetch user.' });
+    return next({ statusCode: 500, message: "Failed to fetch user." });
   }
 };
 
-export const deleteUser = async (req, res,next) => {
+export const deleteUser = async (req, res, next) => {
   try {
-    const { id } = req.query; 
+    const { id } = req.query;
     if (!id) return res.status(400).json({ message: "Missing user id" });
 
     const deletedUser = await User.findByIdAndDelete(id);
 
-    if (!deletedUser) return res.status(404).json({ message: "User not found" });
+    if (!deletedUser)
+      return res.status(404).json({ message: "User not found" });
 
     return res.json({ message: "User deleted successfully" });
   } catch (err) {
-     return next({ statusCode: 500, message: 'Failed to delete user.' });
+    return next({ statusCode: 500, message: "Failed to delete user." });
   }
 };
 
@@ -114,18 +115,12 @@ export const updateProfile = async (req, res, next) => {
 
 export const updatePassword = async (req, res, next) => {
   try {
-    const { currentPassword, newPassword } = req.body;
+    const { newPassword } = req.body;
 
     // 1️⃣ Get user by ID
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
-    }
-
-    // 2️⃣ Check current password
-    const isMatch = await bcrypt.compare(currentPassword, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: "Current password is incorrect" });
     }
 
     // 3️⃣ Hash and save new password

@@ -7,14 +7,13 @@ import SearchBar from "./searchBar";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice.js";
 const NavBar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const user = useSelector(selectCurrentUser);
   useEffect(() => {
     if (user) {
-      setShowLogin(false); 
+      setShowLogin(false);
     }
-  }, [user]); 
+  }, [user]);
 
   return (
     <div className="flex items-start justify-center lg:mt-5">
@@ -28,7 +27,7 @@ const NavBar = () => {
             >
               ✕
             </button>
-            <Login/>
+            <Login />
           </div>
         </div>
       )}
