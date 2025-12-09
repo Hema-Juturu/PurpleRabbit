@@ -99,7 +99,7 @@ const NavBar = () => {
               </div>
             ) : (
               <button
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => setShowLogin(true)}
                 className="flex items-center gap-2 text-gray-300 font-semibold"
               >
                 <LogIn className="w-5 h-5" />
