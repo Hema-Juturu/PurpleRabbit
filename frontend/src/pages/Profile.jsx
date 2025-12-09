@@ -9,6 +9,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const [userdata, setUserData] = useState(null);
   const [error, setError] = useState("");
+  const [oldpasswd, setOldPasswd] = useState("");
   const [newpasswd, setNewPasswd] = useState("");
   const [cpasswd, setCPasswd] = useState("");
   const handleLogout = () => {
@@ -51,7 +52,10 @@ const Profile = () => {
       return;
     }
     try {
-      const res = await api.put("/user/me/password", { newPassword: newpasswd });
+      const res = await api.put("/user/me/password", {
+        currentPassword:oldpasswd,
+        newPassword: newpasswd,
+      });
       console.log(res);
       alert("password updated");
     } catch (err) {
@@ -61,7 +65,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="p-8 max-w-4xl mx-auto ">
+    <div className="p-8 max-w-5xl mx-auto ">
       {/* User Info Header */}
       <div className="border-b pb-6">
         <span className="text-3xl font-bold text-yellow-500 mr-6">
@@ -104,7 +108,17 @@ const Profile = () => {
           Save
         </button>
       </div>
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex flex-col gap-1">
+          <label className="text-sm text-gray-300">old password</label>
+          <input
+            type="password"
+            className="border px-3 py-2 rounded-md focus:ring-2 focus:ring-purple-500 outline-none"
+            value={oldpasswd}
+            onChange={(e) => setOldPasswd(e.target.value)}
+          />
+        </div>
         <div className="flex flex-col gap-1">
           <label className="text-sm text-gray-300">New password</label>
           <input

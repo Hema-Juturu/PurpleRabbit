@@ -115,12 +115,18 @@ export const updateProfile = async (req, res, next) => {
 
 export const updatePassword = async (req, res, next) => {
   try {
-    const { newPassword } = req.body;
+    const { currentPassword,newPassword } = req.body;
 
     // 1️⃣ Get user by ID
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
+    }
+
+    //Authorization
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Current password is incorrect" });
     }
 
     // 3️⃣ Hash and save new password
