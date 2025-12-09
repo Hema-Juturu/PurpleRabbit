@@ -6,8 +6,15 @@ import Login from "../pages/Login";
 import SearchBar from "./searchBar";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice.js";
+import ResponseModal from "./ResponseModal.jsx";
 const NavBar = () => {
   const [showLogin, setShowLogin] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({
+    title: "success",
+    message: "",
+    type: "success",
+  });
   const user = useSelector(selectCurrentUser);
   useEffect(() => {
     if (user) {
@@ -17,6 +24,13 @@ const NavBar = () => {
 
   return (
     <div className="flex items-start justify-center lg:mt-5">
+      <ResponseModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={modalData.title}
+        message={modalData.message}
+        type={modalData.type}
+      />
       {/* Login Modal */}
       {showLogin && (
         <div className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
@@ -85,7 +99,7 @@ const NavBar = () => {
               </div>
             ) : (
               <button
-                onClick={() => setShowLogin(true)}
+                onClick={() => setIsModalOpen(true)}
                 className="flex items-center gap-2 text-gray-300 font-semibold"
               >
                 <LogIn className="w-5 h-5" />

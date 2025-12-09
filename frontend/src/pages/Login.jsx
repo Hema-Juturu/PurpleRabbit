@@ -8,7 +8,7 @@ import {
   selectAuthError,
   selectIsLoading,
 } from "../features/auth/authSlice.js";
-
+import ResponseModal from "../Components/ResponseModal.jsx";
 const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [name, setUsername] = useState("");
@@ -16,14 +16,32 @@ const Login = () => {
   const [admin, setAdmin] = useState(false);
   const [password, setPassword] = useState("");
   const [cpassword, csetPassword] = useState("");
-  const [clientError, setClientError] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({
+    title: "",
+    message: "",
+    type: "",
+  });
   const dispatch = useDispatch();
   const authError = useSelector(selectAuthError);
   const handleSubmit = (e) => {
+    setModalData({
+      title: "Error",
+      message:
+        "Passwords do not match. Please check your confirmation password.",
+      type: "error",
+    });
+    setIsModalOpen(true);
     e.preventDefault();
     if (isRegister) {
       if (password !== cpassword) {
-        setClientError("Passwords do not match.");
+        setModalData({
+          title: "Error",
+          message:
+            "Passwords do not match. Please check your confirmation password.",
+          type: "error",
+        });
+        setIsModalOpen(true);
         return;
       }
     }
@@ -113,12 +131,6 @@ const Login = () => {
             </div>
           </div>
         )}
-        {/* Error Display */}
-        {(clientError || authError) && (
-          <div className="flex items-center p-3 text-sm text-red-400 bg-red-900/30 border border-red-700 rounded-lg">
-            **Error:** {clientError || authError}
-          </div>
-        )}
         <button className="w-full border-2  border-violet-300 text-violet-300 py-2 rounded-full hover:border-x-4 hover:font-bold">
           {isRegister ? "SignUp" : "LogIn"}
         </button>
@@ -134,6 +146,13 @@ const Login = () => {
           {isRegister ? "LogIn" : "SignUp"}
         </button>
       </p>
+      <ResponseModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={modalData.title}
+        message={modalData.message}
+        type={modalData.type}
+      />
     </div>
   );
 };
