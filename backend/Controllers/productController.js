@@ -6,7 +6,6 @@ export const createProduct = async (req, res) => {
       ...req.body,
       owner: req.user.id || req.user._id,
     };
-
     const exists = await Product.findOne({
       name: req.body.name,
       owner: req.user.id,
@@ -42,7 +41,10 @@ export const getAllProducts = async (req, res) => {
 
 export const getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).populate("owner", "name email");
+    const product = await Product.findById(req.params.id).populate(
+      "owner",
+      "name email"
+    );
     if (!product) return res.status(404).json({ message: "Product not found" });
 
     res.json(product);
@@ -54,11 +56,9 @@ export const getProductById = async (req, res) => {
 // UPDATE PRODUCT
 export const updateProduct = async (req, res) => {
   try {
-    const updated = await Product.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const updated = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
 
     if (!updated) return res.status(404).json({ message: "Product not found" });
 
@@ -86,7 +86,8 @@ export const getFilteredProducts = async (req, res) => {
 
     if (req.query.category) query.category = req.query.category;
     if (req.query.minPrice) query.price = { $gte: req.query.minPrice };
-    if (req.query.maxPrice) query.price = { ...query.price, $lte: req.query.maxPrice };
+    if (req.query.maxPrice)
+      query.price = { ...query.price, $lte: req.query.maxPrice };
     if (req.query.owner) query.owner = req.query.owner;
 
     const products = await Product.find(query).populate("owner", "name email");

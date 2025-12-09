@@ -7,6 +7,7 @@ const initialState = {
   token: localStorage.getItem("token") || null,
   isLoading: false,
   error: null,
+  role: "user",
 };
 
 export const loginUser = createAsyncThunk(
@@ -52,6 +53,8 @@ export const authSlice = createSlice({
       state.isLoading = false;
       const { token } = action.payload;
       state.token = token;
+      state.role = action.payload.user.role;
+      localStorage.setItem("role", action.payload.user.role);
       localStorage.setItem("token", token);
     };
 
@@ -81,6 +84,7 @@ export const authSlice = createSlice({
 export const { logout } = authSlice.actions;
 
 export const selectCurrentUser = (state) => state.auth.token;
+export const selectUserRole = (state) => state.auth.role;
 export const selectIsLoading = (state) => state.auth.isLoading;
 export const selectAuthError = (state) => state.auth.error;
 

@@ -77,10 +77,10 @@ const NavBar = () => {
               <div className="flex flex-row justify-end gap-4">
                 {" "}
                 <Link to="/wishlist">
-                  <Heart className="w-6 h-6 text-gray-700 cursor-pointer hover:text-violet-600" />
+                  <Heart className="w-6 h-6 text-gray-300 cursor-pointer hover:text-violet-600" />
                 </Link>
                 <Link to="/bag">
-                  <ShoppingBag className="w-6 h-6 text-gray-700 cursor-pointer hover:text-violet-600" />
+                  <ShoppingBag className="w-6 h-6 text-gray-300 cursor-pointer hover:text-violet-600" />
                 </Link>
               </div>
             ) : (

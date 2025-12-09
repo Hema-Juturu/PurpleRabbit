@@ -10,6 +10,7 @@ import WishlistPage from "./pages/WishlistPage";
 import BagPage from "./pages/BagPage";
 import Profile from "./pages/Profile";
 import { ProductContextProvider } from "./context/product-context";
+import AddNewProductForm from "./pages/AddNewProductForm";
 function AppRoutes() {
   return (
     <>
@@ -26,6 +27,7 @@ function AppRoutes() {
             <Route path="/wishlist" element={<WishlistPage />} />
             <Route path="/bag" element={<BagPage />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/addProduct" element={<AddNewProductForm/>}/>
           </Routes>
         </Layout>
         </ProductContextProvider>

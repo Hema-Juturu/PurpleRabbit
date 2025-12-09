@@ -19,7 +19,7 @@ const HeroCarousel = () => {
   const slides = [img1, img2, img3, img4, img5, img6, img7, img8];
 
   return (
-    <section className="w-full py-10 bg-transparent text-center ">
+    <section className="w-full py-5 bg-transparent text-center ">
 
       {/* Carousel Section */}
       <div className="relative w-full flex justify-center">
