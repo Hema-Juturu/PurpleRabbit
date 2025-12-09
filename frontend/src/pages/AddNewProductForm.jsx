@@ -1,25 +1,31 @@
-import  { useState } from "react";
+import { useState } from "react";
 import api from "../axiosInstance";
+import ResponseModal from "../Components/ResponseModal";
 const AddNewProductForm = () => {
   const [formData, setFormData] = useState({
-  "name": "",
-  "description": "",
-  "price": 0,
-  "rentPrice": 0,
-  "category": "",
-  "condition": "new",
-  "images": [""],
-  "isAvailableForRent": true,
-  "isAvailableForSale": true,
-  "stock": 1,
-  "location": {
-    "city": "",
-    "state": "",
-    "country": ""
-  },
-  "owner":""
-});
-
+    name: "",
+    description: "",
+    price: 0,
+    rentPrice: 0,
+    category: "",
+    condition: "new",
+    images: [""],
+    isAvailableForRent: true,
+    isAvailableForSale: true,
+    stock: 1,
+    location: {
+      city: "",
+      state: "",
+      country: "",
+    },
+    owner: "",
+  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({
+    title: "",
+    message: "",
+    type: "",
+  });
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === "checkbox") {
@@ -56,14 +62,33 @@ const AddNewProductForm = () => {
     setFormData((prev) => ({ ...prev, images: [...prev.images, ""] }));
   };
 
-  const handleSubmit = async(e) => {
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalData({ title: "", message: "", type: "" });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      console.log(formData);
-      res=await api.post("/product",formData);
-      console.log(res.data);
-    }catch(err){
+    try {
+      const res = await api.post("/product", formData);
+      setModalData({
+        title: "Success! 🎉",
+        message: "The product was created successfully.",
+        type: "success",
+      });
+      setIsModalOpen(true);
+    } catch (err) {
       console.log(err);
+      const errorMessage =
+        err.response?.data?.message ||
+        "An unknown error occurred while submitting the form.";
+
+      setModalData({
+        title: "Submission Failed 🙁",
+        message: errorMessage,
+        type: "error",
+      });
+      setIsModalOpen(true);
     }
   };
 
@@ -318,9 +343,16 @@ const AddNewProductForm = () => {
         </fieldset>
 
         <button type="submit" className={buttonPrimaryClass}>
-           ADD PRODUCT
+          ADD PRODUCT
         </button>
       </form>
+      <ResponseModal
+        isOpen={isModalOpen}
+        title={modalData.title}
+        message={modalData.message}
+        type={modalData.type}
+        onClose={closeModal}
+      />
     </div>
   );
 };

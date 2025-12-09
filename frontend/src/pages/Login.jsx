@@ -1,12 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
 import { User, Mail, Lock } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   loginUser,
-  registerUser,
-  selectAuthError,
-  selectIsLoading,
+  registerUser
 } from "../features/auth/authSlice.js";
 import ResponseModal from "../Components/ResponseModal.jsx";
 const Login = () => {
@@ -23,15 +20,7 @@ const Login = () => {
     type: "",
   });
   const dispatch = useDispatch();
-  const authError = useSelector(selectAuthError);
   const handleSubmit = (e) => {
-    setModalData({
-      title: "Error",
-      message:
-        "Passwords do not match. Please check your confirmation password.",
-      type: "error",
-    });
-    setIsModalOpen(true);
     e.preventDefault();
     if (isRegister) {
       if (password !== cpassword) {
@@ -52,7 +41,15 @@ const Login = () => {
     dispatch(authAction)
       .unwrap()
       .catch((error) => {
-        console.error("❌ Auth Failed:", error);
+        const errorMessage =
+          error?.message ||
+          "An unexpected error occurred during authentication.";
+        setModalData({
+          title: "Authentication Failed",
+          message: errorMessage,
+          type: "error",
+        });
+        setIsModalOpen(true);
       });
   };
 

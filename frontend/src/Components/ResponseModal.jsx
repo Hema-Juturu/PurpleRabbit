@@ -7,13 +7,13 @@ const ResponseModal = ({ isOpen, onClose, title, message, type }) => {
       bg: "bg-red-500",
       text: "text-red-700",
       border: "border-red-600",
-      icon: <AlertCircle size={40} color="red"/>,
+      icon: <AlertCircle size={40} color="red" />,
     },
     success: {
-      bg: "bg-lime-600",
+      bg: "bg-red-600",
       text: "text-lime-500",
       border: "border-lime-600",
-      icon: <CheckCircle size={40} color="lime"/>,
+      icon: <CheckCircle size={50} color="lime"/>,
     },
   };
 
@@ -26,7 +26,7 @@ const ResponseModal = ({ isOpen, onClose, title, message, type }) => {
       >
         <div className="text-center">
           <div
-            className={`mx-auto flex items-center justify-center h-12 w-12 rounded-full ${classes.bg} bg-opacity-20`}
+            className={`mx-auto flex items-center justify-center h-11 w-11 rounded-full bg-opacity-20`}
           >
             {classes.icon}
           </div>
@@ -41,7 +41,7 @@ const ResponseModal = ({ isOpen, onClose, title, message, type }) => {
         <div className="mt-4 flex justify-center">
           <button
             type="button"
-            className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white ${
+            className={`w-1/2 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white ${
               classes.bg
             } hover:${classes.bg.replace("-500", "-600")} focus:outline-none`}
             onClick={onClose}
