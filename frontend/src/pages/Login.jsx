@@ -39,7 +39,7 @@ const Login = () => {
       .unwrap()
       .catch((error) => {
         const errorMessage =
-          error?.message ||
+          error ||
           "An unexpected error occurred during authentication.";
         setModalData({
           title: "Authentication Failed",

@@ -7,6 +7,8 @@ import api from "../axiosInstance";
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [userdata, setUserData] = useState(null);
   const [error, setError] = useState("");
   const [oldpasswd, setOldPasswd] = useState("");
@@ -16,24 +18,26 @@ const Profile = () => {
     dispatch(logout());
     navigate("/");
   };
-  if (!userdata) return;
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const res = await api.get("/user/me/profile");
         setUserData(res.data.data.user);
+        setName(res.data.data.user.name)
+        setEmail(res.data.data.user.email)
       } catch (err) {
         console.log(err);
       }
     };
     fetchProfile();
   }, []);
+  if (!userdata) return;
 
   const handleSave = async () => {
     try {
       const res = await api.put("/user/me/update", {
-        name: userdata.name,
-        email: userdata.email,
+        name: name,
+        email: email,
       });
 
       setUserData(res.data.data.user);
@@ -81,10 +85,8 @@ const Profile = () => {
           <label className="text-sm text-gray-300">Name</label>
           <input
             className="border px-3 py-2 rounded-md focus:ring-2 focus:ring-purple-500 outline-none"
-            value={userdata.name}
-            onChange={(e) =>
-              setUserData((prev) => ({ ...prev, name: e.target.value }))
-            }
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
 
@@ -92,10 +94,8 @@ const Profile = () => {
           <label className="text-sm text-gray-300">Email</label>
           <input
             className="border px-3 py-2 rounded-md focus:ring-2 focus:ring-purple-500 outline-none"
-            value={userdata.email}
-            onChange={(e) =>
-              setUserData((prev) => ({ ...prev, email: e.target.value }))
-            }
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
       </div>

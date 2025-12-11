@@ -30,7 +30,7 @@ export const registerUser = createAsyncThunk(
       const response = await api.post(REGISTER_URL, userData);
       return response.data;
     } catch (error) {
-      const message = error.response?.data?.msg || "Registration failed";
+      const message = error.response?.data?.message || "Registration failed";
       return thunkAPI.rejectWithValue(message);
     }
   }

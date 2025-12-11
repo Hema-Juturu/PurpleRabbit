@@ -34,7 +34,7 @@ const ResponseModal = ({ isOpen, onClose, title, message, type }) => {
           <h3 className={`mt-3 text-lg font-bold ${classes.text}`}>{title}</h3>
 
           <div className="mt-2">
-            <p className="text-sm text-gray-500">{message}</p>
+            <p className="text-base text-gray-300">{message}</p>
           </div>
         </div>
 
