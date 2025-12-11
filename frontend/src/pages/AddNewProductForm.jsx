@@ -93,6 +93,7 @@ const AddNewProductForm = () => {
   };
 
   const productConditions = ["new", "like-new", "used", "refurbished"];
+  const productCategory = ["women", "men", "kids", "home"];
 
   const inputClass =
     "w-full p-3 border border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-150";
@@ -148,19 +149,22 @@ const AddNewProductForm = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className={formGroupClass}>
             <label htmlFor="category" className={labelClass}>
-              Category <span className="text-red-500">*</span>
+              Category
             </label>
-            <input
-              type="text"
-              id="category"
-              name="category"
+            <select
+              id="Category"
+              name="Category"
               value={formData.category}
               onChange={handleChange}
-              required
               className={inputClass}
-            />
+            >
+              {productCategory.map((cond) => (
+                <option key={cond} value={cond}>
+                  {cond}
+                </option>
+              ))}
+            </select>
           </div>
-
           <div className={formGroupClass}>
             <label htmlFor="condition" className={labelClass}>
               Condition

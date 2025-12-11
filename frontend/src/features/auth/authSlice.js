@@ -68,6 +68,7 @@ export const authSlice = createSlice({
       state.token = null;
       state.error = action.payload;
       localStorage.removeItem("token");
+      localStorage.removeItem("role");
     };
 
     builder

@@ -5,10 +5,8 @@ import Trending from "../Components/Trending";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 const LandingPage = () => {
-  const role = localStorage.getItem("role");
-  useEffect(()=>{
-
-  },[])
+  const role = localStorage.getItem("role") || "user";
+  useEffect(() => {}, []);
   return (
     <div className="py-5">
       {role == "admin" ? (
@@ -19,9 +17,7 @@ const LandingPage = () => {
             </button>
           </div>
         </Link>
-      ) : (
-        null
-      )}
+      ) : null}
 
       {/* <AddNewProductForm /> */}
       <section className="w-full md:h-screen">

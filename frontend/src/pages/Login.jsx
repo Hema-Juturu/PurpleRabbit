@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { User, Mail, Lock } from "lucide-react";
 import { useDispatch } from "react-redux";
-import {
-  loginUser,
-  registerUser
-} from "../features/auth/authSlice.js";
+import { loginUser, registerUser } from "../features/auth/authSlice.js";
 import ResponseModal from "../Components/ResponseModal.jsx";
 const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -21,6 +18,7 @@ const Login = () => {
   });
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
+    const role = admin ? "admin" : "user";
     e.preventDefault();
     if (isRegister) {
       if (password !== cpassword) {
@@ -34,7 +32,6 @@ const Login = () => {
         return;
       }
     }
-    const role = admin ? "admin" : "user";
     const authAction = isRegister
       ? registerUser({ name, email, password, role })
       : loginUser({ email, password });

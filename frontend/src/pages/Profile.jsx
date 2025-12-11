@@ -16,7 +16,7 @@ const Profile = () => {
     dispatch(logout());
     navigate("/");
   };
-
+  if (!userdata) return;
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -27,9 +27,8 @@ const Profile = () => {
       }
     };
     fetchProfile();
-  }, [userdata]);
+  }, []);
 
-  if (!userdata) return;
   const handleSave = async () => {
     try {
       const res = await api.put("/user/me/update", {
@@ -53,7 +52,7 @@ const Profile = () => {
     }
     try {
       const res = await api.put("/user/me/password", {
-        currentPassword:oldpasswd,
+        currentPassword: oldpasswd,
         newPassword: newpasswd,
       });
       console.log(res);
