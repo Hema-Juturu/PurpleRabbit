@@ -115,7 +115,7 @@ export const updateProfile = async (req, res, next) => {
 
 export const updatePassword = async (req, res, next) => {
   try {
-    const { currentPassword,newPassword } = req.body;
+    const { currentPassword, newPassword } = req.body;
 
     // 1️⃣ Get user by ID
     const user = await User.findById(req.user.id);
@@ -128,7 +128,9 @@ export const updatePassword = async (req, res, next) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Current password is incorrect" });
     }
-
+    if (currentPassword == newPassword) {
+      return res.status(400).json({ message: "Current password is same as old password" });
+    }
     // 3️⃣ Hash and save new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;

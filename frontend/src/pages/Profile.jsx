@@ -102,7 +102,7 @@ const Profile = () => {
       <div className="flex w-full justify-end">
         <button
           onClick={handleSave}
-          className="mt-6 p-3 bg-lime-500 text-white rounded-lg hover:ring-4 hover:bg-white hover:ring-lime-600 hover:text-lime-600"
+          className="mt-6 p-3 bg-lime-500 text-white rounded-lg lg:hover:ring-4 lg:hover:bg-white lg:hover:ring-lime-600 lg:hover:text-lime-600"
         >
           Save
         </button>
@@ -140,7 +140,7 @@ const Profile = () => {
       <div className="flex w-full justify-end">
         <button
           onClick={handleUpdatePassword}
-          className="mt-6 p-3 bg-lime-500 text-white rounded-lg hover:ring-4 hover:bg-white hover:ring-lime-600 hover:text-lime-600"
+          className="mt-6 p-3 bg-lime-500 text-white rounded-lg lg:hover:ring-4 lg:hover:bg-white lg:hover:ring-lime-600 lg:hover:text-lime-600"
         >
           Update Password
         </button>
@@ -149,7 +149,7 @@ const Profile = () => {
       <div className="mt-10 flex justify-end">
         <button
           onClick={handleLogout}
-          className="px-5 py-3 text-white bg-red-500 rounded-lg hover:bg-white hover:text-red-600 hover:ring-4 hover:ring-red-600"
+          className="px-5 py-3 text-white bg-red-500 rounded-lg lg:hover:bg-white lg:hover:text-red-600 lg:hover:ring-4 lg:hover:ring-red-600"
         >
           Logout
         </button>

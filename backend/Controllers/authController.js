@@ -43,7 +43,7 @@ export const register = async (req, res) => {
     });
 
     await newUser.save();
-
+    
     return loginCore({ email, password }, res);
   } catch (error) {
     console.error("Registration Error:", error);
