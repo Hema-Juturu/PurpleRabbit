@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 import { useEffect, useState } from "react";
 import api from "../axiosInstance";
+import ResponseModal from "../Components/ResponseModal.jsx";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -10,10 +11,15 @@ const Profile = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [userdata, setUserData] = useState(null);
-  const [error, setError] = useState("");
   const [oldpasswd, setOldPasswd] = useState("");
   const [newpasswd, setNewPasswd] = useState("");
   const [cpasswd, setCPasswd] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({
+    title: "",
+    message: "",
+    type: "",
+  });
   const handleLogout = () => {
     dispatch(logout());
     navigate("/");
@@ -22,11 +28,19 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const res = await api.get("/user/me/profile");
+
         setUserData(res.data.data.user);
-        setName(res.data.data.user.name)
-        setEmail(res.data.data.user.email)
+        setName(res.data.data.user.name);
+        setEmail(res.data.data.user.email);
       } catch (err) {
-        console.log(err);
+        // console.log("status", res.status == 401);
+        if (err.status == 401) {
+          dispatch(logout());
+          localStorage.clear("role");
+          localStorage.clear("token");
+          navigate("/");
+        }
+        // console.log(err.status );
       }
     };
     fetchProfile();
@@ -40,17 +54,25 @@ const Profile = () => {
         email: email,
       });
 
+      setModalData({
+        title: "Success! 🎉",
+        message: "Details updated.",
+        type: "success",
+      });
+      setIsModalOpen(true);
       setUserData(res.data.data.user);
-      alert("Profile updated!");
     } catch (err) {
-      console.log(err);
-      alert("Update failed");
+      setModalData({
+        title: "Error",
+        message: "Error while updating.",
+        type: "error",
+      });
+      setIsModalOpen(true);
     }
   };
 
   const handleUpdatePassword = async () => {
     if (newpasswd != cpasswd) {
-      setError("Passwords do not match.");
       alert(error);
       return;
     }
@@ -59,14 +81,25 @@ const Profile = () => {
         currentPassword: oldpasswd,
         newPassword: newpasswd,
       });
-      console.log(res);
-      alert("password updated");
+      setModalData({
+        title: "Success! 🎉",
+        message: "Password updated.",
+        type: "success",
+      });
+      setIsModalOpen(true);
     } catch (err) {
-      setError(err);
-      alert("password update failed");
+      setModalData({
+        title: "Error",
+        message: err.response.data.message,
+        type: "error",
+      });
+      setIsModalOpen(true);
     }
   };
-
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalData({ title: "", message: "", type: "" });
+  };
   return (
     <div className="p-8 max-w-5xl mx-auto ">
       {/* User Info Header */}
@@ -154,6 +187,13 @@ const Profile = () => {
           Logout
         </button>
       </div>
+      <ResponseModal
+        isOpen={isModalOpen}
+        title={modalData.title}
+        message={modalData.message}
+        type={modalData.type}
+        onClose={closeModal}
+      />
     </div>
   );
 };
