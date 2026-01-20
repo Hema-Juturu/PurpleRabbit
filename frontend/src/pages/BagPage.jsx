@@ -5,6 +5,10 @@ import { Heart, X } from "lucide-react";
 const BagPage = () => {
   const { cart, removeFromCart, updateQuantity, wishlist, toggleWishlist } =
     useContext(ProductContext);
+  const handleWishlist = (product) => {
+    removeFromCart(product.id);
+    toggleWishlist(product);
+  };
   return (
     <div className="p-4 md:p-8 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">My Bag</h1>
@@ -60,7 +64,7 @@ const BagPage = () => {
                 {/* Wishlist & Remove Buttons */}
                 <button
                   className="p-2 rounded-lg border text-purple-600  hover:bg-purple-600 bg-white"
-                  onClick={() => toggleWishlist(product)}
+                  onClick={() => handleWishlist(product)}
                 >
                   <Heart
                     className={
@@ -69,9 +73,8 @@ const BagPage = () => {
                         : "fill-white"
                     }
                   />
-
-                  {/* <Heart className={wishlist.some((item) => item.id === product.id ? "fill-purple-500" : ""} /> */}
                 </button>
+                {/* <Heart className={wishlist.some((item) => item.id === product.id ? "fill-purple-500" : ""} /> */}
                 <button
                   className="p-2 bg-white rounded-lg border text-red-600  hover:bg-red-600 hover:text-white"
                   onClick={() => removeFromCart(product.id)}
