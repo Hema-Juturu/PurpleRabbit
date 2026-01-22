@@ -7,7 +7,7 @@ const AddNewProductForm = () => {
     description: "",
     price: 0,
     rentPrice: 0,
-    category: "women",
+    category: "",
     condition: "new",
     images: [""],
     isAvailableForRent: true,
@@ -84,7 +84,6 @@ const AddNewProductForm = () => {
       });
       setIsModalOpen(true);
     } catch (err) {
-      console.log(err);
       const errorMessage =
         err.response?.data?.message ||
         "An unknown error occurred while submitting the form.";

@@ -11,25 +11,33 @@ import BagPage from "./pages/BagPage";
 import Profile from "./pages/Profile";
 import { ProductContextProvider } from "./context/product-context";
 import AddNewProductForm from "./pages/AddNewProductForm";
+import { fetchProducts } from "./features/auth/productSlice";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 function AppRoutes() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts()); 
+  }, [dispatch]);
   return (
     <>
       <BrowserRouter>
         <ProductContextProvider>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<LandingPage />}></Route>
-            <Route path="women" element={<Women />} />
-            <Route path="kids" element={<Kids />} />
-            <Route path="men" element={<Men />} />
-            <Route path="home" element={<Home />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/wishlist" element={<WishlistPage />} />
-            <Route path="/bag" element={<BagPage />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/addProduct" element={<AddNewProductForm/>}/>
-          </Routes>
-        </Layout>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<LandingPage />}></Route>
+              <Route path="women" element={<Women />} />
+              <Route path="kids" element={<Kids />} />
+              <Route path="men" element={<Men />} />
+              <Route path="home" element={<Home />} />
+              <Route path="/product/:id" element={<ProductDetails />} />
+              <Route path="/wishlist" element={<WishlistPage />} />
+              <Route path="/bag" element={<BagPage />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/addProduct" element={<AddNewProductForm />} />
+            </Routes>
+          </Layout>
         </ProductContextProvider>
       </BrowserRouter>
     </>

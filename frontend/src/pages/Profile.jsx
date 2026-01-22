@@ -33,14 +33,12 @@ const Profile = () => {
         setName(res.data.data.user.name);
         setEmail(res.data.data.user.email);
       } catch (err) {
-        // console.log("status", res.status == 401);
         if (err.status == 401) {
           dispatch(logout());
           localStorage.clear("role");
           localStorage.clear("token");
           navigate("/");
         }
-        // console.log(err.status );
       }
     };
     fetchProfile();

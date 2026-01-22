@@ -11,7 +11,6 @@ const loginCore = async ({ email, password }, res) => {
     if (!user) {
       return res.status(400).json({ message: "User doesn't exists" });
     }
-
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
@@ -20,7 +19,7 @@ const loginCore = async ({ email, password }, res) => {
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: "8h" }
+      { expiresIn: "8h" },
     );
 
     return res.status(200).json({ token, user });
@@ -43,7 +42,7 @@ export const register = async (req, res) => {
     });
 
     await newUser.save();
-    
+
     return loginCore({ email, password }, res);
   } catch (error) {
     console.error("Registration Error:", error);
