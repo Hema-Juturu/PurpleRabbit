@@ -5,7 +5,10 @@ import { ShoppingBag, X } from "lucide-react";
 const WishlistPage = () => {
   const { wishlist, toggleWishlist, addToCart, cart } =
     useContext(ProductContext);
-
+  const handleCart = (product)=>{
+    addToCart(product,1);
+    toggleWishlist(product);
+  }
   return (
     <div className="p-4 md:p-8 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">My Wishlist</h1>
@@ -43,20 +46,20 @@ const WishlistPage = () => {
                     cart.some((item) => item.id === product.id)
                       ? "hidden "
                       : ""
-                  } p-2 rounded-lg border text-purple-600 hover:bg-purple-100 flex items-center gap-1`}
-                  onClick={() => addToCart(product, 1)}
+                  } p-2 rounded-lg border bg-purple-50 text-purple-600 flex items-center gap-1`}
+                  onClick={() => handleCart(product, 1)}
                 >
                   <ShoppingBag className={`w-4 h-4`} />
                   Move to Bag
                 </button>
 
                 {/* Remove */}
-                <button
+                {/* <button
                   className="p-2 rounded-lg border text-red-600 hover:bg-red-600 hover:text-white bg-white"
                   onClick={() => toggleWishlist(product)}
                 >
                   <X />
-                </button>
+                </button> */}
               </div>
             </div>
           ))}

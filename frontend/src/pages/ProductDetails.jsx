@@ -52,27 +52,27 @@ const ProductDetails = () => {
 
       {/* Details Section */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
-        <p className="text-2xl text-purple-700 mt-2">{product.price}</p>
+        <h1 className="text-3xl font-bold text-gray-300">{product.name}</h1>
+        <p className="text-2xl text-yellow-400 mt-2">{product.price}</p>
         {product.offer && (
-          <p className="text-red-500 font-semibold">{product.offer}</p>
+          <p className="text-rose-500 font-semibold">{product.offer}</p>
         )}
 
-        <p className="mt-4 text-gray-600 leading-relaxed">
+        <p className="mt-4 text-gray-300 leading-relaxed">
           {product.description || "No description available."}
         </p>
 
         {/* Quantity Selector */}
         <div className="flex items-center gap-2 mt-4">
           <button
-            className="px-3 py-1 border rounded"
+            className="px-3 py-2 mr-5 border-2 rounded text-gray-300 text-xl"
             onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
           >
             -
           </button>
-          <span>{quantity}</span>
+          <span className="text-gray-300 text-2xl">{quantity}</span>
           <button
-            className="px-3 py-1 border rounded"
+            className="px-3 py-2 border-2 ml-5 rounded text-gray-300 text-xl"
             onClick={() => setQuantity(quantity + 1)}
           >
             +

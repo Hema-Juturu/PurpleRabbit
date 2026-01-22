@@ -17,19 +17,25 @@ const validateToken = (req, res, next) => {
   } catch (e) {
     console.error("Token verification failed:", e.name, e.message);
     
+    let statusCode = 500;
+    let message = "Internal Server error during token processing";
+    
     if (e.name === 'TokenExpiredError') {
-      return res
-        .status(401)
-        .json({ message: "Unauthorized: Token has expired" });
+      statusCode = 401;
+      message = "Unauthorized: Token has expired. Please log in again.";
+      
+      res.setHeader('X-Token-Invalid', 'expired'); 
+      
     } else if (e.name === 'JsonWebTokenError' || e.name === 'NotBeforeError') {
-      return res
-        .status(403)
-        .json({ message: "Forbidden: Invalid token or signature" });
-    } else {
-      return res
-        .status(500)
-        .json({ error: "Internal Server error during token processing" });
-    }
+      statusCode = 403;
+      message = "Forbidden: Invalid token or signature.";
+      
+      res.setHeader('X-Token-Invalid', 'invalid'); 
+    } 
+
+    return res
+      .status(statusCode)
+      .json({ message: message });
   }
 };
 

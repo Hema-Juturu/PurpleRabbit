@@ -7,7 +7,7 @@ const AddNewProductForm = () => {
     description: "",
     price: 0,
     rentPrice: 0,
-    category: "women",
+    category: "",
     condition: "new",
     images: [""],
     isAvailableForRent: true,
@@ -57,6 +57,12 @@ const AddNewProductForm = () => {
     newImages[index] = value;
     setFormData((prev) => ({ ...prev, images: newImages }));
   };
+  const hanndleRemoveImg = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+  };
 
   const addImageField = () => {
     setFormData((prev) => ({ ...prev, images: [...prev.images, ""] }));
@@ -78,7 +84,6 @@ const AddNewProductForm = () => {
       });
       setIsModalOpen(true);
     } catch (err) {
-      console.log(err);
       const errorMessage =
         err.response?.data?.message ||
         "An unknown error occurred while submitting the form.";
@@ -325,15 +330,25 @@ const AddNewProductForm = () => {
                 <label htmlFor={`image-${index}`} className={labelClass}>
                   Image URL {index + 1}
                 </label>
-                <input
-                  type="url"
-                  id={`image-${index}`}
-                  name={`image-${index}`}
-                  value={image}
-                  onChange={(e) => handleImageChange(index, e.target.value)}
-                  placeholder="https://example.com/product-image.jpg"
-                  className={inputClass}
-                />
+                <div className="flex flex-row gap-2">
+                  <input
+                    type="url"
+                    id={`image-${index}`}
+                    name={`image-${index}`}
+                    value={image}
+                    onChange={(e) => handleImageChange(index, e.target.value)}
+                    placeholder="https://example.com/product-image.jpg"
+                    className={inputClass}
+                  />
+                  <button
+                    className="text-red-600 border-2 border-red-600 bg-white px-3 rounded-lg"
+                    onClick={() => {
+                      hanndleRemoveImg(index);
+                    }}
+                  >
+                    X
+                  </button>
+                </div>
               </div>
             ))}
           </div>

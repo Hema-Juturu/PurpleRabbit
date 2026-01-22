@@ -5,18 +5,23 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice.js";
 import { useEffect, useState } from "react";
 import api from "../axiosInstance";
+import ResponseModal from "../Components/ResponseModal.jsx";
 
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [userdata, setUserData] = useState("");
-  const [error, setError] = useState("");
+  const [userdata, setUserData] = useState(null);
   const [oldpasswd, setOldPasswd] = useState("");
   const [newpasswd, setNewPasswd] = useState("");
   const [cpasswd, setCPasswd] = useState("");
-  const user = useSelector(selectCurrentUser);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({
+    title: "",
+    message: "",
+    type: "",
+  });
   const handleLogout = () => {
     dispatch(Logout());
     navigate("/");
@@ -29,11 +34,17 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const res = await api.get("/user/me/profile");
+
         setUserData(res.data.data.user);
         setName(res.data.data.user.name);
         setEmail(res.data.data.user.email);
       } catch (err) {
-        console.log(err);
+        if (err.status == 401) {
+          dispatch(logout());
+          localStorage.clear("role");
+          localStorage.clear("token");
+          navigate("/");
+        }
       }
     };
     fetchProfile();
@@ -48,17 +59,25 @@ const Profile = () => {
         email: email,
       });
 
+      setModalData({
+        title: "Success! 🎉",
+        message: "Details updated.",
+        type: "success",
+      });
+      setIsModalOpen(true);
       setUserData(res.data.data.user);
-      alert("Profile updated!");
     } catch (err) {
-      console.log(err);
-      alert("Update failed");
+      setModalData({
+        title: "Error",
+        message: "Error while updating.",
+        type: "error",
+      });
+      setIsModalOpen(true);
     }
   };
 
   const handleUpdatePassword = async () => {
     if (newpasswd != cpasswd) {
-      setError("Passwords do not match.");
       alert(error);
       return;
     }
@@ -67,14 +86,25 @@ const Profile = () => {
         currentPassword: oldpasswd,
         newPassword: newpasswd,
       });
-      console.log(res);
-      alert("password updated");
+      setModalData({
+        title: "Success! 🎉",
+        message: "Password updated.",
+        type: "success",
+      });
+      setIsModalOpen(true);
     } catch (err) {
-      setError(err);
-      alert("password update failed");
+      setModalData({
+        title: "Error",
+        message: err.response.data.message,
+        type: "error",
+      });
+      setIsModalOpen(true);
     }
   };
-
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalData({ title: "", message: "", type: "" });
+  };
   return (
     <div className="p-8 max-w-5xl mx-auto ">
       {/* User Info Header */}
@@ -162,6 +192,13 @@ const Profile = () => {
           Logout
         </button>
       </div>
+      <ResponseModal
+        isOpen={isModalOpen}
+        title={modalData.title}
+        message={modalData.message}
+        type={modalData.type}
+        onClose={closeModal}
+      />
     </div>
   );
 };
