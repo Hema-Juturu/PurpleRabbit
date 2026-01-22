@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logout } from "../features/auth/authSlice";
+import { Logout } from "../features/auth/authSlice";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../features/auth/authSlice.js";
 import { useEffect, useState } from "react";
 import api from "../axiosInstance";
 
@@ -9,29 +11,35 @@ const Profile = () => {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [userdata, setUserData] = useState(null);
+  const [userdata, setUserData] = useState("");
   const [error, setError] = useState("");
   const [oldpasswd, setOldPasswd] = useState("");
   const [newpasswd, setNewPasswd] = useState("");
   const [cpasswd, setCPasswd] = useState("");
+  const user = useSelector(selectCurrentUser);
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(Logout());
     navigate("/");
   };
+
   useEffect(() => {
+    if (!user) {
+      return;
+    }
     const fetchProfile = async () => {
       try {
         const res = await api.get("/user/me/profile");
         setUserData(res.data.data.user);
-        setName(res.data.data.user.name)
-        setEmail(res.data.data.user.email)
+        setName(res.data.data.user.name);
+        setEmail(res.data.data.user.email);
       } catch (err) {
         console.log(err);
       }
     };
     fetchProfile();
-  }, []);
-  if (!userdata) return;
+  }, [user]);
+
+  // if (!userdata) return;
 
   const handleSave = async () => {
     try {
@@ -77,7 +85,7 @@ const Profile = () => {
         {userdata.role == "admin" ? (
           <span className="text-red-600 text-lg">{userdata.role}</span>
         ) : null}
-        <p className="text-gray-300 text-lg">{userdata.email}</p>
+        <p className="text-gray-300 text-lg">{email}</p>
       </div>
       {/* Details Section */}
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">

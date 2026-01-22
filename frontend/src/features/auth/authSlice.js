@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../axiosInstance";
 const LOGIN_URL = "/auth/login";
 const REGISTER_URL = "/auth/register";
-
+const LOGOUT_URL = "/auth/logout";
 const initialState = {
   token: localStorage.getItem("token") || null,
   isLoading: false,
@@ -35,18 +35,25 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
+export const Logout = createAsyncThunk(
+  "auth/LOGOUT_URL",
+  async (userData, thunkAPI) => {
+    try {
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      state.token=null;
+      const response = await api.get(LOGOUT_URL);
+      return response.data;
+    } catch (error) {
+      const message = error.response?.data?.message || "Logout failed";
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-
-  reducers: {
-    logout: (state) => {
-      state.token = null;
-      localStorage.removeItem("token");
-      state.error = null;
-    },
-  },
 
   extraReducers: (builder) => {
     const handleAuthSuccess = (state, action) => {
@@ -82,7 +89,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
 
 export const selectCurrentUser = (state) => state.auth.token;
 export const selectUserRole = (state) => state.auth.role;
