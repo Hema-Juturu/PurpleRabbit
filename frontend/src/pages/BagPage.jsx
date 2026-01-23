@@ -9,6 +9,11 @@ const BagPage = () => {
     removeFromCart(product.id);
     toggleWishlist(product);
   };
+  let total = 0;
+  console.log(cart);
+  cart.forEach((p) => {
+    total += p.price * p.quantity;
+  });
   return (
     <div className="p-4 md:p-8 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">My Bag</h1>

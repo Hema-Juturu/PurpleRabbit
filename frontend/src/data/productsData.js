@@ -12,7 +12,7 @@ export const menProducts = [
   {
     id: 1,
     name: "Men's T-shirt",
-    price: "₹2,999",
+    price: 2999,
     offer: "20% Off",
     img: img2,
     description: "Comfortable cotton T-shirt perfect for casual wear.",
@@ -20,7 +20,7 @@ export const menProducts = [
   {
     id: 2,
     name: "Formal Shirt",
-    price: "₹1,499",
+    price: 1499,
     offer: "15% Off",
     img: img3,
     description: "Elegant formal shirt suitable for office and formal events.",
@@ -32,7 +32,7 @@ export const womenProducts = [
   {
     id: 3,
     name: "Dress",
-    price: "₹3,499",
+    price: 3499,
     offer: "10% Off",
     img: img1,
     description: "Traditional saree with a modern design and soft fabric.",
@@ -40,7 +40,7 @@ export const womenProducts = [
   {
     id: 4,
     name: "Dress",
-    price: "₹2,199",
+    price: 2199,
     offer: "",
     img: img8,
     description: "Stylish and trendy dress for casual outings and parties.",
@@ -48,7 +48,7 @@ export const womenProducts = [
   {
     id: 5,
     name: "Dress",
-    price: "₹2,199",
+    price: 2199,
     offer: "",
     img: img6,
     description: "Elegant evening dress with a classy look.",
@@ -60,7 +60,7 @@ export const kidsProducts = [
   {
     id: 6,
     name: "Frock",
-    price: "₹799",
+    price: 799,
     offer: "5% Off",
     img: img5,
     description: "Cute and comfortable frock made for little girls.",
@@ -72,7 +72,7 @@ export const homeProducts = [
   {
     id: 7,
     name: "Decor",
-    price: "₹799",
+    price: 799,
     offer: "5% Off",
     img: img4,
     description: "Modern decorative piece to brighten up your living space.",
@@ -80,7 +80,7 @@ export const homeProducts = [
   {
     id: 8,
     name: "Decor",
-    price: "₹799",
+    price: 799,
     offer: "5% Off",
     img: img7,
     description: "Stylish décor item to add a premium touch to your home.",
