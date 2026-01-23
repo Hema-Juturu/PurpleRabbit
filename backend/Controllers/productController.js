@@ -10,7 +10,6 @@ export const createProduct = async (req, res) => {
       name: req.body.name,
       owner: req.user.id,
     });
-
     if (exists) {
       return res.status(400).json({
         success: false,
@@ -19,13 +18,14 @@ export const createProduct = async (req, res) => {
     }
     const product = new Product(productData);
     await product.save();
-
+    console.log(res.status);
     res.status(201).json({
       success: true,
       message: "Product created successfully",
       product,
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({ error: err.message });
   }
 };
