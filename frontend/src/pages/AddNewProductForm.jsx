@@ -52,11 +52,12 @@ const AddNewProductForm = () => {
     }));
   };
 
-  const handleImageChange = (index, value) => {
+  const handleImageChange = (index, file) => {
     const newImages = [...formData.images];
-    newImages[index] = value;
+    newImages[index] = file;
     setFormData((prev) => ({ ...prev, images: newImages }));
   };
+
   const hanndleRemoveImg = (index) => {
     setFormData((prev) => ({
       ...prev,
@@ -332,12 +333,13 @@ const AddNewProductForm = () => {
                 </label>
                 <div className="flex flex-row gap-2">
                   <input
-                    type="url"
+                    type="file"
                     id={`image-${index}`}
                     name={`image-${index}`}
-                    value={image}
-                    onChange={(e) => handleImageChange(index, e.target.value)}
-                    placeholder="https://example.com/product-image.jpg"
+                    accept="image/*"
+                    onChange={(e) =>
+                      handleImageChange(index, e.target.files[0])
+                    }
                     className={inputClass}
                   />
                   <button
