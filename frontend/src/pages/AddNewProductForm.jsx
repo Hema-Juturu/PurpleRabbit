@@ -1,6 +1,8 @@
 import { useState } from "react";
 import api from "../axiosInstance";
 import ResponseModal from "../Components/ResponseModal";
+import { supabase } from "../FireBaseStorage/supabase";
+import LoadingSpinner from "../Components/loading";
 const AddNewProductForm = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -21,6 +23,7 @@ const AddNewProductForm = () => {
     owner: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [modalData, setModalData] = useState({
     title: "",
     message: "",
@@ -52,10 +55,65 @@ const AddNewProductForm = () => {
     }));
   };
 
-  const handleImageChange = (index, file) => {
-    const newImages = [...formData.images];
-    newImages[index] = file;
-    setFormData((prev) => ({ ...prev, images: newImages }));
+  // const handleImageChange = async (index, file) => {
+  //   setIsLoading(true);
+  //   const filename = "public/image" + "" + file.lastModified;
+  //   let { data, error } = await supabase.storage
+  //     .from("purplerabbit")
+  //     .upload(filename, file);
+  //   if (error) {
+  //     setIsLoading(false);
+  //     const errorMessage =
+  //       error || "An unknown error occurred while uploading image.";
+  //     setModalData({
+  //       title: "Submission Failed 🙁",
+  //       message: errorMessage,
+  //       type: "error",
+  //     });
+  //     setIsModalOpen(true);
+  //   }
+  //   const res = supabase.storage.from("purplerabbit").getPublicUrl(filename);
+  //   console.log(res.data.publicUrl);
+  //   const newImages = [...formData.images];
+  //   newImages[index] = res.data.publicUrl;
+  //   setFormData((prev) => ({ ...prev, images: newImages }));
+  // };
+  const handleImageChange = async (index, file) => {
+    try {
+      setIsLoading(true);
+
+      const fileExt = file.name.split(".").pop();
+      const fileName = `images/${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(2)}.${fileExt}`;
+
+      const { error } = await supabase.storage
+        .from("purplerabbit")
+        .upload(fileName, file, {
+          cacheControl: "3600",
+          upsert: false,
+        });
+
+      if (error) throw error;
+
+      const { data } = supabase.storage
+        .from("purplerabbit")
+        .getPublicUrl(fileName);
+
+      const newImages = [...formData.images];
+      newImages[index] = data.publicUrl;
+
+      setFormData((prev) => ({ ...prev, images: newImages }));
+    } catch (error) {
+      setModalData({
+        title: "Submission Failed 🙁",
+        message: error.message || "Image upload failed",
+        type: "error",
+      });
+      setIsModalOpen(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const hanndleRemoveImg = (index) => {
@@ -359,7 +417,7 @@ const AddNewProductForm = () => {
             onClick={addImageField}
             className={buttonSecondaryClass + " mt-4"}
           >
-            + Add another image URL
+            + Add another image 
           </button>
         </fieldset>
 
@@ -367,6 +425,11 @@ const AddNewProductForm = () => {
           ADD PRODUCT
         </button>
       </form>
+      {isLoading && (
+        <div className="justify-center items-center">
+          <LoadingSpinner />
+        </div>
+      )}
       <ResponseModal
         isOpen={isModalOpen}
         title={modalData.title}

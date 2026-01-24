@@ -3,7 +3,6 @@ import { selectWomenProducts } from "../features/auth/productSlice";
 import { useSelector } from "react-redux";
 const Women = () => {
   const prods = useSelector(selectWomenProducts);
-  console.log("women", prods);
 
   return (
     <div className="p-6">
