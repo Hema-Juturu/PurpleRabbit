@@ -10,7 +10,6 @@ const BagPage = () => {
     toggleWishlist(product);
   };
   let total = 0;
-  console.log(cart);
   cart.forEach((p) => {
     total += p.price * p.quantity;
   });

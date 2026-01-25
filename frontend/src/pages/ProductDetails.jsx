@@ -1,26 +1,19 @@
 import { useParams } from "react-router-dom";
 import { useContext, useState } from "react";
-import {
-  menProducts,
-  womenProducts,
-  kidsProducts,
-  homeProducts,
-} from "../data/productsData";
+
 import { Heart, ShoppingBag } from "lucide-react";
 import { ProductContext } from "../context/product-context";
 
-const allProducts = [
-  ...menProducts,
-  ...womenProducts,
-  ...kidsProducts,
-  ...homeProducts,
-];
-
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 const ProductDetails = () => {
   const { id } = useParams();
   const { addToCart, wishlist, toggleWishlist } = useContext(ProductContext);
-  const product = allProducts.find((p) => p.id === Number(id));
-
+  // const product = allProducts.find((p) => p.id === Number(id));
+  // const product = useSelector((state) => selectProductById(state, id));
+  const { list } = useSelector((state) => state.products);
+  const product = list.find((p) => p._id === id || p.id == id);
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
@@ -29,7 +22,12 @@ const ProductDetails = () => {
       <h2 className="text-center mt-10 text-red-600">Product not found</h2>
     );
   }
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!product) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, product]);
   const handleAddToCart = () => {
     addToCart(product, quantity);
     setAdded(true);
@@ -42,9 +40,9 @@ const ProductDetails = () => {
   return (
     <div className="p-8 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
       {/* Image Section */}
-      <div>
+      <div className="max-w-50 max-h-50">
         <img
-          src={product.img}
+          src={product.images[0]}
           alt={product.name}
           className="w-full h-auto object-cover rounded-lg shadow-lg"
         />

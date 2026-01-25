@@ -18,7 +18,6 @@ export const createProduct = async (req, res) => {
     }
     const product = new Product(productData);
     await product.save();
-    console.log(res.status);
     res.status(201).json({
       success: true,
       message: "Product created successfully",

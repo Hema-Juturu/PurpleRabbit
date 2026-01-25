@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 
-const ProductCard = ({ id, name, price, offer, images }) => {
-  console.log(images);
+const ProductCard = ({ _id, name, price, offer, images }) => {
   return (
-    <Link to={`/product/${id}`}>
+    <Link to={`/product/${_id}`}>
       <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:scale-105 transition">
         <img src={images?.[0]} alt={name} className="w-full h-48 object-cover" />
         <div className="p-4">

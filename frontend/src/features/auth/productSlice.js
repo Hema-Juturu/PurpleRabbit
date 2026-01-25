@@ -37,6 +37,10 @@ const productsSlice = createSlice({
   },
 });
 
+
+export const selectProductById = (state, productId) =>
+  state?.products?.list?.find((p) => p._id === productId || p.id === productId);
+
 export const selectMenProducts = (state) =>
   (state?.products?.list || []).filter((p) => p.category === "men");
 

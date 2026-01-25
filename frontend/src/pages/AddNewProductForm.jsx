@@ -216,8 +216,8 @@ const AddNewProductForm = () => {
               Category
             </label>
             <select
-              id="Category"
-              name="Category"
+              id="category"
+              name="category"
               value={formData.category}
               onChange={handleChange}
               className={inputClass}
