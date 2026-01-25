@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 
 import { Heart, ShoppingBag } from "lucide-react";
 import { ProductContext } from "../context/product-context";
-
+import { fetchProducts } from "../features/auth/productSlice";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -17,17 +17,12 @@ const ProductDetails = () => {
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
-  if (!product) {
-    return (
-      <h2 className="text-center mt-10 text-red-600">Product not found</h2>
-    );
-  }
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!product) {
+    if (list.length === 0) {
       dispatch(fetchProducts());
     }
-  }, [dispatch, product]);
+  }, [dispatch, list.length]);
   const handleAddToCart = () => {
     addToCart(product, quantity);
     setAdded(true);
@@ -36,7 +31,11 @@ const ProductDetails = () => {
 
   // check if product is already in wishlist
   const inWishlist = wishlist.some((item) => item.id === product.id);
-
+  if (!product) {
+    return (
+      <h2 className="text-center mt-10 text-red-600">Product not found</h2>
+    );
+  }
   return (
     <div className="p-8 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
       {/* Image Section */}

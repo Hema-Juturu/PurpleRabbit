@@ -7,8 +7,8 @@ import path from "path";
 
 //import routes
 import authRoutes from "./routes/auth.js";
-import userRoutes from "./routes/userRoutes.js"
-import productRoute from "./routes/product.js"
+import userRoutes from "./routes/userRoutes.js";
+import productRoute from "./routes/product.js";
 
 dotenv.config();
 const app = express();
@@ -18,11 +18,11 @@ app.use(cors());
 app.use(express.json());
 
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname,"../frontend/dist")));
+app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 // Serve index.html for any other routes
 app.get("/", (_, res) =>
-  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"))
+  res.sendFile(path.join(__dirname, "../frontend/dist/index.html")),
 );
 // Routes
 app.get("/api", (_, res) => {
@@ -35,13 +35,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/product", productRoute);
 
-
-// app.use("*", (_, res) => {
-//   console.log("wild-route-hit");
-//   res.status(403).json({
-//     error: ERRORS.METHOD_NOT_ALLOWED,
-//   });
-// });
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+});
 
 // Connect DB & Start Server
 const server = http.createServer(app);
@@ -51,7 +47,9 @@ mongoose
   .then(() => {
     console.log("DB Connected");
     server.listen(process.env.PORT, () => {
-      console.log(`Server running on https://purplerabbit.onrender.com:${process.env.PORT}`);
+      console.log(
+        `Server running on https://purplerabbit.onrender.com:${process.env.PORT}`,
+      );
     });
   })
   .catch((err) => {
