@@ -29,7 +29,7 @@ const BagPage = () => {
               {/* Product Info */}
               <div className="flex items-start gap-4 w-full md:w-auto">
                 <img
-                  src={product.img}
+                  src={product.images[0]}
                   alt={product.name}
                   className="w-24 h-24 md:w-20 md:h-20 object-cover rounded"
                 />

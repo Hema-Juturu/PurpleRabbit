@@ -37,9 +37,9 @@ const ProductDetails = () => {
     );
   }
   return (
-    <div className="p-8 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="p-8 max-w-xl md:max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
       {/* Image Section */}
-      <div className="max-w-50 max-h-50">
+      <div>
         <img
           src={product.images[0]}
           alt={product.name}
