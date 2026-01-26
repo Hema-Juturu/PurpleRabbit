@@ -26,7 +26,7 @@ const Profile = () => {
     dispatch(Logout());
     navigate("/");
   };
-
+  const user = useSelector(selectCurrentUser); 
   useEffect(() => {
     if (!user) {
       return;
@@ -40,7 +40,7 @@ const Profile = () => {
         setEmail(res.data.data.user.email);
       } catch (err) {
         if (err.status == 401) {
-          dispatch(logout());
+          dispatch(Logout());
           localStorage.clear("role");
           localStorage.clear("token");
           navigate("/");
@@ -110,9 +110,9 @@ const Profile = () => {
       {/* User Info Header */}
       <div className="border-b pb-6">
         <span className="text-3xl font-bold text-yellow-500 mr-6">
-          {userdata.name}
+          {userdata?.name}
         </span>
-        {userdata.role == "admin" ? (
+        {userdata?.role == "admin" ? (
           <span className="text-red-600 text-lg">{userdata.role}</span>
         ) : null}
         <p className="text-gray-300 text-lg">{email}</p>
