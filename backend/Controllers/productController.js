@@ -24,7 +24,6 @@ export const createProduct = async (req, res) => {
       product,
     });
   } catch (err) {
-    console.log(err);
     res.status(400).json({ error: err.message });
   }
 };

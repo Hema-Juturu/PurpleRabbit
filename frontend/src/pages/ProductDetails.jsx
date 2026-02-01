@@ -9,13 +9,16 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 const ProductDetails = () => {
   const { id } = useParams();
-  const { addToCart, wishlist, toggleWishlist } = useContext(ProductContext);
+  const {
+    addToCart,
+    wishlist,
+    toggleWishlist,
+  } = useContext(ProductContext);
   // const product = allProducts.find((p) => p.id === Number(id));
   // const product = useSelector((state) => selectProductById(state, id));
   const { list } = useSelector((state) => state.products);
   const product = list.find((p) => p._id === id || p.id == id);
   const [added, setAdded] = useState(false);
-  const [quantity, setQuantity] = useState(1);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -29,8 +32,9 @@ const ProductDetails = () => {
     setTimeout(() => setAdded(false), 2000);
   };
 
-  // check if product is already in wishlist
-  const inWishlist = wishlist.some((item) => item.id === product.id);
+  
+  const inWishlist = wishlist.some((item) => item._id === product._id);
+
   if (!product) {
     return (
       <h2 className="text-center mt-10 text-red-600">Product not found</h2>
@@ -63,14 +67,15 @@ const ProductDetails = () => {
         <div className="flex items-center gap-2 mt-4">
           <button
             className="px-3 py-2 mr-5 border-2 rounded text-gray-300 text-xl"
-            onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+            onClick={() => updateQuantity(product._id, product.quantity - 1)}
+             
           >
             -
           </button>
-          <span className="text-gray-300 text-2xl">{quantity}</span>
+          <span className="text-gray-300 text-2xl">{product.quantity}</span>
           <button
             className="px-3 py-2 border-2 ml-5 rounded text-gray-300 text-xl"
-            onClick={() => setQuantity(quantity + 1)}
+            onClick={() => updateQuantity(product._id, product.quantity - 1)}
           >
             +
           </button>
@@ -96,7 +101,7 @@ const ProductDetails = () => {
             onClick={handleAddToCart}
           >
             <ShoppingBag />
-            {added ? "Added!" : `Add ${quantity} to Bag`}
+            {added ? "Added!" : `Add ${product.quantity} to Bag`}
           </button>
 
           {/* Buy Now Button */}

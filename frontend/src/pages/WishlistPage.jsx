@@ -1,14 +1,17 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ProductContext } from "../context/product-context";
 import { ShoppingBag, X } from "lucide-react";
 
 const WishlistPage = () => {
-  const { wishlist, toggleWishlist, addToCart, cart } =
+  const { wishlist, toggleWishlist, addToCart, cart,fetchCart,fetchWishlist } =
     useContext(ProductContext);
-  const handleCart = (product)=>{
-    addToCart(product,1);
-    toggleWishlist(product);
-  }
+  const handleCart = async (product) => {
+   await toggleWishlist(product);
+    await addToCart(product, 1);
+  };
+  useEffect(() => {
+      fetchWishlist();
+  }, []);
   return (
     <div className="p-4 md:p-8 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">My Wishlist</h1>
@@ -19,13 +22,13 @@ const WishlistPage = () => {
         <div className="space-y-4">
           {wishlist.map((product) => (
             <div
-              key={product.id}
+              key={product._id}
               className=" bg-white/30 flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-lg shadow gap-4"
             >
               {/* Product Info */}
               <div className="flex items-start gap-4 w-full md:w-auto">
                 <img
-                  src={product.images[0]}
+                  src={product.images?.[0]}
                   alt={product.name}
                   className="w-24 h-24 md:w-20 md:h-20 object-cover rounded"
                 />
@@ -43,7 +46,7 @@ const WishlistPage = () => {
                 {/* Move to Cart */}
                 <button
                   className={`${
-                    cart.some((item) => item.id === product.id)
+                    cart.some((item) => item._id === product._id)
                       ? "hidden "
                       : ""
                   } p-2 rounded-lg border bg-purple-50 text-purple-600 flex items-center gap-1`}

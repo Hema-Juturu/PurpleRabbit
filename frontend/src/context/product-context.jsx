@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import api from "../axiosInstance";
 
 export const ProductContext = createContext(null);
 
@@ -6,54 +7,82 @@ export const ProductContextProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [wishlist, setWishlist] = useState([]);
 
-  // Add product to cart with quantity
-  const addToCart = (product, quantity = 1) => {
-    setCart((prevCart) => {
-      const existing = prevCart.find((item) => item.id === product.id);
-      if (existing) {
-        return prevCart.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      } else {
-        return [...prevCart, { ...product, quantity }];
-      }
-    });
+  const removeFromCart = async (productId) => {
+    const res = await api.delete(`/cart/${productId}`);
+    setCart(res.data);
   };
 
-  // Remove one quantity of a product
-  const removeFromCart = (id) => {
-    setCart(
-      (prevCart) =>
-        prevCart
-          .map((item) =>
-            item.id === id ? { ...item, quantity: item.quantity - 1 } : item
-          )
-          .filter((item) => item.quantity > 0) // remove if quantity 0
-    );
-  };
-
-  // Update quantity manually
-  const updateQuantity = (id, quantity) => {
+  const updateQuantity = async (productId, quantity) => {
     if (quantity <= 0) {
-      removeFromCart(id); // remove if 0
-    } else {
-      setCart((prevCart) =>
-        prevCart.map((item) => (item.id === id ? { ...item, quantity } : item))
-      );
+      await removeFromCart(productId);
+      return;
+    }
+
+    const res = await api.put("/cart/update", {
+      productId,
+      quantity,
+    });
+    setCart(res.data);
+  };
+
+  const fetchCart = async () => {
+    try {
+      const res = await api.get("/cart");
+      setCart(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      setCart([]);
     }
   };
-  const toggleWishlist = (product) => {
-    setWishlist((prevWishlist) => {
-      const exists = prevWishlist.some((item) => item.id === product.id);
-      if (exists) {
-        return prevWishlist.filter((item) => item.id !== product.id);
+
+  const addToCart = async (product, quantity = 1) => {
+    try {
+      const res = await api.post("/cart/add", {
+        productId: product._id,
+        quantity,
+      });
+      if (Array.isArray(res.data)) {
+        setCart(res.data);
       } else {
-        return [...prevWishlist, product];
+        await fetchCart();
       }
-    });
+    } catch (err) {
+      console.error("Add to cart failed", err);
+    }
   };
+
+
+  const fetchWishlist = async () => {
+    try {
+      const res = await api.get("/wishlist");
+      setWishlist(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      setWishlist([]);
+    }
+  };
+
+  const toggleWishlist = async (product) => {
+    try {
+      const res = await api.post("/wishlist/toggle", {
+        productId: product._id,
+      });
+
+      if (Array.isArray(res.data)) {
+        setWishlist(res.data);
+      } else {
+        await fetchWishlist();
+      }
+    } catch (err) {
+      console.error("Wishlist toggle failed", err);
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      fetchCart();
+      fetchWishlist();
+    }
+  }, []);
+
   return (
     <ProductContext.Provider
       value={{
@@ -63,6 +92,8 @@ export const ProductContextProvider = ({ children }) => {
         updateQuantity,
         wishlist,
         toggleWishlist,
+        fetchCart,
+        fetchWishlist
       }}
     >
       {children}
