@@ -55,29 +55,7 @@ const AddNewProductForm = () => {
     }));
   };
 
-  // const handleImageChange = async (index, file) => {
-  //   setIsLoading(true);
-  //   const filename = "public/image" + "" + file.lastModified;
-  //   let { data, error } = await supabase.storage
-  //     .from("purplerabbit")
-  //     .upload(filename, file);
-  //   if (error) {
-  //     setIsLoading(false);
-  //     const errorMessage =
-  //       error || "An unknown error occurred while uploading image.";
-  //     setModalData({
-  //       title: "Submission Failed 🙁",
-  //       message: errorMessage,
-  //       type: "error",
-  //     });
-  //     setIsModalOpen(true);
-  //   }
-  //   const res = supabase.storage.from("purplerabbit").getPublicUrl(filename);
-  //   console.log(res.data.publicUrl);
-  //   const newImages = [...formData.images];
-  //   newImages[index] = res.data.publicUrl;
-  //   setFormData((prev) => ({ ...prev, images: newImages }));
-  // };
+
   const handleImageChange = async (index, file) => {
     try {
       setIsLoading(true);
@@ -270,7 +248,7 @@ const AddNewProductForm = () => {
               {formData.isAvailableForSale && (
                 <div className={formGroupClass + " pl-7"}>
                   <label htmlFor="price" className={labelClass}>
-                    Sale Price ($)
+                    Sale Price (RS)
                   </label>
                   <input
                     type="number"
@@ -302,7 +280,7 @@ const AddNewProductForm = () => {
               {formData.isAvailableForRent && (
                 <div className={formGroupClass + " pl-7"}>
                   <label htmlFor="rentPrice" className={labelClass}>
-                    Rent Price ($/month)
+                    Rent Price (RS/day)
                   </label>
                   <input
                     type="number"

@@ -8,7 +8,7 @@ const ProductCard = ({ _id, name, price, offer, images }) => {
         <div className="p-4">
           <h3 className="text-lg font-semibold">{name}</h3>
           <p className="text-gray-600">
-            {price}&nbsp;&nbsp;
+            Rs.{price}&nbsp;&nbsp;
             {offer && <span className="text-sm text-red-500">{offer}</span>}
           </p>
         </div>
