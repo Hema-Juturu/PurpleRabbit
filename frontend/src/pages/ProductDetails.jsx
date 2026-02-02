@@ -3,47 +3,44 @@ import { useContext, useState } from "react";
 
 import { Heart, ShoppingBag } from "lucide-react";
 import { ProductContext } from "../context/product-context";
-import { fetchProducts } from "../features/auth/productSlice";
+
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 const ProductDetails = () => {
   const { id } = useParams();
-  const {
-    addToCart,
-    wishlist,
-    toggleWishlist,
-  } = useContext(ProductContext);
+  const { addToCart, wishlist, toggleWishlist } = useContext(ProductContext);
   // const product = allProducts.find((p) => p.id === Number(id));
   // const product = useSelector((state) => selectProductById(state, id));
   const { list } = useSelector((state) => state.products);
   const product = list.find((p) => p._id === id || p.id == id);
   const [added, setAdded] = useState(false);
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (list.length === 0) {
-      dispatch(fetchProducts());
-    }
-  }, [dispatch, list.length]);
-  const handleAddToCart = () => {
-    addToCart(product, quantity);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
-  };
-
-  
-  const inWishlist = wishlist.some((item) => item._id === product._id);
+  const [quantity, setQuantity] = useState(1);
 
   if (!product) {
     return (
       <h2 className="text-center mt-10 text-red-600">Product not found</h2>
     );
   }
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!product) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, product]);
+  const handleAddToCart = () => {
+    addToCart(product, quantity);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
+
+  // check if product is already in wishlist
+  const inWishlist = wishlist.some((item) => item.id === product.id);
+
   return (
-    <div className="p-8 max-w-xl md:max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="p-8 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
       {/* Image Section */}
-      <div>
+      <div className="max-w-50 max-h-50">
         <img
           src={product.images[0]}
           alt={product.name}
@@ -67,15 +64,14 @@ const ProductDetails = () => {
         <div className="flex items-center gap-2 mt-4">
           <button
             className="px-3 py-2 mr-5 border-2 rounded text-gray-300 text-xl"
-            onClick={() => updateQuantity(product._id, product.quantity - 1)}
-             
+            onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
           >
             -
           </button>
-          <span className="text-gray-300 text-2xl">{product.quantity}</span>
+          <span className="text-gray-300 text-2xl">{quantity}</span>
           <button
             className="px-3 py-2 border-2 ml-5 rounded text-gray-300 text-xl"
-            onClick={() => updateQuantity(product._id, product.quantity - 1)}
+            onClick={() => setQuantity(quantity + 1)}
           >
             +
           </button>
@@ -101,7 +97,7 @@ const ProductDetails = () => {
             onClick={handleAddToCart}
           >
             <ShoppingBag />
-            {added ? "Added!" : `Add ${product.quantity} to Bag`}
+            {added ? "Added!" : `Add ${quantity} to Bag`}
           </button>
 
           {/* Buy Now Button */}
