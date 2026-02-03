@@ -3,14 +3,18 @@ import Categories from "../Components/Categories";
 import Features from "../Components/Features";
 import Trending from "../Components/Trending";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "../Components/NavBar";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
 const LandingPage = () => {
+  const [role, setRole] = useState("user");
   const user = useSelector(selectCurrentUser);
-  const role = user?.role || "user";
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const r = localStorage.getItem("role") || "user";
+    console.log(r);
+    setRole(r);
+  }, [user]);
   return (
     <div className="py-5">
       {role == "admin" ? (
