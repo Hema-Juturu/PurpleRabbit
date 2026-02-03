@@ -4,8 +4,12 @@ import Features from "../Components/Features";
 import Trending from "../Components/Trending";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import NavBar from "../Components/NavBar";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../features/auth/authSlice";
 const LandingPage = () => {
-  const role = localStorage.getItem("role") || "user";
+  const user = useSelector(selectCurrentUser);
+  const role = user?.role || "user";
   useEffect(() => {}, []);
   return (
     <div className="py-5">

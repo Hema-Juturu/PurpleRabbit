@@ -20,7 +20,7 @@ export const loginUser = createAsyncThunk(
       const message = error.response?.data?.message || "Login failed";
       return thunkAPI.rejectWithValue(message);
     }
-  }
+  },
 );
 
 export const registerUser = createAsyncThunk(
@@ -33,23 +33,23 @@ export const registerUser = createAsyncThunk(
       const message = error.response?.data?.message || "Registration failed";
       return thunkAPI.rejectWithValue(message);
     }
-  }
+  },
 );
-export const Logout = createAsyncThunk(
-  "auth/LOGOUT_URL",
-  async (userData, thunkAPI) => {
-    try {
-      localStorage.removeItem("token");
-      localStorage.removeItem("role");
-      state.token=null;
-      const response = await api.get(LOGOUT_URL);
-      return response.data;
-    } catch (error) {
-      const message = error.response?.data?.message || "Logout failed";
-      return thunkAPI.rejectWithValue(message);
-    }
+
+export const Logout = createAsyncThunk("auth/Logout", async (_, thunkAPI) => {
+ 
+  try {
+    const response = await api.get(LOGOUT_URL);
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("user"); 
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(
+      error.response?.data?.message || "Logout failed",
+    );
   }
-);
+});
 
 export const authSlice = createSlice({
   name: "auth",
@@ -85,10 +85,22 @@ export const authSlice = createSlice({
 
       .addCase(registerUser.pending, handleAuthPending)
       .addCase(registerUser.fulfilled, handleAuthSuccess)
-      .addCase(registerUser.rejected, handleAuthRejected);
+      .addCase(registerUser.rejected, handleAuthRejected)
+      .addCase(Logout.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(Logout.fulfilled, (state) => {
+        state.isLoading = false;
+        state.token = null;
+        state.role = null;
+        state.user = null; 
+        state.error = null;
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+      })
+      .addCase(Logout.rejected, handleAuthRejected);
   },
 });
-
 
 export const selectCurrentUser = (state) => state.auth.token;
 export const selectUserRole = (state) => state.auth.role;
