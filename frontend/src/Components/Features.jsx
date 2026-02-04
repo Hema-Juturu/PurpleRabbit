@@ -1,37 +1,35 @@
-import { Truck, ShieldCheck, CreditCard } from "lucide-react";
+import { Truck, ShieldCheck, CreditCard, BadgeCheck,Undo2 } from "lucide-react";
 
 const Features = () => {
   const features = [
     {
       id: 1,
-      icon: <Truck className="w-10 h-10 text-indigo-600" />,
-      title: "Fast Delivery",
-      desc: "Get your products delivered quickly and reliably.",
+      icon: <Truck className="w-8 h-8 fill-fuchsia-400" />,
+      title: "FAST DELIVERY",
     },
     {
       id: 2,
-      icon: <ShieldCheck className="w-10 h-10 text-indigo-600" />,
-      title: "Secure Shopping",
-      desc: "Your data is safe with end-to-end encryption.",
+      icon: <ShieldCheck className="w-8 h-8  fill-indigo-400" />,
+      title: "SECURE SHOPPING",
     },
     {
       id: 3,
-      icon: <CreditCard className="w-10 h-10 text-indigo-600" />,
-      title: "Easy Payments",
-      desc: "Multiple payment options with hassle-free checkout.",
+      icon: <CreditCard className="w-8 h-8 fill-amber-700" />,
+      title: "EASY PAYMENTS",
+    },
+    {
+      id: 4,
+      icon: <BadgeCheck className="w-8 h-8 fill-yellow-500" />,
+      title: "ASSURED QUALITY",
     },
   ];
 
   return (
-    <div className="grid md:grid-cols-3 gap-8 text-center">
+    <div className="grid md:grid-cols-4 gap-2 text-center">
       {features.map((f) => (
-        <div
-          key={f.id}
-          className="p-6 rounded-2xl shadow hover:shadow-lg transition duration-300"
-        >
-          <div className="flex justify-center mb-4">{f.icon}</div>
-          <h3 className="text-xl font-semibold mb-2">{f.title}</h3>
-          <p className="text-gray-600">{f.desc}</p>
+        <div key={f.id} className="p-6">
+          <div className="flex justify-center mb-2">{f.icon}</div>
+          <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
         </div>
       ))}
     </div>

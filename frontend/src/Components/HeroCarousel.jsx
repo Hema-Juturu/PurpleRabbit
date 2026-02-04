@@ -60,18 +60,10 @@ const HeroCarousel = () => {
           ))}
         </Swiper>
       </div>
-       <div className="mb-12">
-        <p className="text-lg md:text-xl mb-6 text-gray-300">
+       <div className="mb-24">
+        <p className="text-lg md:text-xl mb-6 mt-8 text-gray-300">
           Shop • Rent • Explore the latest trends
         </p>
-        <div className="flex justify-center space-x-4">
-          <button className="bg-purple-400 text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-yellow-500 transition">
-            Shop Now
-          </button>
-          <button className="border border-white text-white px-6 py-3 rounded-lg hover:bg-yellow-400 hover:text-white transition">
-            Explore
-          </button>
-        </div>
       </div>
     </section>
   );

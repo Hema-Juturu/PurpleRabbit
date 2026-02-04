@@ -31,8 +31,8 @@ const LandingPage = () => {
       <section className="w-full md:h-screen">
         <HeroCarousel />
       </section>
-      <section className="py-16 px-8 bg-white/30 backdrop-blur-md">
-        <h2 className=" text-gray-50 text-2xl font-bold mb-8 text-center">
+      {/* <section className="py-16 px-8 bg-white/30 backdrop-blur-md">
+        <h2 className=" text-gray-50 text-2xl font-bold mb-2 text-center">
           Shop by Category
         </h2>
         <Categories />
@@ -40,9 +40,8 @@ const LandingPage = () => {
 
       <section>
         <Trending />
-      </section>
-      <section className="py-16 px-8 bg-gray-50">
-        <h2 className="text-2xl font-bold mb-8 text-center">Why Choose Us?</h2>
+      </section> */}
+      <section className="py-4 px-4 bg-gray-50">
         <Features />
       </section>
     </div>

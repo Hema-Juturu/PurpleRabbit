@@ -2,6 +2,7 @@ import ProductCard from "../Components/ProductCard";
 import { selectWomenProducts } from "../features/auth/productSlice";
 import { useSelector } from "react-redux";
 const Women = () => {
+  
   const prods = useSelector(selectWomenProducts);
 
   return (

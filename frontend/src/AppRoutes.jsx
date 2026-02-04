@@ -22,9 +22,9 @@ function AppRoutes() {
 
   const user = useSelector(selectCurrentUser);
   useEffect(() => {
-    if(user){
+    
       dispatch(fetchProducts()); 
-    }
+    
   }, [dispatch]);
   return (
     <>
