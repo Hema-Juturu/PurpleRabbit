@@ -89,7 +89,6 @@ export const getFilteredProducts = async (req, res) => {
     if (req.query.owner) query.owner = req.query.owner;
 
     const products = await Product.find(query).populate("owner", "name email");
-
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });

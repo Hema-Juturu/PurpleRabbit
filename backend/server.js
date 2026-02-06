@@ -22,10 +22,6 @@ app.use(express.json());
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-// Serve index.html for any other routes
-app.get("/", (_, res) =>
-  res.sendFile(path.join(__dirname, "../frontend/dist/index.html")),
-);
 // Routes
 app.get("/api", (_, res) => {
   res.status(200).json({
@@ -33,9 +29,9 @@ app.get("/api", (_, res) => {
   });
 });
 
+app.use("/api/product", productRoute);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
-app.use("/api/product", productRoute);
 app.use("/api/cart",cartRoute);
 app.use("/api/wishlist",wishlistRoute);
 

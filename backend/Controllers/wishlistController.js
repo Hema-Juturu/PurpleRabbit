@@ -2,7 +2,6 @@ import User from "../models/User.js";
 
 export const toggleWishlist = async (req, res) => {
   const { productId } = req.body;
-  console.log(productId);
     if(!productId){
         return res.status(400).json({ message: "Missing user id" });
     }

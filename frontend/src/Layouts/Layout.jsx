@@ -1,10 +1,14 @@
 import { useState } from "react";
 import NavBar from "../Components/NavBar";
 import Footer from "../Components/Footer";
+import SearchBar from "../Components/searchBar";
 const Layout = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col bg-purple-900">
-      <NavBar className="absolute top-0 left-0 w-full z-50" />  
+      <NavBar />  
+      <div className="p-12">
+      <SearchBar/>
+      </div>
       <main className="flex-grow">{children}</main>
       <Footer />
     </div>

@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "./features/auth/authSlice";
+import ProductsPage from "./pages/ProductsPage";
 
 function AppRoutes() {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ function AppRoutes() {
               <Route path="/bag" element={<BagPage />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/addProduct" element={<AddNewProductForm />} />
+              <Route path="/products" element={<ProductsPage />} />
             </Routes>
           </Layout>
         </ProductContextProvider>

@@ -12,7 +12,6 @@ const LandingPage = () => {
   const user = useSelector(selectCurrentUser);
   useEffect(() => {
     const r = localStorage.getItem("role") || "user";
-    console.log(r);
     setRole(r);
   }, [user]);
   return (
@@ -28,7 +27,7 @@ const LandingPage = () => {
       ) : null}
 
       {/* <AddNewProductForm /> */}
-      <section className="w-full md:h-screen">
+      <section className="w-full">
         <HeroCarousel />
       </section>
       {/* <section className="py-16 px-8 bg-white/30 backdrop-blur-md">
@@ -36,11 +35,11 @@ const LandingPage = () => {
           Shop by Category
         </h2>
         <Categories />
-      </section>
+      </section> */}
 
       <section>
         <Trending />
-      </section> */}
+      </section>
       <section className="py-4 px-4 bg-gray-50">
         <Features />
       </section>

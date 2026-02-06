@@ -21,7 +21,7 @@ const Trending = () => {
     { id: 5, name: "Designer Dress", price: "₹4,499", offer: "", img: img4 },
     {
       id: 3,
-      name: "Designer Dress",
+      name: "Designer Bag",
       price: "₹7,499",
       offer: "15% Off",
       img: "/images/handbag.png",

@@ -71,17 +71,16 @@ const Footer = () => {
       </footer>
       <div className="bg-purple-900 fixed z-50 bottom-0 w-full left-0 lg:hidden flex flex-row justify-evenly px-6 py-3 ">
         <button>
-          <Home className="w-8 h-8 text-gray-300" />
-        </button>
-        <button>
           <Flame className="w-8 h-8 text-gray-300" />
-        </button>
-        <button>
-          <LayoutGrid className="w-8 h-8 text-gray-300" />
         </button>
         <button>
           <Link to="/profile">
             <User className="w-8 h-8 text-gray-300" />
+          </Link>
+        </button>
+        <button>
+          <Link to="/">
+            <Home className="w-8 h-8 text-gray-300" />
           </Link>
         </button>
         <button>

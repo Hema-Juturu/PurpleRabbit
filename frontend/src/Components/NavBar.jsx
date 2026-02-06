@@ -15,6 +15,7 @@ const NavBar = () => {
     message: "",
     type: "success",
   });
+  const [search, setSearch] = useState("");
   const user = useSelector(selectCurrentUser);
   useEffect(() => {
     if (user) {
@@ -47,9 +48,19 @@ const NavBar = () => {
       )}
 
       {/* Navbar */}
-      <nav className="bg-white/30 backdrop-blur-lg w-full items-center lg:w-3/4 lg:flex h-18 px-10 py-4 justify-between lg:rounded-full shadow-lg top-10 z-40">
+      <nav className="bg-white/30 w-full backdrop-blur-lg lg:backdrop-blur-none lg:bg-transparent items-center  lg:flex h-18 p-4  top-10 z-40 justify-evenly">
         {/* Left Menu (Desktop only) */}
-        <div className="hidden lg:flex gap-8 justify-start font-medium text-gray-300">
+        <div className="hidden lg:flex lg:justify-center ">
+          <Link to="/">
+            <img
+              src={logo}
+              alt="Logo"
+              className="w-16 h-auto object-contain hover:scale-110 transition "
+            />
+          </Link>
+          {/* <SearchBar className="outline-none"/> */}
+        </div>
+        <div className="hidden lg:flex gap-24 justify-items-stretch font-medium text-gray-300 ml-16">
           <Link to="/women" className="hover:text-violet-900 text-lg">
             Women
           </Link>
@@ -65,16 +76,7 @@ const NavBar = () => {
         </div>
 
         {/* Logo */}
-        <div className="hidden lg:flex lg:justify-center w-1/2">
-          <Link to="/">
-            <img
-              src={logo}
-              alt="Logo"
-              className="w-16 h-auto object-contain hover:scale-110 transition mr-10"
-            />
-          </Link>
-          <SearchBar className="outline-none" />
-        </div>
+
         {/* Mobile view*/}
         <div className="flex flex-col mt-5 lg:hidden lg:mt-0 ">
           <div className="flex flex-row mt-3 justify-between px-2 items-center">
@@ -122,9 +124,9 @@ const NavBar = () => {
             </Link>
           </div>
 
-          <div className="flex mt-3 px-2">
-            <SearchBar className="w-full" />
-          </div>
+          {/* <div className="flex mt-3 px-2"> */}
+          {/* <SearchBar className="w-full" /> */}
+          {/* </div> */}
         </div>
         {/* Right Side (Desktop only) */}
         <div className="hidden lg:flex items-center gap-6 justify-items-end ml-3">
@@ -145,7 +147,7 @@ const NavBar = () => {
           ) : (
             <button
               onClick={() => setShowLogin(true)}
-              className="flex items-center justify-end justify-items-end justify-self-end gap-2 text-gray-300 font-semibold px-4 py-2 rounded-full border border-gray-300 hover:border-y-2"
+              className="flex items-center justify-end justify-items-end justify-self-end gap-2 text-gray-300 font-semibold px-4 py-2 "
             >
               <LogIn className="w-5 h-5" />
               <span>LogIn</span>

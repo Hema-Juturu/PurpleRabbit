@@ -1,11 +1,21 @@
 import { useState, useEffect } from "react";
-import { Search } from 'lucide-react';
-
+import { Search } from "lucide-react";
+import api from "../axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 export default function SearchBar() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const navigate = useNavigate();
 
+  const handleSearchAction = (searchTerm) => {
+    const finalSearch = searchTerm || query;
+    if (!finalSearch.trim()) return;
+
+    setResults([]);
+
+    navigate(`/products?search=${encodeURIComponent(finalSearch)}`);
+  };
   useEffect(() => {
     if (query.trim() === "") {
       setResults([]);
@@ -13,10 +23,12 @@ export default function SearchBar() {
     }
 
     const timer = setTimeout(async () => {
+      if (!query) return;
       try {
-        const res = await fetch(`/api/products?search=${query}`);
-        const data = await res.json();
-        setResults(data);
+        // const res = await fetch(`/api/products?search=${query}`);
+        const res = await api.get(`/product/filter?search=${query}`);
+        // console.log(res.data);
+        setResults(res.data);
       } catch (err) {
         console.error("Search error:", err);
       }
@@ -27,20 +39,31 @@ export default function SearchBar() {
 
   return (
     <div className="relative w-full max-w-lg mx-auto">
-      <div className="flex items-center border-none shadow-sm">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSearchAction();
+        }}
+        className="flex items-center border-none shadow-sm"
+      >
+        {/* <div className="flex items-center border-none shadow-sm"> */}
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search for products..."
-          className="w-full px-4 py-2 border-b-2 border-gray-300 focus:outline-none bg-transparent"
+          className="w-full px-4 py-2 border-b-2 border-gray-300 focus:outline-none bg-transparent text-gray-300 text-xl"
         />
-            <Search className="w-7 h-7 text-gray-300" />
-
-      </div>
+        <button type="submit" aria-label="Search">
+          <Search
+            className="w-7 h-7 text-gray-300 cursor-pointer hover:text-purple-600 transition-colors"
+            onClick={() => handleSearchAction()}
+          />
+        </button>
+      </form>
 
       {results.length > 0 && (
-        <ul className="absolute left-0 right-0 mt-2 shadow-lg rounded-lg overflow-hidden z-10">
+        <ul className="absolute left-0 right-0 mt-2 shadow-lg rounded-lg overflow-hidden z-10 bg-white text-purple-950">
           {results.map((item, idx) => (
             <li
               key={idx}

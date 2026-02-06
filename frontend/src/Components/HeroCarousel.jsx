@@ -19,7 +19,7 @@ const HeroCarousel = () => {
   const slides = [img1, img2, img3, img4, img5, img6, img7, img8];
 
   return (
-    <section className="w-full py-5 bg-transparent text-center ">
+    <section className="w-full bg-transparent text-center ">
 
       {/* Carousel Section */}
       <div className="relative w-full flex justify-center">
@@ -60,8 +60,8 @@ const HeroCarousel = () => {
           ))}
         </Swiper>
       </div>
-       <div className="mb-24">
-        <p className="text-lg md:text-xl mb-6 mt-8 text-gray-300">
+       <div>
+        <p className="text-lg md:text-xl  text-gray-300">
           Shop • Rent • Explore the latest trends
         </p>
       </div>
