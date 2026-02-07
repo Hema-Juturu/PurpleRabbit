@@ -38,7 +38,7 @@ export default function SearchBar() {
   }, [query]);
 
   return (
-    <div className="relative w-full max-w-lg mx-auto">
+    <div className="relative w-full max-w-2xl mx-auto">
       <form
         onSubmit={(e) => {
           e.preventDefault();

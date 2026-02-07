@@ -61,16 +61,16 @@ const NavBar = () => {
           {/* <SearchBar className="outline-none"/> */}
         </div>
         <div className="hidden lg:flex gap-24 justify-items-stretch font-medium text-gray-300 ml-16">
-          <Link to="/women" className="hover:text-violet-900 text-lg">
+          <Link to="/women" className="hover:border-y-2 p-1 text-xl ml-5">
             Women
           </Link>
-          <Link to="/men" className="hover:text-violet-900 text-lg">
+          <Link to="/men" className="hover:border-y-2 p-1 text-xl">
             Men
           </Link>
-          <Link to="/kids" className="hover:text-violet-900 text-lg">
+          <Link to="/kids" className="hover:border-y-2 p-1 text-xl">
             Kids
           </Link>
-          <Link to="/home" className="hover:text-violet-900 mr-5 text-lg">
+          <Link to="/home" className="hover:border-y-2 p-1  text-xl">
             Home
           </Link>
         </div>
@@ -135,13 +135,13 @@ const NavBar = () => {
             <>
               {" "}
               <Link to="/profile">
-                <User className="w-6 h-6  text-gray-300 cursor-pointer hover:text-violet-600" />
+                <User className="w-11 h-11  text-gray-300 cursor-pointer  p-2 hover:border-2 hover:rounded-full" />
               </Link>
               <Link to="/wishlist">
-                <Heart className="w-6 h-6 text-gray-300 cursor-pointer hover:text-violet-600" />
+                <Heart className="w-11 h-11 text-gray-300 cursor-pointer  p-2 hover:border-2 hover:rounded-full" />
               </Link>
               <Link to="/bag">
-                <ShoppingBag className="w-6 h-6 text-gray-300 cursor-pointer hover:text-violet-600" />
+                <ShoppingBag className="w-11 h-11 text-gray-300 cursor-pointer  p-2 hover:border-2 hover:rounded-full" />
               </Link>
             </>
           ) : (

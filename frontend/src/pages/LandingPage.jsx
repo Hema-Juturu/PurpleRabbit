@@ -16,15 +16,7 @@ const LandingPage = () => {
   }, [user]);
   return (
     <div className="py-5">
-      {role == "admin" ? (
-        <Link to="/addProduct" className="bg-white">
-          <div className="mt-2 flex justify-center">
-            <button className="bg-purple-400 p-2 rounded-md text-white m-2 ">
-              add new products
-            </button>
-          </div>
-        </Link>
-      ) : null}
+   
 
       {/* <AddNewProductForm /> */}
       <section className="w-full">

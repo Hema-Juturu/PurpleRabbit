@@ -6,6 +6,7 @@ import { selectCurrentUser } from "../features/auth/authSlice.js";
 import { useEffect, useState } from "react";
 import api from "../axiosInstance";
 import ResponseModal from "../Components/ResponseModal.jsx";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -22,11 +23,16 @@ const Profile = () => {
     message: "",
     type: "",
   });
+  const [role, setRole] = useState("user");
+  const user = useSelector(selectCurrentUser);
+  useEffect(() => {
+    const r = localStorage.getItem("role") || "user";
+    setRole(r);
+  }, [user]);
   const handleLogout = () => {
     dispatch(Logout());
     navigate("/");
   };
-  const user = useSelector(selectCurrentUser); 
   useEffect(() => {
     if (!user) {
       return;
@@ -107,6 +113,7 @@ const Profile = () => {
   };
   return (
     <div className="p-8 max-w-5xl mx-auto ">
+   
       {/* User Info Header */}
       <div className="border-b pb-6">
         <span className="text-3xl font-bold text-yellow-500 mr-6">
@@ -117,6 +124,15 @@ const Profile = () => {
         ) : null}
         <p className="text-gray-300 text-lg">{email}</p>
       </div>
+         {role == "admin" ? (
+        <Link to="/addProduct" className="bg-white">
+          <div className="m-2">
+            <button className="bg-purple-400 p-2 rounded-md text-white m-2 ">
+              add new products
+            </button>
+          </div>
+        </Link>
+      ) : null}
       {/* Details Section */}
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="flex flex-col gap-1">
