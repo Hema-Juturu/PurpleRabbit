@@ -7,10 +7,18 @@ export const ProductContextProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [wishlist, setWishlist] = useState([]);
 
+
   const removeFromCart = async (productId) => {
+  try {
     const res = await api.delete(`/cart/${productId}`);
     setCart(res.data);
-  };
+    return res.data;
+  } catch (err) {
+    console.error("Failed to remove from cart", err);
+    throw err;
+  }
+};
+
 
   const updateQuantity = async (productId, quantity) => {
     if (quantity <= 0) {

@@ -5,10 +5,12 @@ import { Heart, X } from "lucide-react";
 const BagPage = () => {
   const { cart, removeFromCart, updateQuantity, wishlist, toggleWishlist } =
     useContext(ProductContext);
-  const handleWishlist = (product) => {
-    removeFromCart(product._id);
-    toggleWishlist(product._id);
+
+  const handleWishlist = async (product) => {
+    await toggleWishlist(product);
+    await removeFromCart(product._id);
   };
+
   let total = 0;
   cart.forEach((p) => {
     total += p.price * p.quantity;
