@@ -1,29 +1,57 @@
 import { useContext } from "react";
 import { ProductContext } from "../context/product-context";
 import { Heart, X } from "lucide-react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { selectCart } from "../features/bagSlice";
+import { fetchCart } from "../features/bagSlice";
+import { fetchWishlist } from "../features/bagSlice";
+import { selectCartProducts } from "../features/bagSlice";
+import { removeFromCart } from "../features/bagSlice";
+import { toggleWishlist } from "../features/bagSlice";
+import { selectWishlist } from "../features/bagSlice";
 
 const BagPage = () => {
-  const { cart, removeFromCart, updateQuantity, wishlist, toggleWishlist } =
-    useContext(ProductContext);
-
-  const handleWishlist = async (product) => {
-    await toggleWishlist(product);
-    await removeFromCart(product._id);
+  const wishlist = useSelector(selectWishlist);
+  const handleWishlist = async(product) => {
+     await dispatch(toggleWishlist(product._id));
+     await dispatch(removeFromCart(product._id));
   };
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      dispatch(fetchCart());
+      dispatch(fetchWishlist());
+    }
+  }, []);
+  const cart = useSelector(selectCart);
+  const fullc = useSelector(selectCartProducts);
+  console.log("fullcart", fullc);
+  const handleRmCart = (id) => {
+    console.log("id",id);
+    dispatch(removeFromCart(id));
+  };
+   const handleupdateQuantity = (id,q) => {
+    dispatch(updateQuantity({id,q}));
+  };
   let total = 0;
-  cart.forEach((p) => {
-    total += p.price * p.quantity;
-  });
+  if (cart.length) {
+    cart.forEach((p) => {
+      // console.log(p);
+      total += p.price * p.quantity;
+    });
+  }
   return (
     <div className="p-4 md:p-8 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">My Bag</h1>
 
-      {cart.length === 0 ? (
+      {fullc.length === 0 ? (
         <p className="text-gray-500">Your bag is empty.</p>
       ) : (
         <div className="space-y-4">
-          {cart.map((product) => (
+          {fullc.map((product) => (
             <div
               key={product._id}
               className="bg-white/30 flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-lg shadow gap-4"
@@ -51,7 +79,7 @@ const BagPage = () => {
                   <button
                     className="px-2 py-1 border rounded bg-white "
                     onClick={() =>
-                      updateQuantity(product._id, product.quantity - 1)
+                      handleupdateQuantity(product._id, product.quantity - 1)
                     }
                   >
                     -
@@ -60,7 +88,7 @@ const BagPage = () => {
                   <button
                     className="px-2 py-1 border rounded bg-white "
                     onClick={() =>
-                      updateQuantity(product._id, product.quantity + 1)
+                      handleupdateQuantity(product._id, product.quantity + 1)
                     }
                   >
                     +
@@ -82,7 +110,7 @@ const BagPage = () => {
                 </button>
                 <button
                   className="p-2 bg-white rounded-lg border text-red-600  hover:bg-red-600 hover:text-white"
-                  onClick={() => removeFromCart(product._id)}
+                  onClick={() => handleRmCart(product._id)}
                 >
                   <X />
                 </button>

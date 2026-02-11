@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import Product from "../models/Product.js"; 
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },

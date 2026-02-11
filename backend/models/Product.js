@@ -83,10 +83,6 @@ const productSchema = new mongoose.Schema(
       state: String,
       country: String,
     },
-    aiDescription: { 
-      type: String, 
-      default: "" 
-    },
     status: {
       type: String,
       enum: ["active", "inactive", "sold", "rented"],

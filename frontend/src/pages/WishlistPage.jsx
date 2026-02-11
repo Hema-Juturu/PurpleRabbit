@@ -7,7 +7,7 @@ const WishlistPage = () => {
     useContext(ProductContext);
   const handleCart = async (product) => {
    await toggleWishlist(product);
-    await addToCart(product, 1);
+    await dispatch(addToCart({product,quantity:1}));
   };
   useEffect(() => {
       fetchWishlist();

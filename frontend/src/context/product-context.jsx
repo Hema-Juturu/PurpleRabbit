@@ -7,18 +7,16 @@ export const ProductContextProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [wishlist, setWishlist] = useState([]);
 
-
   const removeFromCart = async (productId) => {
-  try {
-    const res = await api.delete(`/cart/${productId}`);
-    setCart(res.data);
-    return res.data;
-  } catch (err) {
-    console.error("Failed to remove from cart", err);
-    throw err;
-  }
-};
-
+    try {
+      const res = await api.delete(`/cart/${productId}`);
+      setCart(res.data);
+      return res.data;
+    } catch (err) {
+      console.error("Failed to remove from cart", err);
+      throw err;
+    }
+  };
 
   const updateQuantity = async (productId, quantity) => {
     if (quantity <= 0) {
@@ -58,20 +56,26 @@ export const ProductContextProvider = ({ children }) => {
     }
   };
 
-
   const fetchWishlist = async () => {
     try {
       const res = await api.get("/wishlist");
-      setWishlist(Array.isArray(res.data) ? res.data : []);
+      if (Array.isArray(res.data)) {
+        setWishlist(res.data);
+      }
+      else{
+        setWishlist([]);
+      }
     } catch (err) {
+      console.log(err);
       setWishlist([]);
     }
   };
 
   const toggleWishlist = async (product) => {
+    console.log(product);
     try {
       const res = await api.post("/wishlist/toggle", {
-        productId: product._id,
+        productId: product.product,
       });
 
       if (Array.isArray(res.data)) {
@@ -101,7 +105,7 @@ export const ProductContextProvider = ({ children }) => {
         wishlist,
         toggleWishlist,
         fetchCart,
-        fetchWishlist
+        fetchWishlist,
       }}
     >
       {children}
