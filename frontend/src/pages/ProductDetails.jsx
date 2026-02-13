@@ -15,14 +15,10 @@ import { fetchProducts } from "../features/auth/productSlice";
 import { selectWishlist } from "../features/bagSlice";
 const ProductDetails = () => {
   const { id } = useParams();
-  // const { wishlist } = useContext(ProductContext);
-  // const product = allProducts.find((p) => p.id === Number(id));
-  // const product = useSelector((state) => selectProductById(state, id));
   const { list } = useSelector((state) => state.products);
   const product = list.find((p) => p._id === id || p.id == id);
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  // const [user, setUser] = useState("");
   const user = useSelector(selectCurrentUser);
 
   const dispatch = useDispatch();
@@ -38,17 +34,23 @@ const ProductDetails = () => {
     setTimeout(() => setAdded(false), 2000);
   };
   const handleWishlist = async () => {
-    console.log(wishlist);
     await dispatch(toggleWishlist(product._id));
   };
   const wishlist = useSelector(selectWishlist);
   // check if product is already in wishlist
-  const inWishlist = wishlist.some((item) => item.id === product.id);
   if (!product) {
     return (
       <h2 className="text-center mt-10 text-red-600">Product not found</h2>
     );
   }
+  // const inWishlist = wishlist.some((item) => item === product._id);
+ let inWishlist=false;
+  wishlist.forEach(a => {
+    if(a === product._id){
+      inWishlist=true;
+    }
+  });
+
 
   return (
     <div className="p-8 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -95,9 +97,9 @@ const ProductDetails = () => {
               {/* Wishlist Button */}
               <button
                 onClick={handleWishlist}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg text-purple-600 border-purple-600 hover:bg-purple-100"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl text-purple-600 border-purple-900 border-2 hover:border-gray-200"
               >
-                <Heart className={inWishlist ? "fill-purple-500" : ""} />
+                <Heart className={inWishlist ? "fill-red-400" : "" } />
               </button>
 
               {/* Add to Bag Button */}

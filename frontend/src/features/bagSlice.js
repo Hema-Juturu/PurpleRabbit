@@ -51,7 +51,7 @@ export const toggleWishlist = createAsyncThunk(
     const res = await api.post("/wishlist/toggle", {
       productId: id,
     });
-    return Array.isArray(res.data) ? res.data : null;
+    return Array.isArray(res.data.wishlist) ? res.data.wishlist : null;
   },
 );
 
@@ -99,9 +99,7 @@ export const selectWishlist = (state) => state.bag.wishlist;
 
 export const selectCartProducts = (state) => {
   const products = state.products.list || [];
-  //   console.log("list",products);
   const cart = state.bag.cart || [];
-  //   console.log("cart",cart);
 
   // Force it to use the ID string as the key
   const cartMap = new Map(
@@ -110,7 +108,6 @@ export const selectCartProducts = (state) => {
       return [id, c.quantity];
     }),
   );
-  //   console.log("cartMap", cartMap);
 
   return products
     .filter((p) => cartMap.has(p._id) || cartMap.has(p.id))
