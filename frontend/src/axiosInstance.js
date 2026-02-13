@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   // ✅ your backend base URL
-  baseURL: "https://purplerabbit.onrend er.com/api",
+  baseURL: "https://purplerabbit.onrender.com/api",
   //  baseURL: "http://localhost:7000/api"
 });
 
