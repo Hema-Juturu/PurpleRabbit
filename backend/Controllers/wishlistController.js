@@ -67,16 +67,12 @@ export const toggleWishlist = async (req, res) => {
 export const getWishlist = async (req, res) => {
   try {
   
-    const user = await User.findById(req.user.id).populate({
-      path: 'wishlist',
-      model: 'Product' 
-    });
+    const user = await User.findById(req.user.id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    console.log("Populated Wishlist Data:", user.wishlist);
     res.status(200).json(user.wishlist);
   } catch (error) {
     res.status(500).json({ message: "Error fetching wishlist", error: error.message });

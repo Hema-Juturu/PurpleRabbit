@@ -57,7 +57,7 @@ const ProductDetails = () => {
       {/* Image Section */}
       <div className="max-w-50 max-h-50">
         <img
-          src={product.images[0]}
+          src={product.images?.[0]}
           alt={product.name}
           className="w-full h-auto object-cover rounded-lg shadow-lg"
         />

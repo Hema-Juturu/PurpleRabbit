@@ -119,7 +119,7 @@ export const selectCartProducts = (state) => {
 
 export const selectWishlistProducts = (state) => {
   const products = state.products.list || [];
-  const wishIds = new Set(state.bag.wishlist.map((w) => w.product));
+  const wishIds =state.bag.wishlist;
 
-  return products.filter((p) => wishIds.has(p._id) || wishIds.has(p.id));
+  return products.filter((p) => wishIds.includes(p._id) || wishIds.includes(p.id));
 };

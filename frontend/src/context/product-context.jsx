@@ -66,13 +66,11 @@ export const ProductContextProvider = ({ children }) => {
         setWishlist([]);
       }
     } catch (err) {
-      console.log(err);
       setWishlist([]);
     }
   };
 
   const toggleWishlist = async (product) => {
-    console.log(product);
     try {
       const res = await api.post("/wishlist/toggle", {
         productId: product.product,

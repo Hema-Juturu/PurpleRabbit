@@ -9,7 +9,6 @@ import WishlistPage from "./pages/WishlistPage";
 import BagPage from "./pages/BagPage";
 import Profile from "./pages/Profile";
 import Layout from "./Layouts/Layout";
-import { ProductContextProvider } from "./context/product-context";
 import AddNewProductForm from "./pages/AddNewProductForm";
 import { fetchProducts } from "./features/auth/productSlice";
 import { useDispatch } from "react-redux";
@@ -24,13 +23,12 @@ function AppRoutes() {
   const user = useSelector(selectCurrentUser);
   useEffect(() => {
     
-      dispatch(fetchProducts()); 
+      dispatch(fetchProducts());  
     
   }, [dispatch]);
   return (
     <>
       <BrowserRouter>
-        <ProductContextProvider>
           <Layout>
             <Routes>
               <Route path="/" element={<LandingPage />}/>
@@ -46,7 +44,6 @@ function AppRoutes() {
               <Route path="/products" element={<ProductsPage />} />
             </Routes>
           </Layout>
-        </ProductContextProvider>
       </BrowserRouter>
     </>
   );

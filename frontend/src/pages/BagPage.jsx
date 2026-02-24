@@ -14,11 +14,11 @@ import { selectWishlist } from "../features/bagSlice";
 
 const BagPage = () => {
   const wishlist = useSelector(selectWishlist);
+  const dispatch = useDispatch();
   const handleWishlist = async(product) => {
      await dispatch(toggleWishlist(product._id));
      await dispatch(removeFromCart(product._id));
   };
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -28,7 +28,6 @@ const BagPage = () => {
   }, []);
   const cart = useSelector(selectCart);
   const fullc = useSelector(selectCartProducts);
-  console.log("fullcart", fullc);
   const handleRmCart = (id) => {
     console.log("id",id);
     dispatch(removeFromCart(id));

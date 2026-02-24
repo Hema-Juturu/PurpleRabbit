@@ -1,17 +1,21 @@
 import { useContext, useEffect } from "react";
 import { ProductContext } from "../context/product-context";
 import { ShoppingBag, X } from "lucide-react";
-
+import { fetchWishlist, selectCartProducts, selectWishlistProducts,toggleWishlist,addToCart,selectWishlist } from "../features/bagSlice";
+import { useDispatch, useSelector } from "react-redux";
 const WishlistPage = () => {
-  const { wishlist, toggleWishlist, addToCart, cart,fetchCart,fetchWishlist } =
-    useContext(ProductContext);
+  const dispatch = useDispatch();
   const handleCart = async (product) => {
-   await toggleWishlist(product);
-    await dispatch(addToCart({product,quantity:1}));
+    const id= product._id
+    await dispatch(toggleWishlist(id));
+    await dispatch(addToCart({ id, quantity: 1 }));
   };
   useEffect(() => {
-      fetchWishlist();
+    dispatch(fetchWishlist());
   }, []);
+  const wishlist= useSelector(selectWishlistProducts)
+  const wishlitprods = useSelector(selectWishlist)
+  const cart = useSelector(selectCartProducts)
   return (
     <div className="p-4 md:p-8 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">My Wishlist</h1>
