@@ -129,7 +129,7 @@ const ProductDetails = () => {
         ) : (
           <div className="mt-6">
             <Link
-              to="/"
+              to="/login"
               className="bg-yellow-500 text-lg px-6 py-2 rounded-lg hover:bg-yellow-600 shadow"
             >
               Log in to add to bag / wishlist

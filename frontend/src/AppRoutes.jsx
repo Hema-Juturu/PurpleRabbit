@@ -16,6 +16,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "./features/auth/authSlice";
 import ProductsPage from "./pages/ProductsPage";
+import Login from "./pages/Login";
 
 function AppRoutes() {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ function AppRoutes() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/addProduct" element={<AddNewProductForm />} />
               <Route path="/products" element={<ProductsPage />} />
+              <Route path="/login" element={<Login/>}/>
             </Routes>
           </Layout>
       </BrowserRouter>

@@ -1,12 +1,12 @@
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { Logout } from "../features/auth/authSlice";
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../features/auth/authSlice.js";
-import { useEffect, useState } from "react";
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {Logout} from "../features/auth/authSlice";
+import {useSelector} from "react-redux";
+import {selectCurrentUser} from "../features/auth/authSlice.js";
+import {useEffect, useState} from "react";
 import api from "../axiosInstance";
 import ResponseModal from "../Components/ResponseModal.jsx";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -35,6 +35,7 @@ const Profile = () => {
   };
   useEffect(() => {
     if (!user) {
+      navigate("/login");
       return;
     }
     const fetchProfile = async () => {
@@ -49,7 +50,7 @@ const Profile = () => {
           dispatch(Logout());
           localStorage.clear("role");
           localStorage.clear("token");
-          navigate("/");
+           navigate("/login");
         }
       }
     };
@@ -109,11 +110,10 @@ const Profile = () => {
   };
   const closeModal = () => {
     setIsModalOpen(false);
-    setModalData({ title: "", message: "", type: "" });
+    setModalData({title: "", message: "", type: ""});
   };
   return (
     <div className="p-8 max-w-5xl mx-auto ">
-   
       {/* User Info Header */}
       <div className="border-b pb-6">
         <span className="text-3xl font-bold text-yellow-500 mr-6">
@@ -124,7 +124,7 @@ const Profile = () => {
         ) : null}
         <p className="text-gray-300 text-lg">{email}</p>
       </div>
-         {role == "admin" ? (
+      {role == "admin" ? (
         <Link to="/addProduct" className="bg-white">
           <div className="m-2">
             <button className="bg-purple-400 p-2 rounded-md text-white m-2 ">

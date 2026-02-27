@@ -60,7 +60,6 @@ export const toggleWishlist = async (req, res) => {
 
 // export const getWishlist = async (req, res) => {
 //   const user = await User.findById(req.user.id).populate("wishlist");
-//   console.log(user.wishlist);
 //   res.json(user.wishlist);
 // };
 

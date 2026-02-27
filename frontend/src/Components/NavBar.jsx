@@ -33,19 +33,19 @@ const NavBar = () => {
         type={modalData.type}
       />
       {/* Login Modal */}
-      {showLogin && (
+      {/* {showLogin && (
         <div className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
           <div className="bg-black/40 backdrop-blur-lg p-6 rounded-xl w-96 shadow-lg relative">
-            <button
+            <Link
               onClick={() => setShowLogin(false)}
               className="absolute top-2 right-2 text-gray-500 hover:text-black"
             >
               ✕
-            </button>
+            </Link>
             <Login />
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Navbar */}
       <nav className="bg-white/30 w-full backdrop-blur-lg lg:backdrop-blur-none lg:bg-transparent items-center  lg:flex h-18 p-4  top-10 z-40 justify-evenly">
@@ -100,13 +100,13 @@ const NavBar = () => {
                 </Link>
               </div>
             ) : (
-              <button
-                onClick={() => setShowLogin(true)}
+              <Link
+               to="/login"
                 className="flex items-center gap-2 text-gray-300 font-semibold"
               >
                 <LogIn className="w-5 h-5" />
                 <span>Login</span>
-              </button>
+              </Link>
             )}
           </div>
           <div className="flex flex-row justify-evenly items-center p-4 text-gray-300">
@@ -145,13 +145,13 @@ const NavBar = () => {
               </Link>
             </>
           ) : (
-            <button
-              onClick={() => setShowLogin(true)}
+            <Link
+              to="/login"
               className="flex items-center justify-end justify-items-end justify-self-end gap-2 text-gray-300 font-semibold px-4 py-2 "
             >
               <LogIn className="w-5 h-5" />
               <span>LogIn</span>
-            </button>
+            </Link>
           )}
         </div>
         {/* </div> */}
