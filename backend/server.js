@@ -11,6 +11,7 @@ import userRoutes from "./routes/userRoutes.js";
 import productRoute from "./routes/product.js";
 import cartRoute from "./routes/cart.js";
 import wishlistRoute from "./routes/wishlist.js"
+import chatRoute from "./routes/chat.js";
 
 dotenv.config();
 const app = express();
@@ -34,6 +35,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/cart",cartRoute);
 app.use("/api/wishlist",wishlistRoute);
+app.use("/api/chat",chatRoute);
 
 app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
