@@ -8,7 +8,12 @@ import {
   LayoutGrid,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../features/auth/authSlice";
+
+
 const Footer = () => {
+  const user = useSelector(selectCurrentUser);
   return (
     <>
       <footer className=" text-gray-300 bg-transparent">
@@ -74,9 +79,15 @@ const Footer = () => {
           <Flame className="w-8 h-8 text-gray-300" />
         </button>
         <button>
-          <Link to="/profile">
-            <User className="w-8 h-8 text-gray-300" />
-          </Link>
+          {user ? (
+            <Link to="/profile">
+              <User className="w-8 h-8 text-gray-300" />
+            </Link>
+          ) : (
+              <Link to="/login">
+              <User className="w-8 h-8 text-gray-300" />
+            </Link>
+          )}
         </button>
         <button>
           <Link to="/">

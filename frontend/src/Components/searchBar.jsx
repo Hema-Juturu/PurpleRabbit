@@ -27,7 +27,6 @@ export default function SearchBar() {
       try {
         // const res = await fetch(`/api/products?search=${query}`);
         const res = await api.get(`/product/filter?search=${query}`);
-        // console.log(res.data);
         setResults(res.data);
       } catch (err) {
         console.error("Search error:", err);

@@ -29,7 +29,6 @@ const BagPage = () => {
   const cart = useSelector(selectCart);
   const fullc = useSelector(selectCartProducts);
   const handleRmCart = (id) => {
-    console.log("id",id);
     dispatch(removeFromCart(id));
   };
    const handleupdateQuantity = (id,q) => {
@@ -38,7 +37,6 @@ const BagPage = () => {
   let total = 0;
   if (cart.length) {
     cart.forEach((p) => {
-      // console.log(p);
       total += p.price * p.quantity;
     });
   }
