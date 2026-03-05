@@ -1,7 +1,7 @@
 import NavBar from "../Components/NavBar";
 import Footer from "../Components/Footer";
 import SearchBar from "../Components/searchBar";
-import SalesChatbot from "../Components/salesChatBot";
+import SalesChatbot from "../Components/salesChatbot";
 
 
 const Layout = ({ children }) => {
