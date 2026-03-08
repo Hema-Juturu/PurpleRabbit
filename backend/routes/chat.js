@@ -1,55 +1,123 @@
 import express from "express";
 import axios from "axios";
+import Product from "../models/Product.js";
 
 const router = express.Router();
 
+const models = [
+  "openai/gpt-oss-120b:free",
+  "openai/gpt-oss-20b:free",
+  "meta-llama/llama-3.3-70b-instruct:free",
+  "meta-llama/llama-3.2-3b-instruct:free",
+  "nousresearch/hermes-3-llama-3.1-405b:free",
+];
+
 router.post("/", async (req, res) => {
-  const { message } = req.body;
-
-  if (!message) {
-    return res.status(400).json({ error: "Message is required" });
-  }
-
-  if (!process.env.OPENROUTER_API_KEY) {
-    return res.status(500).json({ error: "API key missing" });
-  }
-
   try {
-    const response = await axios.post(
-      "https://openrouter.ai/api/v1/chat/completions",
-      {
-        model: "nvidia/nemotron-nano-9b-v2",
-        max_tokens: 300,
-        temperature: 0.7,
-        messages: [
-          {
-            role: "system",
-            content: `
-You are a smart sales assistant for PurpleRabbit.
-PurpleRabbit is an e-commerce + rental platform.
-Help users decide whether to rent or buy.
-Be persuasive but friendly.
-Always suggest relevant products.
-End with a call to action.
-`,
-          },
-          { role: "user", content: message },
-        ],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-      },
-    );
+    const { message } = req.body;
 
-    res.json({
-      reply: response.data.choices[0].message.content,
+    if (!message || !message.trim()) {
+      return res.status(400).json({ error: "Message required" });
+    }
+
+    if (!process.env.OPENROUTER_API_KEY) {
+      return res.status(500).json({ error: "Missing API key" });
+    }
+
+    const cleanMessage = message.trim().toLowerCase();
+
+    const stopWords = ["need", "want", "for", "the", "with", "and", "please"];
+    const keywords = cleanMessage
+      .split(" ")
+      .filter((word) => word.length > 2 && !stopWords.includes(word));
+
+    let products = await Product.find({
+      $or: [
+        { name: { $regex: keywords.join("|"), $options: "i" } },
+        { category: { $regex: keywords.join("|"), $options: "i" } },
+        { description: { $regex: keywords.join("|"), $options: "i" } },
+      ],
+    }).limit(5);
+
+    if (!products.length) {
+      return res.json({
+        reply:
+          "Sorry, we don't currently have products matching that request on PurpleRabbit. Try searching for laptops, cameras, dresses, or gaming consoles.",
+        products: [],
+      });
+    }
+
+    const productList = products
+      .map(
+        (p) =>
+          `${p.name} | Rent: ₹${p.rentPrice || "N/A"}/day | Buy: ₹${p.price}`,
+      )
+      .join("\n");
+
+    const systemPrompt = `
+You are PurpleRabbit AI, a smart shopping assistant.
+
+PurpleRabbit is an e-commerce + rental platform.
+
+Available products:
+${productList}
+
+Your goals:
+- Help users decide whether to RENT or BUY
+- Recommend the best products from the list
+- Be friendly and persuasive
+- Keep answers short
+
+Rules:
+- Suggest 2-3 products maximum
+- If user needs short-term → recommend RENT
+- If long-term → recommend BUY
+- Always end with a friendly call to action.
+`;
+
+    // 🔁 Try AI models until one works
+    for (const model of models) {
+      try {
+        const response = await axios.post(
+          "https://openrouter.ai/api/v1/chat/completions",
+          {
+            model,
+            max_tokens: 250,
+            temperature: 0.7,
+            messages: [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: cleanMessage },
+            ],
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+            timeout: 10000,
+          },
+        );
+
+        const aiReply = response.data?.choices?.[0]?.message?.content?.trim();
+
+        if (!aiReply) {
+          continue;
+        }
+
+        return res.json({
+          reply: aiReply,
+          model,
+          products,
+        });
+      } catch (err) {}
+    }
+
+    res.status(500).json({
+      reply:
+        "Sorry, I'm having trouble generating a response right now. Please try again later.",
     });
   } catch (error) {
-    console.error(error.response?.data || error.message);
-    res.status(500).json({ error: "AI error" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 

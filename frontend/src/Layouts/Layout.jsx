@@ -1,7 +1,6 @@
 import NavBar from "../Components/NavBar";
 import Footer from "../Components/Footer";
 import SearchBar from "../Components/searchBar";
-// import SalesChatbot from "../Components/salesChatbot";
 import SalesChatbot from "../Components/SalesChatbot.jsx";
 
 

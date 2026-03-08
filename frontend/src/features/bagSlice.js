@@ -8,11 +8,14 @@ export const fetchCart = createAsyncThunk("products/fetchCart", async () => {
 
 export const addToCart = createAsyncThunk(
   "products/addToCart",
-  async ({ id, quantity = 1 }) => {
+  async ({ id, quantity = 1, mode = "buy",rentdays=1 }) => {
     const res = await api.post("/cart/add", {
       productId: id,
       quantity,
+      type:mode,
+      rentDuration:rentdays
     });
+
     return Array.isArray(res.data) ? res.data : null;
   },
 );
@@ -101,20 +104,22 @@ export const selectCartProducts = (state) => {
   const products = state.products.list || [];
   const cart = state.bag.cart || [];
 
-  // Force it to use the ID string as the key
   const cartMap = new Map(
     cart.map((c) => {
       const id = typeof c.product === "object" ? c.product._id : c.product;
-      return [id, c.quantity];
+      return [id, { quantity: c.quantity, type: c.type }];
     }),
   );
-
   return products
     .filter((p) => cartMap.has(p._id) || cartMap.has(p.id))
-    .map((p) => ({
-      ...p,
-      quantity: cartMap.get(p._id) || cartMap.get(p.id),
-    }));
+    .map((p) => {
+      const cartItem = cartMap.get(p._id) || cartMap.get(p.id);
+      return {
+        ...p,
+        quantity: cartItem?.quantity || 0,
+        type: cartItem?.type || "buy",
+      };
+    });
 };
 
 export const selectWishlistProducts = (state) => {

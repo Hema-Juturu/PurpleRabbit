@@ -19,6 +19,9 @@ const ProductDetails = () => {
   const product = list.find((p) => p._id === id || p.id == id);
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const[rentdays,setRentDays] = useState(1);
+  const [mode, setMode] = useState("buy");
+
   const user = useSelector(selectCurrentUser);
 
   const dispatch = useDispatch();
@@ -27,30 +30,44 @@ const ProductDetails = () => {
       dispatch(fetchProducts());
     }
   }, [product]);
+  
   const handleAddToCart = () => {
-    const id = product._id;
-    dispatch(addToCart({ id, quantity }));
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
-  };
+  const id = product._id;
+  if(mode == "rent"){
+      dispatch(addToCart({
+    id,
+    quantity,
+    mode,
+    rentdays
+  }));
+  }
+  else{
+    dispatch(addToCart({
+      id,
+      quantity,
+      mode
+    }));
+  }
+
+  setAdded(true);
+  setTimeout(() => setAdded(false), 2000);
+};
+
   const handleWishlist = async () => {
     await dispatch(toggleWishlist(product._id));
   };
   const wishlist = useSelector(selectWishlist);
-  // check if product is already in wishlist
   if (!product) {
     return (
       <h2 className="text-center mt-10 text-red-600">Product not found</h2>
     );
   }
-  // const inWishlist = wishlist.some((item) => item === product._id);
- let inWishlist=false;
-  wishlist.forEach(a => {
-    if(a === product._id){
-      inWishlist=true;
+  let inWishlist = false;
+  wishlist.forEach((a) => {
+    if (a === product._id) {
+      inWishlist = true;
     }
   });
-
 
   return (
     <div className="p-8 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -66,9 +83,42 @@ const ProductDetails = () => {
       {/* Details Section */}
       <div>
         <h1 className="text-3xl font-bold text-gray-300">{product.name}</h1>
-        <p className="text-2xl text-yellow-400 mt-2">{product.price}</p>
+        <div className="mt-2">
+          <p className="text-2xl text-yellow-400">Buy: ₹{product.price}</p>
+
+          {product.rentPrice && (
+            <p className="text-xl text-green-400">
+              Rent: ₹{product.rentPrice} / day
+            </p>
+          )}
+        </div>
         {product.offer && (
           <p className="text-rose-500 font-semibold">{product.offer}</p>
+        )}
+        {product.rentPrice && (
+          <div className="flex gap-4 mt-4">
+            <button
+              onClick={() => setMode("buy")}
+              className={`px-4 py-2 rounded-lg border ${
+                mode === "buy"
+                  ? "bg-yellow-500  "
+                  : "border-gray-400 text-gray-300"
+              }`}
+            >
+              Buy
+            </button>
+
+            <button
+              onClick={() => setMode("rent")}
+              className={`px-4 py-2 rounded-lg border ${
+                mode === "rent"
+                  ? "bg-green-600 text-white"
+                  : "border-gray-400 text-gray-300"
+              }`}
+            >
+              Rent
+            </button>
+          </div>
         )}
 
         <p className="mt-4 text-gray-300 leading-relaxed">
@@ -92,6 +142,24 @@ const ProductDetails = () => {
               >
                 +
               </button>
+              <span className="text-gray-300 text-xl">Quantity</span>
+            </div>
+            {/* rentdays selector */}
+              <div className={`flex items-center gap-2 mt-4 ${mode === "buy" ? "opacity-50 pointer-events-none" : ""}`}>
+              <button
+                className="px-3 py-2 mr-5 border-2 rounded text-gray-300 text-xl"
+                onClick={() => setRentDays(rentdays > 1 ? rentdays - 1 : 1)}
+              >
+                -
+              </button>
+              <span className="text-gray-300 text-2xl">{rentdays}</span>
+              <button
+                className="px-3 py-2 border-2 ml-5 rounded text-gray-300 text-xl"
+                onClick={() => setRentDays(rentdays + 1)}
+              >
+                +
+              </button>
+                <span className="text-gray-300 text-xl"> Days</span>
             </div>
             <div className="flex gap-4 mt-6 items-center">
               {/* Wishlist Button */}
@@ -99,7 +167,7 @@ const ProductDetails = () => {
                 onClick={handleWishlist}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-purple-600 border-purple-900 border-2 hover:border-gray-200"
               >
-                <Heart className={inWishlist ? "fill-red-400" : "" } />
+                <Heart className={inWishlist ? "fill-red-400" : ""} />
               </button>
 
               {/* Add to Bag Button */}

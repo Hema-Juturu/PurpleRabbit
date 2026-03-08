@@ -10,9 +10,11 @@ import {
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
-
+import SalesChatbot from "./SalesChatbot";
+import { useState } from "react";
 
 const Footer = () => {
+  const [chatOpen, setChatOpen] = useState(false);
   const user = useSelector(selectCurrentUser);
   return (
     <>
@@ -84,7 +86,7 @@ const Footer = () => {
               <User className="w-8 h-8 text-gray-300" />
             </Link>
           ) : (
-              <Link to="/login">
+            <Link to="/login">
               <User className="w-8 h-8 text-gray-300" />
             </Link>
           )}
@@ -94,10 +96,11 @@ const Footer = () => {
             <Home className="w-8 h-8 text-gray-300" />
           </Link>
         </button>
-        <button>
+        <button onClick={() => setChatOpen(true)}>
           <MessageCircleQuestionMark className="w-8 h-8 text-gray-300" />
         </button>
       </div>
+      <SalesChatbot isOpen={chatOpen} setIsOpen={setChatOpen} />
     </>
   );
 };

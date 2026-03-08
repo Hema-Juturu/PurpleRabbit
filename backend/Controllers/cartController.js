@@ -2,22 +2,31 @@ import User from "../models/User.js";
 
 export const addToCart = async (req, res) => {
   try {
-    const { productId, quantity = 1 } = req.body;
+    const { productId, quantity = 1 ,type="buy",rentDuration=1} = req.body;
     const user = await User.findById(req.user.id);
 
     const itemIndex = user.cart.findIndex(
       (item) => item.product.toString() === productId,
     );
-
-    if (itemIndex > -1) {
+    if (itemIndex > -1 && user.cart[itemIndex].type == type) {
       user.cart[itemIndex].quantity = quantity;
-
+      if (type === "rent") {
+        user.cart[itemIndex].rentDuration = rentDuration;
+      }
       user.markModified("cart");
-    } else {
+    } else if(type=="buy") {
       user.cart.push({
         product: productId,
         quantity,
-        type: "buy",
+        type,
+      });
+    }
+    else{
+       user.cart.push({
+        product: productId,
+        quantity,
+        type,
+        rentDuration,
       });
     }
 

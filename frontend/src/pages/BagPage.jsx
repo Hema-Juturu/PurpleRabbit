@@ -61,8 +61,8 @@ const BagPage = () => {
                   className="w-24 h-24 md:w-20 md:h-20 object-cover rounded"
                 />
                 <div className="flex-1">
-                  <h2 className="font-bold">{product?.name}</h2>
-                  <p className="text-purple-700">{product?.price}</p>
+                  <h1 className="font-bold text-2xl">{product?.name}</h1>
+                  <p className="text-green-300 text-xl">RS.{product.type == "buy"?product?.price+".00":product?.rentPrice+".00 / day"}</p>
                   {product.offer && (
                     <p className="text-red-500 text-sm">{product?.offer}</p>
                   )}
