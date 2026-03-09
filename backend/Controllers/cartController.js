@@ -45,10 +45,9 @@ export const getCart = async (req, res) => {
 
 export const updateCartItem = async (req, res) => {
   const { productId, quantity, rentDuration } = req.body;
-
   const user = await User.findById(req.user.id);
 
-  const item = user.cart.find((i) => i._id.toString() === productId);
+  const item = user.cart.find((i) => i.product.toString() === productId);
 
   if (!item) {
     return res.status(404).json({ message: "Item not found" });
