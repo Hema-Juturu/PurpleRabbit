@@ -1,18 +1,23 @@
+import { Outlet } from "react-router-dom";
 import NavBar from "../Components/NavBar";
 import Footer from "../Components/Footer";
 import SearchBar from "../Components/searchBar";
 import SalesChatbot from "../Components/SalesChatbot.jsx";
 
-
-const Layout = ({ children }) => {
+const Layout = () => {
   return (
     <div className="min-h-screen flex flex-col bg-purple-900">
-      <NavBar />  
+      <NavBar />
+
       <div className="p-8">
-      <SearchBar/>
+        <SearchBar />
       </div>
-      <main className="flex-grow">{children}</main>
-      <SalesChatbot/>
+
+      <main className="flex-grow">
+        <Outlet />
+      </main>
+
+      <SalesChatbot />
       <Footer />
     </div>
   );

@@ -8,21 +8,18 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice.js";
 import ResponseModal from "./ResponseModal.jsx";
 const NavBar = () => {
-  const [showLogin, setShowLogin] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [role, setRole] = useState("user");
   const [modalData, setModalData] = useState({
     title: "success",
     message: "",
     type: "success",
   });
-  const [search, setSearch] = useState("");
   const user = useSelector(selectCurrentUser);
   useEffect(() => {
-    if (user) {
-      setShowLogin(false);
-    }
-  }, [user]);
-
+    const r = localStorage.getItem("role") || "user";
+    setRole(r);
+  })
   return (
     <div className="flex items-start justify-center lg:mt-5">
       <ResponseModal
@@ -73,6 +70,10 @@ const NavBar = () => {
           <Link to="/home" className="hover:border-y-2 p-1  text-xl">
             Home
           </Link>
+          {role == "admin" && (<Link to="/admin" className="hover:border-y-2 p-1  text-xl">
+            Admin
+          </Link>)}
+
         </div>
 
         {/* Logo */}
@@ -101,7 +102,7 @@ const NavBar = () => {
               </div>
             ) : (
               <Link
-               to="/login"
+                to="/login"
                 className="flex items-center gap-2 text-gray-300 font-semibold"
               >
                 <LogIn className="w-5 h-5" />
@@ -122,6 +123,10 @@ const NavBar = () => {
             <Link to="/home">
               <span>Home</span>
             </Link>
+            {role == "admin" && (<Link to="/admin">
+              <span>Admin</span>
+            </Link>)}
+
           </div>
 
           {/* <div className="flex mt-3 px-2"> */}

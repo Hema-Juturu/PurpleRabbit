@@ -3,17 +3,21 @@ import api from "../axiosInstance";
 import ResponseModal from "../Components/ResponseModal";
 import { supabase } from "../FireBaseStorage/supabase";
 import LoadingSpinner from "../Components/loading";
+import { SquareX } from "lucide-react";
+import { X } from "lucide-react";
+import { Link } from "react-router-dom";
+
 const AddNewProductForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     price: 0,
     rentPrice: 0,
-    category: "",
+    category: "women",
     condition: "new",
     images: [""],
-    isAvailableForRent: true,
-    isAvailableForSale: true,
+    isAvailableForRent: false,
+    isAvailableForSale: false,
     stock: 1,
     location: {
       city: "",
@@ -113,7 +117,7 @@ const AddNewProductForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/product", formData);
+      await api.post("/product", formData);
       setModalData({
         title: "Success! 🎉",
         message: "The product was created successfully.",
@@ -141,7 +145,8 @@ const AddNewProductForm = () => {
     "w-full p-3 border border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-150";
   const labelClass = "block text-sm font-medium text-gray-700 mb-1";
   const buttonPrimaryClass =
-    "w-full py-3 px-4 bg-lime-500 lg:lg:hover:bg-purple-700 text-white font-semibold rounded-lg shadow-md transition duration-200 ease-in-out mt-6";
+    "py-3 px-4 bg-lime-500 lg:lg:hover:bg-purple-700 text-white font-semibold rounded-lg shadow-md transition duration-200 ease-in-out mt-6";
+  const closeButtonClass = "py-3 px-4 bg-red-500 lg:lg:hover:bg-red-700 text-white font-semibold rounded-lg shadow-md transition duration-200 ease-in-out mt-6";
   const buttonSecondaryClass =
     "py-2 px-4 border border-purple-500 text-purple-600 lg:hover:bg-purple-50 rounded-lg font-medium transition duration-150";
   const formGroupClass = "mb-4";
@@ -155,6 +160,11 @@ const AddNewProductForm = () => {
         onSubmit={handleSubmit}
         className="max-w-3xl mx-auto bg-gray-100 p-8 rounded-2xl shadow-2xl border border-gray-200"
       >
+        <Link to="/admin">
+          <div className="flex justify-end">
+            <X className="text-red-500" size={30} />
+          </div>
+        </Link>
         <h2 className="text-3xl text-center font-thin mb-8 border-b-2 border-purple-200 pb-3">
           Product Details
         </h2>
@@ -379,12 +389,12 @@ const AddNewProductForm = () => {
                     className={inputClass}
                   />
                   <button
-                    className="text-red-600 border-2 border-red-600 bg-white px-3 rounded-lg"
+                    className="text-red-600"
                     onClick={() => {
                       hanndleRemoveImg(index);
                     }}
                   >
-                    X
+                    <SquareX size={30} />
                   </button>
                 </div>
               </div>
@@ -395,13 +405,19 @@ const AddNewProductForm = () => {
             onClick={addImageField}
             className={buttonSecondaryClass + " mt-4"}
           >
-            + Add another image 
+            + Add another image
           </button>
         </fieldset>
-
-        <button type="submit" className={buttonPrimaryClass}>
-          ADD PRODUCT
-        </button>
+        <div className="flex justify-between px-32">
+          <Link to="/admin">
+            <button type="submit" className={closeButtonClass}>
+              close
+            </button>
+          </Link>
+          <button type="submit" className={buttonPrimaryClass}>
+            ADD PRODUCT
+          </button>
+        </div>
       </form>
       {isLoading && (
         <div className="justify-center items-center">

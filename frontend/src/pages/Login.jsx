@@ -4,6 +4,9 @@ import { useDispatch } from "react-redux";
 import { loginUser, registerUser } from "../features/auth/authSlice.js";
 import ResponseModal from "../Components/ResponseModal.jsx";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
+
+
 const Login = () => {
   const navigate = useNavigate()
   const [isRegister, setIsRegister] = useState(false);
@@ -68,8 +71,15 @@ const Login = () => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
-      <div className="bg-black/40 backdrop-blur-lg p-6 rounded-xl w-96 shadow-lg relative">
+    <div className="fixed inset-0 bg-purple-900 flex  flex-col justify-items-center justify-center items-center z-50 ">
+      <div className="flex justify-center items-center">
+        <img
+          src={logo}
+          alt="Logo"
+          className="w-1/2 h-auto object-contain"
+        />
+      </div>
+      <div className="bg-black/40 backdrop-blur-lg p-6 rounded-xl w-96 shadow-lg">
         <button
           type="button"
           onClick={handleClose}

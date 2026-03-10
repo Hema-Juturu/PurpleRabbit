@@ -17,35 +17,40 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "./features/auth/authSlice";
 import ProductsPage from "./pages/ProductsPage";
 import Login from "./pages/Login";
+import { Admin } from "./pages/Admin";
 
 function AppRoutes() {
   const dispatch = useDispatch();
 
   const user = useSelector(selectCurrentUser);
   useEffect(() => {
-    
-      dispatch(fetchProducts());  
-    
+
+    dispatch(fetchProducts());
+
   }, [dispatch]);
   return (
     <>
       <BrowserRouter>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<LandingPage />}/>
-              <Route path="women" element={<Women />} />
-              <Route path="kids" element={<Kids />} />
-              <Route path="men" element={<Men />} />
-              <Route path="home" element={<Home />} />
-              <Route path="/product/:id" element={<ProductDetails />} />
-              <Route path="/wishlist" element={<WishlistPage />} />
-              <Route path="/bag" element={<BagPage />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/addProduct" element={<AddNewProductForm />} />
-              <Route path="/products" element={<ProductsPage />} />
-              <Route path="/login" element={<Login/>}/>
-            </Routes>
-          </Layout>
+        <Routes>
+
+          <Route element={<Layout />}>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="women" element={<Women />} />
+            <Route path="kids" element={<Kids />} />
+            <Route path="men" element={<Men />} />
+            <Route path="home" element={<Home />} />
+            <Route path="product/:id" element={<ProductDetails />} />
+            <Route path="wishlist" element={<WishlistPage />} />
+            <Route path="bag" element={<BagPage />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="addProduct" element={<AddNewProductForm />} />
+            <Route path="products" element={<ProductsPage />} />
+            <Route path="admin" element={<Admin/>}/>
+          </Route>
+
+          <Route path="/login" element={<Login />} />
+
+        </Routes>
       </BrowserRouter>
     </>
   );

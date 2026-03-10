@@ -1,8 +1,7 @@
 import { useParams } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 import { Heart, ShoppingBag } from "lucide-react";
-import { ProductContext } from "../context/product-context";
 
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -19,7 +18,7 @@ const ProductDetails = () => {
   const product = list.find((p) => p._id === id || p.id == id);
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const[rentdays,setRentDays] = useState(1);
+  const [rentdays, setRentDays] = useState(1);
   const [mode, setMode] = useState("buy");
 
   const user = useSelector(selectCurrentUser);
@@ -30,28 +29,28 @@ const ProductDetails = () => {
       dispatch(fetchProducts());
     }
   }, [product]);
-  
-  const handleAddToCart = () => {
-  const id = product._id;
-  if(mode == "rent"){
-      dispatch(addToCart({
-    id,
-    quantity,
-    mode,
-    rentdays
-  }));
-  }
-  else{
-    dispatch(addToCart({
-      id,
-      quantity,
-      mode
-    }));
-  }
 
-  setAdded(true);
-  setTimeout(() => setAdded(false), 2000);
-};
+  const handleAddToCart = () => {
+    const id = product._id;
+    if (mode == "rent") {
+      dispatch(addToCart({
+        id,
+        quantity,
+        mode,
+        rentdays
+      }));
+    }
+    else {
+      dispatch(addToCart({
+        id,
+        quantity,
+        mode
+      }));
+    }
+
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
 
   const handleWishlist = async () => {
     await dispatch(toggleWishlist(product._id));
@@ -68,7 +67,6 @@ const ProductDetails = () => {
       inWishlist = true;
     }
   });
-
   return (
     <div className="p-8 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
       {/* Image Section */}
@@ -86,7 +84,7 @@ const ProductDetails = () => {
         <div className="mt-2">
           <p className="text-2xl text-yellow-400">Buy: ₹{product.price}</p>
 
-          {product.rentPrice && (
+          {product.isAvailableForRent && (
             <p className="text-xl text-green-400">
               Rent: ₹{product.rentPrice} / day
             </p>
@@ -95,31 +93,29 @@ const ProductDetails = () => {
         {product.offer && (
           <p className="text-rose-500 font-semibold">{product.offer}</p>
         )}
-        {product.rentPrice && (
-          <div className="flex gap-4 mt-4">
-            <button
-              onClick={() => setMode("buy")}
-              className={`px-4 py-2 rounded-lg border ${
-                mode === "buy"
-                  ? "bg-yellow-500  "
-                  : "border-gray-400 text-gray-300"
-              }`}
-            >
-              Buy
-            </button>
 
-            <button
-              onClick={() => setMode("rent")}
-              className={`px-4 py-2 rounded-lg border ${
-                mode === "rent"
-                  ? "bg-green-600 text-white"
-                  : "border-gray-400 text-gray-300"
+        <div className="flex gap-4 mt-4">
+          <button
+            onClick={() => setMode("buy")}
+            className={`px-4 py-2 rounded-lg border ${mode === "buy"
+              ? "bg-yellow-500  "
+              : "border-gray-400 text-gray-300"
               }`}
-            >
-              Rent
-            </button>
-          </div>
-        )}
+          >
+            Buy
+          </button>
+
+          {product.isAvailableForRent && (<button
+            onClick={() => setMode("rent")}
+            className={`px-4 py-2 rounded-lg border ${mode === "rent"
+              ? "bg-green-600 text-white"
+              : "border-gray-400 text-gray-300"
+              }`}
+          >
+            Rent
+          </button>)}
+        </div>
+
 
         <p className="mt-4 text-gray-300 leading-relaxed">
           {product.description || "No description available."}
@@ -145,7 +141,7 @@ const ProductDetails = () => {
               <span className="text-gray-300 text-xl">Quantity</span>
             </div>
             {/* rentdays selector */}
-              <div className={`flex items-center gap-2 mt-4 ${mode === "buy" ? "opacity-50 pointer-events-none" : ""}`}>
+            {product.isAvailableForRent && (<div className={`flex items-center gap-2 mt-4 ${mode === "buy" ? "opacity-50 pointer-events-none" : ""}`}>
               <button
                 className="px-3 py-2 mr-5 border-2 rounded text-gray-300 text-xl"
                 onClick={() => setRentDays(rentdays > 1 ? rentdays - 1 : 1)}
@@ -159,8 +155,9 @@ const ProductDetails = () => {
               >
                 +
               </button>
-                <span className="text-gray-300 text-xl"> Days</span>
-            </div>
+              <span className="text-gray-300 text-xl"> Days</span>
+            </div>)}
+
             <div className="flex gap-4 mt-6 items-center">
               {/* Wishlist Button */}
               <button
@@ -172,11 +169,10 @@ const ProductDetails = () => {
 
               {/* Add to Bag Button */}
               <button
-                className={`px-4 py-2 rounded-lg ${
-                  added
-                    ? "bg-green-500 text-white"
-                    : "bg-purple-600 text-white hover:bg-purple-700"
-                } shadow flex items-center gap-2`}
+                className={`px-4 py-2 rounded-lg ${added
+                  ? "bg-green-500 text-white"
+                  : "bg-purple-600 text-white hover:bg-purple-700"
+                  } shadow flex items-center gap-2`}
                 onClick={handleAddToCart}
               >
                 <ShoppingBag />
