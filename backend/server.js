@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import http from "http";
 import path from "path";
-
+import process from "process";
 //import routes
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/userRoutes.js";
