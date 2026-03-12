@@ -11,6 +11,7 @@ import { selectCartProducts } from "../features/bagSlice";
 import { removeFromCart } from "../features/bagSlice";
 import { toggleWishlist } from "../features/bagSlice";
 import { selectWishlist } from "../features/bagSlice";
+import { updateQuantity } from "../features/bagSlice";
 
 const BagPage = () => {
   const wishlist = useSelector(selectWishlist);
@@ -31,8 +32,8 @@ const BagPage = () => {
   const handleRmCart = (id) => {
     dispatch(removeFromCart(id));
   };
-   const handleupdateQuantity = (id,q) => {
-    dispatch(updateQuantity({id,q}));
+   const handleupdateQuantity = (productId,quantity) => {
+    dispatch(updateQuantity({productId,quantity}));
   };
   let total = 0;
   if (cart.length) {
