@@ -51,7 +51,7 @@ const SalesChatbot = ({ isOpen, setIsOpen }) => {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-20 right-6 w-[calc(60vw)] overflow-y-auto  max-h-[calc(100vh-22vh)] bg-white shadow-2xl rounded-2xl flex flex-col z-50 ">
+        <div className="fixed bottom-20 right-6 max-w-[calc(60vw)] overflow-y-auto  max-h-[calc(100vh-22vh)] bg-white shadow-2xl rounded-2xl flex flex-col z-50 ">
           <div className="bg-purple-600 text-white p-3 font-semibold flex justify-between">
             <span>Chat Buddy 🐰</span>
             <span onClick={() => setIsOpen(!isOpen)}>
