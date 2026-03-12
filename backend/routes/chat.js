@@ -17,14 +17,14 @@ const models = [
 
 router.post("/", async (req, res) => {
   try {
-    const { message } = req.body;
+    const {message} = req.body;
 
     if (!message || !message.trim()) {
-      return res.status(400).json({ error: "Message required" });
+      return res.status(400).json({error: "Message required"});
     }
 
     if (!process.env.OPENROUTER_API_KEY) {
-      return res.status(500).json({ error: "Missing API key" });
+      return res.status(500).json({error: "Missing API key"});
     }
 
     const cleanMessage = message.trim().toLowerCase();
@@ -92,9 +92,9 @@ router.post("/", async (req, res) => {
 
     let products = await Product.find({
       $or: [
-        { name: { $regex: keywords.join("|"), $options: "i" } },
-        { category: { $regex: keywords.join("|"), $options: "i" } },
-        { description: { $regex: keywords.join("|"), $options: "i" } },
+        {name: {$regex: keywords.join("|"), $options: "i"}},
+        {category: {$regex: keywords.join("|"), $options: "i"}},
+        {description: {$regex: keywords.join("|"), $options: "i"}},
       ],
     }).limit(5);
 
@@ -116,7 +116,7 @@ router.post("/", async (req, res) => {
     const productList = products
       .map(
         (p) =>
-          `${p.name} | Rent: ₹${p.rentPrice || "N/A"}/day | Buy: ₹${p.price} | URL: https://purplerabbit.com/product/${p._id}`,
+          `${p.name} | Rent: ₹${p.rentPrice || "N/A"}/day | Buy: ₹${p.price} }`,
       )
       .join("\n");
     const systemPrompt = `
@@ -150,8 +150,8 @@ Rules:
             max_tokens: 1000,
             temperature: 0.7,
             messages: [
-              { role: "system", content: systemPrompt },
-              { role: "user", content: cleanMessage },
+              {role: "system", content: systemPrompt},
+              {role: "user", content: cleanMessage},
             ],
           },
           {
@@ -165,14 +165,20 @@ Rules:
 
         const aiReply = response.data?.choices?.[0]?.message?.content?.trim();
 
+        
         if (!aiReply) {
           continue;
         }
+        
+        const productsWithUrl = products.map((p) => ({
+          name:p.name,
+          url: `/product/${p._id}`,
+        }));
 
         return res.json({
           reply: aiReply,
           model,
-          products,
+          products: productsWithUrl,
         });
       } catch (err) {}
     }
@@ -183,7 +189,7 @@ Rules:
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error });
+    res.status(500).json({error: error});
   }
 });
 

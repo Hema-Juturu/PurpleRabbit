@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MessageCircle, X } from "lucide-react";
 import api from "../axiosInstance";
-import { useEffect,useRef } from "react";
+import { useEffect, useRef } from "react";
 
 const SalesChatbot = ({ isOpen, setIsOpen }) => {
   const [messages, setMessages] = useState([]);
@@ -26,8 +26,8 @@ const SalesChatbot = ({ isOpen, setIsOpen }) => {
       const botMessage = {
         role: "bot",
         text: res.data.reply,
+        prods: res.data.products || []
       };
-
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error("Chat error:", error);
@@ -51,25 +51,33 @@ const SalesChatbot = ({ isOpen, setIsOpen }) => {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-20 right-6 w-[calc(60vw)] overflow-y-auto h-[calc(100vh-22vh)] bg-white shadow-2xl rounded-2xl flex flex-col z-50 ">
+        <div className="fixed bottom-20 right-6 w-[calc(60vw)] overflow-y-auto  max-h-[calc(100vh-22vh)] bg-white shadow-2xl rounded-2xl flex flex-col z-50 ">
           <div className="bg-purple-600 text-white p-3 font-semibold flex justify-between">
             <span>Chat Buddy 🐰</span>
             <span onClick={() => setIsOpen(!isOpen)}>
               <X size={20} />{" "}
             </span>
           </div>
-
           <div className="flex-1 p-3 overflow-y-auto space-y-2 text-sm">
             {messages.map((msg, index) => (
               <div
                 key={index}
-                className={`p-2 rounded-lg max-w-[80%] ${
-                  msg.role === "user"
-                    ? "bg-purple-100 self-end ml-auto w-fit"
-                    : "bg-gray-100 w-fit"
-                }`}
+                className={`p-2 rounded-lg max-w-[80%] ${msg.role === "user"
+                  ? "bg-purple-100 self-end ml-auto w-fit"
+                  : "bg-gray-100 w-fit"
+                  }`}
               >
                 {msg.text}
+
+                {msg.prods?.map((p, i) => (
+                  <a
+                    key={i}
+                    href={p.url}
+                    className="block text-purple-600 underline mt-1"
+                  >
+                    {p.name || "View Product"}
+                  </a>
+                ))}
               </div>
             ))}
 
