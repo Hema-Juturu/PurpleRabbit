@@ -1,20 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { MessageCircle, X } from "lucide-react";
 import api from "../axiosInstance";
-import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SalesChatbot = ({ isOpen, setIsOpen }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+
   const messagesEndRef = useRef(null);
+  const navigate = useNavigate();
 
   const sendMessage = async () => {
     if (!input.trim()) return;
 
     const userMessage = { role: "user", text: input };
-
     setMessages((prev) => [...prev, userMessage]);
+
     setInput("");
     setLoading(true);
 
@@ -26,8 +28,9 @@ const SalesChatbot = ({ isOpen, setIsOpen }) => {
       const botMessage = {
         role: "bot",
         text: res.data.reply,
-        prods: res.data.products || []
+        prods: res.data.products || [],
       };
+
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error("Chat error:", error);
@@ -35,58 +38,67 @@ const SalesChatbot = ({ isOpen, setIsOpen }) => {
 
     setLoading(false);
   };
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
+
+  const openProductsPage = (products) => {
+    navigate("/chat-results", {
+      state: { products },
+    });
+  };
 
   return (
     <>
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="hidden lg:flex fixed bottom-6 right-6  bg-purple-600 text-white p-4 rounded-full shadow-lg overflow-hidden hover:bg-purple-700 transition"
+        className="hidden lg:flex fixed bottom-6 right-6 bg-purple-600 text-white p-4 rounded-full shadow-lg hover:bg-purple-700"
       >
         <MessageCircle size={20} />
       </button>
 
-      {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-20 right-6 max-w-[calc(60vw)] overflow-y-auto  max-h-[calc(100vh-22vh)] bg-white shadow-2xl rounded-2xl flex flex-col z-50 ">
+        <div className="fixed bottom-20 right-6 max-w-[60vw] max-h-[70vh] bg-white shadow-2xl rounded-2xl flex flex-col z-50">
+          
           <div className="bg-purple-600 text-white p-3 font-semibold flex justify-between">
             <span>Chat Buddy 🐰</span>
-            <span onClick={() => setIsOpen(!isOpen)}>
-              <X size={20} />{" "}
-            </span>
+            <X size={20} onClick={() => setIsOpen(false)} />
           </div>
+
+          {/* Messages */}
           <div className="flex-1 p-3 overflow-y-auto space-y-2 text-sm">
             {messages.map((msg, index) => (
               <div
                 key={index}
-                className={`p-2 rounded-lg max-w-[80%] ${msg.role === "user"
-                  ? "bg-purple-100 self-end ml-auto w-fit"
-                  : "bg-gray-100 w-fit"
-                  }`}
+                className={`p-2 rounded-lg max-w-[80%] ${
+                  msg.role === "user"
+                    ? "bg-purple-100 ml-auto w-fit"
+                    : "bg-gray-100 w-fit"
+                }`}
               >
                 {msg.text}
 
-                {msg.prods?.map((p, i) => (
-                  <a
-                    key={i}
-                    href={p.url}
-                    className="block text-purple-600 underline mt-1"
+                {msg.prods?.length > 0 && (
+                  <button
+                    onClick={() => openProductsPage(msg.prods)}
+                    className="block mt-2 text-purple-600 underline"
                   >
-                    {p.name || "View Product"}
-                  </a>
-                ))}
+                    View {msg.prods.length} Products
+                  </button>
+                )}
               </div>
             ))}
 
             {loading && (
               <div className="bg-gray-100 p-2 rounded-lg w-fit">Typing...</div>
             )}
+
             <div ref={messagesEndRef} />
           </div>
 
+          {/* Input */}
           <div className="p-2 border-t flex gap-2">
             <input
               value={input}
@@ -95,6 +107,7 @@ const SalesChatbot = ({ isOpen, setIsOpen }) => {
               className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             />
+
             <button
               onClick={sendMessage}
               className="bg-purple-600 text-white px-3 rounded-lg hover:bg-purple-700"

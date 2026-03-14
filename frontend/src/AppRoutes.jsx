@@ -18,21 +18,19 @@ import { selectCurrentUser } from "./features/auth/authSlice";
 import ProductsPage from "./pages/ProductsPage";
 import Login from "./pages/Login";
 import { Admin } from "./pages/Admin";
+import ChatResults from "./pages/ChatResults";
 
 function AppRoutes() {
   const dispatch = useDispatch();
 
   const user = useSelector(selectCurrentUser);
   useEffect(() => {
-
     dispatch(fetchProducts());
-
   }, [dispatch]);
   return (
     <>
       <BrowserRouter>
         <Routes>
-
           <Route element={<Layout />}>
             <Route path="/" element={<LandingPage />} />
             <Route path="women" element={<Women />} />
@@ -45,11 +43,11 @@ function AppRoutes() {
             <Route path="profile" element={<Profile />} />
             <Route path="addProduct" element={<AddNewProductForm />} />
             <Route path="products" element={<ProductsPage />} />
-            <Route path="admin" element={<Admin/>}/>
+            <Route path="admin" element={<Admin />} />
+            <Route path="/chat-results" element={<ChatResults />} />
           </Route>
 
           <Route path="/login" element={<Login />} />
-
         </Routes>
       </BrowserRouter>
     </>
