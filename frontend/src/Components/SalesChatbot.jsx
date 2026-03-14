@@ -2,14 +2,43 @@ import { useState, useEffect, useRef } from "react";
 import { MessageCircle, X } from "lucide-react";
 import api from "../axiosInstance";
 import { useNavigate } from "react-router-dom";
+import {
+  selectCurrentUser,
+  selectCurrentUserId,
+} from "../features/auth/authSlice";
+import { useSelector } from "react-redux";
 
 const SalesChatbot = ({ isOpen, setIsOpen }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const userId = localStorage.getItem("userId");
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
+
+  /* ---------------- LOAD CHAT HISTORY ---------------- */
+
+  useEffect(() => {
+    const loadChats = async () => {
+      try {
+        const res = await api.get(`/chat/${userId}`);
+
+        const formatted = res.data.map((c) => ({
+          role: c.role === "assistant" ? "bot" : "user",
+          text: c.message,
+          prods: c.products,
+        }));
+        setMessages(formatted);
+      } catch (err) {
+        console.error("Failed to load chats", err);
+      }
+    };
+
+    if (userId && isOpen) loadChats();
+  }, [userId, isOpen]);
+
+  /* ---------------- SEND MESSAGE ---------------- */
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -21,6 +50,14 @@ const SalesChatbot = ({ isOpen, setIsOpen }) => {
     setLoading(true);
 
     try {
+      /* Save USER message */
+      await api.post("/chat/save", {
+        userId,
+        role: "user",
+        message: input,
+      });
+
+      /* Call AI */
       const res = await api.post("/chat", {
         message: input,
       });
@@ -32,12 +69,22 @@ const SalesChatbot = ({ isOpen, setIsOpen }) => {
       };
 
       setMessages((prev) => [...prev, botMessage]);
+
+      /* Save BOT message */
+      await api.post("/chat/save", {
+        userId,
+        role: "assistant",
+        message: res.data.reply,
+        products: res.data.products || [],
+      });
     } catch (error) {
       console.error("Chat error:", error);
     }
 
     setLoading(false);
   };
+
+  /* ---------------- AUTO SCROLL ---------------- */
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -48,7 +95,10 @@ const SalesChatbot = ({ isOpen, setIsOpen }) => {
       state: { products },
     });
   };
-
+  const user = useSelector(selectCurrentUser);
+  if (!user) {
+    navigate("/login");
+  }
   return (
     <>
       {/* Floating Button */}
@@ -61,7 +111,6 @@ const SalesChatbot = ({ isOpen, setIsOpen }) => {
 
       {isOpen && (
         <div className="fixed bottom-20 right-6 max-w-[60vw] max-h-[70vh] bg-white shadow-2xl rounded-2xl flex flex-col z-50">
-          
           <div className="bg-purple-600 text-white p-3 font-semibold flex justify-between">
             <span>Chat Buddy 🐰</span>
             <X size={20} onClick={() => setIsOpen(false)} />

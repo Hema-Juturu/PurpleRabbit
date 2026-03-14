@@ -3,6 +3,8 @@ import NavBar from "../Components/NavBar";
 import Footer from "../Components/Footer";
 import SearchBar from "../Components/searchBar";
 import SalesChatbot from "../Components/SalesChatbot.jsx";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../features/auth/authSlice.js";
 
 const Layout = () => {
   return (
@@ -16,7 +18,6 @@ const Layout = () => {
       <main className="flex-grow">
         <Outlet />
       </main>
-
       <SalesChatbot />
       <Footer />
     </div>

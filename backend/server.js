@@ -11,7 +11,7 @@ import userRoutes from "./routes/userRoutes.js";
 import productRoute from "./routes/product.js";
 import cartRoute from "./routes/cart.js";
 import wishlistRoute from "./routes/wishlist.js"
-import chatRoute from "./routes/chat.js";
+import chatRoute from "./routes/chat.js"; 
 
 dotenv.config();
 const app = express();

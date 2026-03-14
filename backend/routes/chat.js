@@ -2,6 +2,9 @@ import express from "express";
 import axios from "axios";
 import Product from "../models/Product.js";
 import process from "process";
+import { saveChat,getChatHistory,deleteChats } from "../Controllers/chatController.js";
+
+
 const router = express.Router();
 
 const models = [
@@ -172,15 +175,15 @@ Rules:
       } catch (err) {
       }
     }
-    // console.log(res);
     res.status(500).json({
       reply:
         "Sorry, I'm having trouble generating a response right now. Please try again later.",
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: error });
   }
 });
-
+router.post("/save", saveChat);
+router.get("/:userId", getChatHistory);
+router.delete("/:userId", deleteChats);
 export default router;

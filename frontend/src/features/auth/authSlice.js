@@ -61,8 +61,10 @@ export const authSlice = createSlice({
       const { token } = action.payload;
       state.token = token;
       state.role = action.payload.user.role;
+      state.userId=action.payload.user._id;
       localStorage.setItem("role", action.payload.user.role);
       localStorage.setItem("token", token);
+      localStorage.setItem("userId",action.payload.user._id );
     };
 
     const handleAuthPending = (state) => {
@@ -103,6 +105,7 @@ export const authSlice = createSlice({
 });
 
 export const selectCurrentUser = (state) => state.auth.token;
+export const selectCurrentUserId = (state) => state.auth.userId;
 export const selectUserRole = (state) => state.auth.role;
 export const selectIsLoading = (state) => state.auth.isLoading;
 export const selectAuthError = (state) => state.auth.error;

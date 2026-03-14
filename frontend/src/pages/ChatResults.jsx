@@ -1,18 +1,17 @@
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectProductById } from "../features/auth/productSlice";
+import ProductCard from "../Components/ProductCard";
 
 const ChatResults = () => {
   const location = useLocation();
 
   const productIds = location.state?.products || [];
-    console.log(productIds)
   const products = useSelector((state) =>
     productIds
       .map((id) => selectProductById(state, id))
       .filter(Boolean)
   );
-  console.log(products)
   return (
     <div className="p-6">
       <h1 className="text-2xl font-semibold mb-6">

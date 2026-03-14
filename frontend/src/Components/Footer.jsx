@@ -96,9 +96,15 @@ const Footer = () => {
             <Home className="w-8 h-8 text-gray-300" />
           </Link>
         </button>
-        <button onClick={() => setChatOpen(true)}>
-          <MessageCircleQuestionMark className="w-8 h-8 text-gray-300" />
-        </button>
+        {user ? (
+          <button onClick={() => setChatOpen(true)}>
+            <MessageCircleQuestionMark className="w-8 h-8 text-gray-300" />
+          </button>
+        ) : (
+          <Link to="/login">
+            <MessageCircleQuestionMark className="w-8 h-8 text-gray-300" />
+          </Link>
+        )}
       </div>
       <SalesChatbot isOpen={chatOpen} setIsOpen={setChatOpen} />
     </>

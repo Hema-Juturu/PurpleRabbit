@@ -15,7 +15,6 @@ export const Admin = () => {
                 setMyProds(res.data);
             }
             catch (err) {
-                console.log(err);
             }
 
         })();
@@ -28,7 +27,6 @@ export const Admin = () => {
             setMyProds((prev) => prev.filter((product) => product._id !== id));
         }
         catch(err){
-            console.log(err);
         }
     }
 
