@@ -60,7 +60,7 @@ const callAI = async (systemPrompt, userMessage) => {
         "https://openrouter.ai/api/v1/chat/completions",
         {
           model,
-          max_tokens: 200,
+          max_tokens: 500,
           temperature: 0.7,
           messages: [
             { role: "system", content: systemPrompt },
