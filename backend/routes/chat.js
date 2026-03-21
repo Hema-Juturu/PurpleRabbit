@@ -2,11 +2,7 @@ import express from "express";
 import axios from "axios";
 import Product from "../models/Product.js";
 import process from "process";
-import {
-  saveChat,
-  getChatHistory,
-  deleteChats,
-} from "../Controllers/chatController.js";
+import { saveChat, getChatHistory, deleteChats } from "../Controllers/chatController.js";
 import { removeStopwords, eng } from "stopword";
 
 const router = express.Router();
@@ -17,42 +13,9 @@ const models = [
   "google/gemma-3-27b-it:free",
   "mistralai/mistral-7b-instruct:free",
   "qwen/qwen3-235b-a22b:free",
-  "stepfun/step-3.5-flash:free"
+  "stepfun/step-3.5-flash:free",
 ];
 
-const intentWords = [
-  "looking",
-  "searching",
-  "find",
-  "show",
-  "give",
-  "get",
-  "need",
-  "want",
-  "please",
-  "rent",
-  "buy",
-];
-const customStopwords = [...eng, ...intentWords];
-
-const generalQuestions = [
-  "what can you do",
-  "how does this work",
-  "what do you sell",
-  "what is purplerabbit",
-  "help",
-  "what are your categories",
-  "what do you offer",
-  "tell me about yourself",
-  "who are you",
-  "how do i",
-  "how does",
-  "what is",
-  "explain",
-  "difference between",
-];
-
-// ✅ Helper: call AI with any prompt
 const callAI = async (systemPrompt, userMessage) => {
   for (const model of models) {
     try {
@@ -65,7 +28,7 @@ const callAI = async (systemPrompt, userMessage) => {
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: userMessage },
-          ],
+          ] ,
         },
         {
           headers: {
@@ -73,7 +36,7 @@ const callAI = async (systemPrompt, userMessage) => {
             "Content-Type": "application/json",
           },
           timeout: 10000,
-        },
+        }
       );
 
       const aiReply = response.data?.choices?.[0]?.message?.content?.trim();
@@ -81,16 +44,33 @@ const callAI = async (systemPrompt, userMessage) => {
         console.warn(`Model ${model} returned empty reply, trying next...`);
         continue;
       }
-
       return { reply: aiReply, model };
     } catch (modelError) {
       const status = modelError.response?.status;
-      const reason =
-        modelError.response?.data?.error?.message || modelError.message;
+      const reason = modelError.response?.data?.error?.message || modelError.message;
       console.warn(`Model ${model} failed [${status || "timeout"}]: ${reason}`);
+      await new Promise((r) => setTimeout(r, 300));
     }
   }
-  return null; // all models failed
+  return null;
+};
+
+const classifyIntent = async (message) => {
+  const result = await callAI(
+    `You are an intent classifier for a shopping chatbot called PurpleRabbit.
+Classify the user message into exactly ONE of these labels:
+- greeting       → hi, hello, hey, good morning, etc.
+- general_question → questions about how the platform works, categories, about PurpleRabbit
+- product_search → user wants to find or browse a product
+- rent_intent    → user explicitly wants to rent something (mentions "rent", "for a day", "for an event", "wedding", "occasion")
+- buy_intent     → user explicitly wants to buy/purchase/keep something
+
+Reply with ONLY the label. No punctuation. No explanation.`,
+    message
+  );
+  const label = result?.reply?.trim().toLowerCase();
+  const valid = ["greeting", "general_question", "product_search", "rent_intent", "buy_intent"];
+  return valid.includes(label) ? label : "product_search";
 };
 
 router.post("/", async (req, res) => {
@@ -102,29 +82,22 @@ router.post("/", async (req, res) => {
     }
 
     if (!process.env.OPENROUTER_API_KEY) {
-      return res
-        .status(500)
-        .json({ error: "Server misconfiguration: missing API key" });
+      return res.status(500).json({ error: "Server misconfiguration: missing API key" });
     }
 
-    const cleanMessage = message.trim().toLowerCase();
+    const cleanMessage = message.trim().toLowerCase().slice(0, 500);
 
-    // ✅ Greeting handler (no AI needed)
-    const greetings = ["hi", "hello", "hey", "good morning", "good evening"];
-    if (greetings.includes(cleanMessage)) {
+    const intent = await classifyIntent(cleanMessage);
+    console.log(`Intent classified as: ${intent}`);
+
+    if (intent === "greeting") {
       return res.json({
-        reply:
-          "Hello 👋 I'm PurpleRabbit AI. I can help you find products to buy or rent. What are you looking for today?",
+        reply: "Hello! I'm PurpleRabbit AI. I can help you find products to buy or rent. What are you looking for today?",
         products: [],
       });
     }
 
-    // ✅ General question → AI answers dynamically (no DB fetch)
-    const isGeneralQuestion = generalQuestions.some((q) =>
-      cleanMessage.includes(q),
-    );
-
-    if (isGeneralQuestion) {
+    if (intent === "general_question") {
       const generalSystemPrompt = `
 You are PurpleRabbit AI, a smart and friendly shopping assistant for PurpleRabbit.
 
@@ -141,33 +114,28 @@ Your job:
 - Always end by encouraging them to search for a product
 - Never give the same generic reply — tailor your response to what they actually asked
 `;
-
       const result = await callAI(generalSystemPrompt, cleanMessage);
-
       if (!result) {
-        return res.status(503).json({
-          reply:
-            "Sorry, I'm having trouble responding right now. Please try again later.",
-        });
+        return res.status(503).json({ reply: "Sorry, I'm having trouble responding right now. Please try again later." });
       }
-
-      return res.json({
-        reply: result.reply,
-        model: result.model,
-        products: [],
-      });
+      return res.json({ reply: result.reply, model: result.model, products: [] });
     }
 
-    // ✅ Product search flow
-    const keywords = removeStopwords(
-      cleanMessage.split(" "),
-      customStopwords,
-    ).filter((word) => word.length > 2);
+    const intentHint =
+      intent === "rent_intent" ? "The user wants to RENT. Recommend renting." :
+      intent === "buy_intent"  ? "The user wants to BUY. Recommend buying." :
+      "Ask or infer whether they want to rent or buy.";
+
+    const intentWords = ["looking", "searching", "find", "show", "give", "get", "need", "want", "please", "rent", "buy"];
+    const customStopwords = [...eng, ...intentWords];
+
+    const keywords = removeStopwords(cleanMessage.split(" "), customStopwords).filter(
+      (word) => word.length > 2
+    );
 
     if (!keywords.length) {
       return res.json({
-        reply:
-          "Could you be more specific? Try something like 'red kurti', 'men kurtha', or 'kids dress'.",
+        reply: "Could you be more specific? Try something like 'red kurti', 'men kurtha', or 'kids dress'.",
         products: [],
       });
     }
@@ -176,31 +144,25 @@ Your job:
     try {
       products = await Product.find({
         $or: [
-          { name: { $regex: keywords.join("|"), $options: "i" } },
-          { category: { $regex: keywords.join("|"), $options: "i" } },
+          { name:        { $regex: keywords.join("|"), $options: "i" } },
+          { category:    { $regex: keywords.join("|"), $options: "i" } },
           { description: { $regex: keywords.join("|"), $options: "i" } },
         ],
       }).limit(5);
     } catch (dbError) {
       console.error("Database error:", dbError.message);
-      return res
-        .status(500)
-        .json({ error: "Failed to fetch products. Please try again." });
+      return res.status(500).json({ error: "Failed to fetch products. Please try again." });
     }
 
     if (!products.length) {
       return res.json({
-        reply:
-          "Sorry, we don't have that item yet on PurpleRabbit. You can explore our collections for Men, Women, Kids and Home.",
+        reply: "Sorry, we don't have that item yet on PurpleRabbit. You can explore our collections for Men, Women, Kids and Home.",
         products: [],
       });
     }
 
     const productList = products
-      .map(
-        (p) =>
-          `${p.name} | Rent: ₹${p.rentPrice || "N/A"}/day | Buy: ₹${p.price}`,
-      )
+      .map((p) => `${p.name} | Rent: ₹${p.rentPrice || "N/A"}/day | Buy: ₹${p.price}`)
       .join("\n");
 
     const productSystemPrompt = `
@@ -210,25 +172,23 @@ PurpleRabbit is an e-commerce + rental platform.
 Available products:
 ${productList}
 
+Intent hint: ${intentHint}
+
 Your goals:
-- Help users decide whether to RENT or BUY
+- Help users decide whether to RENT or BUY based on the intent hint
 - Recommend the best products from the list
 - Be friendly and persuasive
-- Keep answers short
+- Keep answers short (2-3 sentences max)
 
 Rules:
 - Suggest 2-3 products maximum
-- If user needs short-term → recommend RENT
-- If long-term → recommend BUY
-- Always end with a friendly call to action.
+- Always end with a friendly call to action
 `;
 
     const result = await callAI(productSystemPrompt, cleanMessage);
-
     if (!result) {
       return res.status(503).json({
-        reply:
-          "Sorry, I'm having trouble generating a response right now. Please try again later.",
+        reply: "Sorry, I'm having trouble generating a response right now. Please try again later.",
       });
     }
 
@@ -237,11 +197,10 @@ Rules:
       model: result.model,
       products: products.map((p) => p._id),
     });
+
   } catch (error) {
     console.error("Unexpected error in /chat:", error.message);
-    return res
-      .status(500)
-      .json({ error: "An unexpected error occurred. Please try again." });
+    return res.status(500).json({ error: "An unexpected error occurred. Please try again." });
   }
 });
 
