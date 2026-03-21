@@ -4,8 +4,11 @@ import Product from "../models/Product.js";
 import process from "process";
 import { saveChat, getChatHistory, deleteChats } from "../Controllers/chatController.js";
 import { removeStopwords, eng } from "stopword";
+import { validateToken } from "../middleware/auth.js";
+import { roles } from "../middleware/roles.js";
 
 const router = express.Router();
+const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 const models = [
   "meta-llama/llama-3.3-70b-instruct:free",
@@ -142,11 +145,12 @@ Your job:
 
     let products;
     try {
+      const regexPattern = keywords.map(escapeRegex).join("|");
       products = await Product.find({
         $or: [
-          { name:        { $regex: keywords.join("|"), $options: "i" } },
-          { category:    { $regex: keywords.join("|"), $options: "i" } },
-          { description: { $regex: keywords.join("|"), $options: "i" } },
+          { name:        { $regex: regexPattern, $options: "i" } },
+          { category:    { $regex: regexPattern, $options: "i" } },
+          { description: { $regex: regexPattern, $options: "i" } },
         ],
       }).limit(5);
     } catch (dbError) {
@@ -204,8 +208,8 @@ Rules:
   }
 });
 
-router.post("/save", saveChat);
-router.get("/:userId", getChatHistory);
-router.delete("/:userId", deleteChats);
+router.post("/save", validateToken, roles("user", "admin"), saveChat);
+router.get("/:userId", validateToken, roles("user", "admin"), getChatHistory);
+router.delete("/:userId", validateToken, roles("user", "admin"), deleteChats);
 
 export default router;

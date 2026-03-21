@@ -96,9 +96,13 @@ const SalesChatbot = ({ isOpen, setIsOpen }) => {
     });
   };
   const user = useSelector(selectCurrentUser);
-  if (!user) {
-    navigate("/login");
-  }
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
+
+  if (!user) return null;
   return (
     <>
       {/* Floating Button */}
