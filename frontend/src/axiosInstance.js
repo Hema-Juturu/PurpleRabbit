@@ -18,4 +18,31 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const status = error?.response?.status;
+    const tokenInvalidHeader = error?.response?.headers?.["x-token-invalid"];
+    const shouldLogout = error?.response?.data?.shouldLogout === true;
+    const tokenInvalidBody = error?.response?.data?.tokenInvalid;
+
+    const isExpired =
+      status === 401 &&
+      (shouldLogout || tokenInvalidHeader === "expired" || tokenInvalidBody === "expired");
+
+    if (isExpired) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      localStorage.removeItem("user");
+      localStorage.removeItem("userId");
+
+      if (window.location.pathname !== "/login") {
+        window.location.assign("/login");
+      }
+    }
+
+    return Promise.reject(error);
+  },
+);
+
 export default api;

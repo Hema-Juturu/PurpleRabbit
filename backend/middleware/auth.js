@@ -25,6 +25,8 @@ const validateToken = (req, res, next) => {
       message = "Unauthorized: Token has expired. Please log in again.";
       
       res.setHeader('X-Token-Invalid', 'expired'); 
+      // Hint to clients to clear stored token and re-authenticate
+      res.setHeader("WWW-Authenticate", 'Bearer error="invalid_token", error_description="The access token expired"');
       
     } else if (e.name === 'JsonWebTokenError' || e.name === 'NotBeforeError') {
       statusCode = 403;
@@ -35,7 +37,11 @@ const validateToken = (req, res, next) => {
 
     return res
       .status(statusCode)
-      .json({ message: message });
+      .json({
+        message,
+        tokenInvalid: statusCode === 401 ? "expired" : (statusCode === 403 ? "invalid" : undefined),
+        shouldLogout: statusCode === 401,
+      });
   }
 };
 
