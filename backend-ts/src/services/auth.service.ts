@@ -2,6 +2,7 @@ import User from '../models/user.model';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import transporter from '../config/mailer';
+import "dotenv/config";
 
 export const sendOtp = async (email: string) => {
     console.log('Sending OTP to:', email);
@@ -12,9 +13,8 @@ export const sendOtp = async (email: string) => {
   await User.findOneAndUpdate(
     { email },
     { email, otp: hashedOtp, otpExpiry, isVerified: false },
-    { upsert: true, new: true }
+    { upsert: true,  returnDocument: "after" }
   );
-
   await transporter.sendMail({
     from: process.env.EMAIL_USER,
     to: email,
